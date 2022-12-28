@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+
+    <title>Navigation</title>
+</head>
+<body>
+<!--Navigation-->
+<header>
+    <nav>
+        <section class="logo" >
+            <a th:href="@{/}">
+                <img th:src="@{/images/logo.png}" type="button" alt="logo">
+
+            </a>
+        </section>
+        <ul>
+            <!--Users and Guest-->
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <!--Only Guest-->
+            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}">Register</a></li>
+            <!--Only Users-->
+            <li><a href="#">Create Offer</a></li>
+            <li   sec:authorize="isAuthenticated()">
+                <form id="GFG" th:action="@{/users/logout}" th:method="post">
+                    <a href="javascript:document.getElementById('GFG').submit();">Logout</a>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+</body>
+</html>

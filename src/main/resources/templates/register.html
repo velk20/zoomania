@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Register</title>
+  <th:block th:include="~{/fragments/head}"></th:block>
+
+</head>
+<body>
+<div th:replace="fragments/navbar">Navbar</div>
+
+<main id="content">
+  <!--Register Page-->
+  <section id="registerPage">
+    <form class="registerForm"
+          th:action="@{/users/register}"
+          th:method="post"
+          th:object="${userModel}">
+      <img th:src="@{/images/logo.png}" alt="logo" />
+      <h2>Register</h2>
+      <div class="on-dark">
+        <label for="username">Username:</label>
+        <input id="username" name="username" type="text" placeholder="steven123"
+               th:field="*{username}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+      <div class="on-dark">
+        <label for="firstName">First Name:</label>
+        <input id="firstName" name="firstName" type="text" placeholder="Steven"
+               th:field="*{firstName}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+      <div class="on-dark">
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" name="lastName" type="text" placeholder="Stevenov"
+               th:field="*{lastName}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+      <div class="on-dark">
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="text" placeholder="steven@abv.bg"
+               th:field="*{email}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+      <div class="on-dark">
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password" placeholder="********"
+               th:field="*{password}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+
+      <div class="on-dark">
+        <label for="confirmPassword">Confirm Password:</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="********"
+               th:field="*{confirmPassword}"
+               th:errorclass="is-invalid"
+               value="">
+        <p class="invalid-feedback errors alert alert-danger">
+          First name is required and should be between 2 and 20 symbols.
+        </p>
+      </div>
+
+      <button class="btn" type="submit">Register</button>
+
+      <p class="field">
+        <span>If you have profile click <a th:href="@{/users/login}">here</a></span>
+      </p>
+    </form>
+  </section>
+</main>
+</body>
+<div th:replace="fragments/footer">Footer</div>
+
+</html>
