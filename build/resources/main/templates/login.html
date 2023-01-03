@@ -9,40 +9,46 @@
 <body>
 <div th:replace="fragments/navbar">Navbar</div>
 
-<main id="content">
-    <!--Login Page-->
-    <section id="loginPage">
-        <form class="loginForm"
+<div class="container">
+        <form id="loginForm" class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
               th:action="@{/users/login}"
               th:method="post">
 
-            <img th:src="@{/images/logo.png}" alt="logo"/>
-            <h2>Login</h2>
+            <h2 class="text-center text-white">Login</h2>
 
-            <div>
-                <label for="username">Username:</label>
+            <div class="row justify-content-center">
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="username"  class="text-white font-weight-bold" >Username:</label>
                 <input id="username" name="username"
                        th:value="${username}"
-                       type="text" placeholder="steven123" value="">
+                       type="text" placeholder="steven123"
+                       class="form-control"value="">
             </div>
+            </div>
+<div class="row justify-content-center">
 
-            <div>
-                <label for="password">Password:</label>
-                <input id="password" name="password" type="password" placeholder="********" value="">
+            <div class="form-group col-md-6 mb-3">
+                <label for="password"  class="text-white font-weight-bold">Password:</label>
+                <input id="password" name="password" type="password"
+                       class="form-control"placeholder="********" value="">
             </div>
+</div>
 
             <p th:if="${bad_credentials}" class="errors alert alert-danger">
                 Invalid username or password.
             </p>
+            <div class="justify-content-center">
+                <input id="loginBtn"  type="submit" class="btn btn-info btn-lg" value="Login"/>
+                <p>
+                    <span>If you don't have profile click
+                        <a th:href="@{/users/register}">here</a></span>
+                </p>
+            </div>
 
-            <button class="btn" type="submit">Login</button>
 
-            <p class="field">
-                <span>If you don't have profile click <a th:href="@{/users/login}">here</a></span>
-            </p>
         </form>
-    </section>
-</main>
+</div>
 </body>
 <div th:replace="fragments/footer">Footer</div>
 

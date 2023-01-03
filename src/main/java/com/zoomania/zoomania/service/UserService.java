@@ -35,7 +35,7 @@ public class UserService {
         UserRoleEntity byUserRoleEnum = userRoleRepository.findByUserRoleEnum(UserRoleEnum.USER);
 
         UserEntity userEntity = mapper.map(userRegisterDTO, UserEntity.class);
-       userEntity
+        userEntity
                .setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()))
                .addRole(byUserRoleEnum)
                .setActive(true);

@@ -9,28 +9,51 @@
 <body>
 <!--Navigation-->
 <header>
-    <nav>
-        <section class="logo" >
-            <a th:href="@{/}">
-                <img th:src="@{/images/logo.png}" type="button" alt="logo">
+    <nav id="navigation" class="navbar navbar-expand-lg navbar-dark fixed-top text-dark">
+        <a class="navbar-brand" th:href="@{/}"><img alt="logo"
+                                                    th:src="@{/images/logo.png}"
+                                                    class="logo">
+        </a>
 
-            </a>
-        </section>
-        <ul>
-            <!--Users and Guest-->
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/dashboard}">Dashboard</a></li>
-            <!--Only Guest-->
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}">Register</a></li>
-            <!--Only Users-->
-            <li><a href="#">Create Offer</a></li>
-            <li   sec:authorize="isAuthenticated()">
-                <form id="GFG" th:action="@{/users/logout}" th:method="post">
-                    <a href="javascript:document.getElementById('GFG').submit();">Logout</a>
-                </form>
-            </li>
-        </ul>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav mr-auto col-12 ">
+                <li
+                        class="nav-item">
+                    <a class="nav-link text-dark btn btn-link" th:href="@{/}">
+                        <strong>Home</strong>
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link text-dark btn btn-link"
+                                        th:href="@{/offers/all}"><strong>All offers</strong></a></li>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link text-dark btn btn-link"
+                                        th:href="@{/offers/my}"><strong>My offers</strong></a></li>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link text-dark btn btn-link"
+                                        th:href="@{/offers/create}"><strong>Create
+                    Offer</strong></a></li>
+
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link text-dark btn btn-link" th:href="@{/users/login}">
+                        <strong>Login</strong>
+                    </a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link text-dark btn btn-link" th:href="@{/users/register}">
+                        <strong>Register</strong></a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form id="GFG" th:action="@{/users/logout}" th:method="post">
+                        <a class="nav-link text-dark btn btn-link"
+                           href="javascript:document.getElementById('GFG').submit();"><strong>Logout</strong></a>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </nav>
 </header>
 </body>

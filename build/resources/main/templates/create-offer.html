@@ -3,43 +3,133 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Create Offer</title>
-  <th:block th:include="~{/fragments/head}"></th:block>
+    <th:block th:include="~{/fragments/head}"></th:block>
 </head>
 <body>
 <div th:replace="fragments/navbar">Navbar</div>
 
-<main id="content">
-  <!--Create Page-->
-  <section id="createPage">
-    <form class="createForm">
-      <img th:src="@{/images/cat-create.jpg}">
-      <div>
-        <h2>Create PetPal</h2>
-        <div class="name">
-          <label for="name">Name:</label>
-          <input name="name" id="name" type="text" placeholder="Max">
-        </div>
-        <div class="breed">
-          <label for="breed">Breed:</label>
-          <input name="breed" id="breed" type="text" placeholder="Shiba Inu">
-        </div>
-        <div class="Age">
-          <label for="age">Age:</label>
-          <input name="age" id="age" type="text" placeholder="2 years">
-        </div>
-        <div class="weight">
-          <label for="weight">Weight:</label>
-          <input name="weight" id="weight" type="text" placeholder="5kg">
-        </div>
-        <div class="image">
-          <label for="image">Image:</label>
-          <input name="image" id="image" type="text" placeholder="./image/dog.jpeg">
-        </div>
-        <button class="btn" type="submit">Create Pet</button>
-      </div>
-    </form>
-  </section>
-</main>
+<div class="container-fluid">
+
+    <div class="container justify-content-center">
+        <form th:action="@{/offers/create}"
+              th:method="post"
+              th:object="${addOfferModel}"
+              enctype="multipart/form-data"
+              id="loginForm">
+
+            <!-- Title -->
+            <div class="d-flex justify-content-between text-center align-items-lg-center py-3 flex-column flex-lg-row">
+                <h2 class="text-white">Add new offer</h2>
+
+                <div class="hstack gap-3">
+                    <button class="btn btn-light btn-lg btn-icon-text"><i class="bi bi-x"></i>
+                        <a class="text text-dark" style="text-decoration: none;" th:href="@{/offers/all}">Cancel</a></button>
+                    <input type="submit" value="Save" class="btn btn-primary btn-lg btn-icon-text">
+
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="row">
+                <!-- Left side -->
+                <div class="col-lg-12">
+                    <!-- Basic information -->
+                    <div class=" mb-4">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label text-white" for="title"><strong>Title</strong></label>
+                                        <input type="text" id="title" name="title"
+                                               th:field="*{title}"
+                                               th:errorclass="is-invalid"
+                                               class="form-control">
+                                        <p class="invalid-feedback errors alert alert-danger">
+                                            Title is required.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label for="price" class="form-label text-white"><strong>Price</strong></label>
+                                        <input type="number" id="price" name="price"
+                                               th:field="*{price}"
+                                               th:errorclass="is-invalid"
+                                               class="form-control">
+                                        <p class="invalid-feedback errors alert alert-danger">
+                                            Price must be positive number.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label for="category"
+                                               class="form-label text-white"><strong>Category</strong></label>
+                                        <select id="category"
+                                                name="category"
+                                                th:errorclass="is-invalid"
+                                        class="form-control">
+                                            <option selected disabled> <--- Select category ---></option>
+                                            <option th:each="e : ${T(com.zoomania.zoomania.model.enums.CategoryEnum).values()}"
+                                                    th:text="${e}"
+                                                    th:value="${e}"
+                                                    th:selected="${e} == *{category}">
+                                                Category
+                                            </option>
+                                        </select>
+                                        <p class="invalid-feedback errors alert alert-danger">
+                                            Category type is required.
+                                        </p>
+                                      </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label
+                                                   class="form-label text-white"><strong>Image URL</strong></label>
+                                            <input
+                                                    th:field="*{imageUrl}"
+                                                    th:errorclass="is-invalid"
+                                                   class="form-control" name="image" type="text">
+                                            <p class="invalid-feedback errors alert alert-danger">
+                                                Valid ImageUrl is required.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- Description -->
+                                    <div class="mb-8">
+                                        <div class="form-group">
+                                            <label for="description"
+                                                   class="form-label text-white"><strong>Description</strong></label>
+                                            <textarea id="description"
+                                                      th:field="*{description}"
+                                                      th:errorclass="is-invalid"
+                                                      class="form-control" rows="3"
+                                                      name="description"></textarea>
+                                            <p class="invalid-feedback errors alert alert-danger">
+                                                Description is required.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
 </body>
 <div th:replace="fragments/footer">Footer</div>
 

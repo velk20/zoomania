@@ -6,23 +6,56 @@
     <th:block th:include="~{/fragments/head}"></th:block>
 
 </head>
-<body>
-<div th:replace="fragments/navbar">Navbar</div>
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="fragments/navbar::header">Navbar</div>
 
-<main id="content">
-    <!--Welcome Page-->
-    <section class="welcome-content">
-        <article class="welcome-content-text">
-            <h1>We Care</h1>
-            <h1 class="bold-welcome">Your Pets</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
-        </article>
-        <article class="welcome-content-image">
-            <img th:src="@{/images/header-dog.png}" alt="dog">
-        </article>
-    </section>
-</main>
+<section>
+    <div  class="container px-5 ">
+        <div id="landingPage" class="row gx-5 align-items-center justify-content-center justify-content-lg-between welcome-content">
+            <div class="col-12 col-lg-5 text-center" >
+                <h2 class="display-4 lh-1 mb-4 text-white">We Care <br><strong>Your Pets</strong></h2>
+                <h4 class="lead fw-normal mb-5 mb-lg-0 text-white" >We offer everything your pet would want and so
+                    much more.
+                </h4>
+            </div>
+            <div class="col-sm-8 col-md-6">
+                <div class="px-5 px-sm-0">
+                    <img class="img-fluid rounded-circle" th:src="@{/images/header-dog.png}" alt="dog" /></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-items">
+    <div class="container-fluid" style="margin-bottom: 20px">
+        <h1 class="text-center text-white">Most recent offers</h1>
+
+        <div class="row">
+            <div th:each="offer : ${recentOffers}" class="col-md-4 col-sm-6">
+                <!-- Restaurant Item -->
+                <div class="item">
+                    <!-- Item's image -->
+                    <img class="img-responsive" height="300px" width="300px"  th:src="${offer.imageUrl}" alt="">
+                    <!-- Item details -->
+                    <div class="item-dtls">
+                        <!-- product title -->
+                        <h4 th:text="${offer.title}">Title</h4>
+                        <!-- price -->
+                        <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
+                    </div>
+                    <!-- add to cart btn -->
+                    <div class="ecom bg-lblue">
+                        <a class="btn" th:href="@{/offers/{id}/details(id=${offer.id})}">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</section>
+
+<div th:replace="fragments/footer.html::footer">Footer</div>
 </body>
-<div th:replace="fragments/footer">Footer</div>
 
 </html>

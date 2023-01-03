@@ -15,14 +15,14 @@ import javax.validation.constraints.Size;
         message = "Passwords do not match"
 )
 public class UserRegisterDTO {
-    @NotEmpty
-    @Size(min = 2,max = 20)
+    @NotEmpty(message = "Username can't be empty.")
+    @Size(min = 2,max = 20,message = "Must be between 2 and 20 symbols.")
     @UniqueUsername(message = "Username should be unique.")
     private String username;
     @NotEmpty
     @Size(min = 2,max = 20)
     private String firstName;
-    @NotEmpty(message = "User should be provided.")
+    @NotEmpty(message = "User email should be provided.")
     @Email(message = "User email should be valid.")
     @UniqueUserEmail(message = "User email should be unique.")
     private String email;

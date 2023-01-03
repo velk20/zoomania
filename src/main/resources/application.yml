@@ -19,3 +19,13 @@ spring:
   sql:
     init:
       mode: never
+  # For uploading files to our server
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 5MB
+  mvc:
+    # For PUT and PATCH on forms
+    hiddenmethod:
+      filter:
+        enabled: true

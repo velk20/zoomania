@@ -9,59 +9,82 @@
 <body>
 <div th:replace="fragments/navbar">Navbar</div>
 
-<main id="content">
-  <!--Dashboard-->
-  <section id="dashboard">
-    <h2 class="dashboard-title">Services for every animal</h2>
-    <div class="animals-dashboard">
-      <div class="animals-board">
-        <article class="service-img">
-          <img class="animal-image-cover" src="./images/cat2.jpg">
-        </article>
-        <h2 class="name">Athena</h2>
-        <h3 class="breed">American Curl</h3>
-        <div class="action">
-          <a class="btn" href="#">Details</a>
-        </div>
+<div class="shop-items">
+  <div class="container-fluid">
+    <h1 class="text-center text-white">Dashboard</h1>
+
+    <div class="row">
+      <div th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
+         <!-- Restaurant Item -->
+          <div class="item">
+            <!-- Item's image -->
+            <img class="img-responsive" th:src="${offer.imageUrl}" alt="">
+            <!-- Item details -->
+            <div class="item-dtls">
+              <!-- product title -->
+              <h4 th:text="${offer.title}">Title</h4>
+              <!-- price -->
+              <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
+            </div>
+            <!-- add to cart btn -->
+            <div class="ecom bg-lblue">
+              <a class="btn" th:href="@{/offers/{id}/details(id=${offer.id})}">Details</a>
+            </div>
+          </div>
       </div>
 
-      <div class="animals-board">
-        <article class="service-img">
-          <img class="animal-image-cover" src="./images/dog2.jpg">
-        </article>
-        <h2 class="name">Apollo</h2>
-        <h3 class="breed">Pug</h3>
-        <div class="action">
-          <a class="btn" href="#">Details</a>
-        </div>
-      </div>
-
-      <div class="animals-board">
-        <img class="animal-image-cover" src="./images/guinea-pig.jpg">
-        <h2 class="name">Chibi</h2>
-        <h3 class="breed">Teddy guinea pig</h3>
-        <div class="action">
-          <a class="btn" href="#">Details</a>
-        </div>
-      </div>
-
-      <div class="animals-board">
-        <article class="service-img">
-          <img class="animal-image-cover" src="./images/Shiba-Inu.png">
-        </article>
-        <h2 class="name">Max</h2>
-        <h3 class="breed">Shiba Inu</h3>
-        <div class="action">
-          <a class="btn" href="#">Details</a>
-        </div>
-      </div>
-      <!--If there is no pets in dashboard-->
-      <div>
-        <p class="no-pets">No pets in dashboard</p>
-      </div>
     </div>
-  </section>
-</main>
+  </div>
+
+  <div id="paginationNav" class="container-fluid row justify-content-center mar">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${offers.isFirst()} ? 'disabled' : ''">
+          <a th:unless="${offers.isFirst()}"
+             th:href="@{/offers/all(size=${offers.getSize()},page=0)}"
+             class="page-link" href="#">First</a>
+          <a th:if="${offers.isFirst()}"
+             class="page-link" href="#">First</a>
+        </li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${offers.hasPrevious() ? '' : 'disabled'}">
+          <a th:if="${offers.hasPrevious()}"
+             th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getNumber() - 1})}"
+             class="page-link" href="#">Previous</a>
+          <a th:unless="${offers.hasPrevious()}"
+             class="page-link" href="#">Previous</a>
+        </li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${offers.hasNext() ? '' : 'disabled'}">
+          <a th:if="${offers.hasNext()}"
+             th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getNumber() + 1})}"
+             class="page-link" href="#">Next</a>
+          <a th:unless="${offers.hasNext()}"
+             class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${offers.isLast()} ? 'disabled' : ''">
+          <a th:unless="${offers.isLast()}"
+             th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getTotalPages() - 1})}"
+             class="page-link" href="#">Last</a>
+          <a th:if="${offers.isLast()}"
+             class="page-link" href="#">Last</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</div>
+
 </body>
 <div th:replace="fragments/footer">Footer</div>
 

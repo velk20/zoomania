@@ -34,6 +34,7 @@ public class SecurityConfig {
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 // everyone can log in and register
                         antMatchers( "/").permitAll().
+                        antMatchers("/offers/all").permitAll().
                         antMatchers("/users/login", "/users/register").anonymous().
                 // all other pages are available for logger in users
                         anyRequest().

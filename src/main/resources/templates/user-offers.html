@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <title>Dashboard</title>
+    <title>My offers</title>
   <th:block th:include="~{/fragments/head}"></th:block>
 
 </head>
@@ -11,32 +12,34 @@
 
 <div class="shop-items">
   <div class="container-fluid">
-    <h1 class="text-center text-white">Dashboard</h1>
+    <h1  th:if="${offers.hasContent()}" class="text-center text-white">My offers</h1>
 
-    <div class="row">
-      <div th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
-         <!-- Restaurant Item -->
-          <div class="item">
-            <!-- Item's image -->
-            <img class="img-responsive" th:src="${offer.imageUrl}" alt="">
-            <!-- Item details -->
-            <div class="item-dtls">
-              <!-- product title -->
-              <h4 th:text="${offer.title}">Title</h4>
-              <!-- price -->
-              <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
-            </div>
-            <!-- add to cart btn -->
-            <div class="ecom bg-lblue">
-              <a class="btn" th:href="@{/offers/{id}/details(id=${offer.id})}">Details</a>
-            </div>
+    <div class="row text-center justify-content-center">
+      <div th:if="${offers.hasContent()}" th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
+        <!-- Restaurant Item -->
+        <div class="item">
+          <!-- Item's image -->
+          <img class="img-responsive" height="250px" width="250px" th:src="${offer.imageUrl}" alt="">
+          <!-- Item details -->
+          <div class="item-dtls">
+            <!-- product title -->
+            <h4 th:text="${offer.title}">Title</h4>
+            <!-- price -->
+            <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
           </div>
+          <!-- add to cart btn -->
+          <div class="ecom bg-lblue">
+            <a class="btn" th:href="@{/offers/{id}/details(id=${offer.id})}">Details</a>
+          </div>
+        </div>
       </div>
-
+      <div class=" ">
+        <h2 th:unless="${offers.hasContent()}" class="text-center text-danger text-capitalize">You don't
+          have any offers!</h2></div>
     </div>
   </div>
 
-  <div id="paginationNav" class="container-fluid row justify-content-center mar">
+  <div th:if="${offers.hasContent()}" id="paginationNav" class="container-fluid row justify-content-center mar">
     <nav>
       <ul class="pagination">
         <li class="page-item" th:classappend="${offers.isFirst()} ? 'disabled' : ''">
@@ -84,7 +87,6 @@
   </div>
 
 </div>
-
 </body>
 <div th:replace="fragments/footer">Footer</div>
 
