@@ -13,6 +13,9 @@ public class CreateOrUpdateOfferDTO {
     @NotEmpty
     @Size(min = 3, max = 20)
     private String title;
+    @NotEmpty
+    @Size(min = 3, max = 20)
+    private String breed;
     @NotNull
     @Positive
     private BigDecimal price;
@@ -24,6 +27,15 @@ public class CreateOrUpdateOfferDTO {
     @NotEmpty
     @Size(min = 3, max = 150)
     private String description;
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public CreateOrUpdateOfferDTO setBreed(String breed) {
+        this.breed = breed;
+        return this;
+    }
 
     public String getImageUrl() {
         return imageUrl;

@@ -1,6 +1,7 @@
 package com.zoomania.zoomania.web;
 
 import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.OfferDetailsDTO;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
 import com.zoomania.zoomania.repository.CategoryRepository;
 import com.zoomania.zoomania.service.CategoryService;
@@ -12,10 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -86,5 +84,16 @@ public class OfferController {
         offerService.addOffer(addOfferModel, userDetails);
 
         return "redirect:/offers/all";
+    }
+
+    @GetMapping("/{id}/details")
+    public String detailOffer(
+            Model model,
+            @PathVariable("id") Long id
+    ) {
+        OfferDetailsDTO offerById = offerService.getOfferById(id);
+        model.addAttribute("offer", offerById);
+
+        return "details-offer";
     }
 }

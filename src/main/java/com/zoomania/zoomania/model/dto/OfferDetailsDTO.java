@@ -1,7 +1,5 @@
 package com.zoomania.zoomania.model.dto;
 
-import com.zoomania.zoomania.model.entity.CategoryEntity;
-import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.enums.CategoryEnum;
 
 import java.math.BigDecimal;
@@ -11,12 +9,26 @@ public class OfferDetailsDTO {
     private Long id;
     private String title;
     private BigDecimal price;
+    private String breed;
     private String description;
     private String imageUrl;
     private LocalDate createdOn;
-    private CategoryEnum category;
+    private String category;
     private String sellerFirstName;
     private String sellerLastName;
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public OfferDetailsDTO setBreed(String breed) {
+        this.breed = breed;
+        return this;
+    }
+
+    public String getSellerFullName() {
+        return sellerFirstName.concat(" ").concat(sellerLastName);
+    }
 
     public String getDescription() {
         return description;
@@ -45,11 +57,11 @@ public class OfferDetailsDTO {
         return this;
     }
 
-    public CategoryEnum getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public OfferDetailsDTO setCategory(CategoryEnum category) {
+    public OfferDetailsDTO setCategory(String category) {
         this.category = category;
         return this;
     }

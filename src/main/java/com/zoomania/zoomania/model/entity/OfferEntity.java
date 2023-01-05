@@ -3,6 +3,7 @@ package com.zoomania.zoomania.model.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "offers")
@@ -15,18 +16,29 @@ public class OfferEntity extends BaseEntity {
     private BigDecimal price;
     @Basic
     private String imageUrl;
+    @Basic
+    private String breed;
     @Column(nullable = false)
-    private LocalDate createdOn;
+    private LocalDateTime createdOn;
     @ManyToOne(optional = false)
     private CategoryEntity category;
     @ManyToOne(optional = false)
     private UserEntity seller;
 
-    public LocalDate getCreatedOn() {
+    public String getBreed() {
+        return breed;
+    }
+
+    public OfferEntity setBreed(String breed) {
+        this.breed = breed;
+        return this;
+    }
+
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public OfferEntity setCreatedOn(LocalDate createdOn) {
+    public OfferEntity setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
     }

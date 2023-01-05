@@ -26,9 +26,10 @@
                 type="text"
                 class="form-control"
                 placeholder="First name"/>
-        <p class="invalid-feedback errors alert alert-danger">
-          First name is required and should be between 2 and 20 symbols.
-        </p>
+        <div class="invalid-feedback errors alert alert-danger">
+<div   th:each="err : ${#fields.errors('firstName')}"
+       th:text="${err}"></div>
+        </div>
       </div>
       <div class="form-group col-md-6 mb-3">
         <label for="lastName" class="text-white font-weight-bold">Last Name</label>
@@ -38,9 +39,12 @@
                type="text"
                class="form-control"
                placeholder="Last name"/>
-        <p class="invalid-feedback errors alert alert-danger">
-          Last name is required and should be between 2 and 20 symbols.
-        </p>
+        <div class="invalid-feedback errors alert alert-danger">
+          <div   th:each="err : ${#fields.errors('lastName')}"
+                 th:text="${err}">
+
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -77,6 +81,39 @@
     </div>
     <div class="row">
       <div class="form-group col-md-6 mb-3">
+        <label for="age" class="text-white font-weight-bold">Age</label>
+        <input id="age"
+               th:field="*{age}"
+               th:errorclass="is-invalid"
+               type="number"
+               min="0"
+               step="1"
+               class="form-control"
+               placeholder="Age"/>
+        <div class="invalid-feedback errors alert alert-danger">
+
+            <div   th:each="err : ${#fields.errors('age')}"
+                   th:text="${err}"></div>
+
+          </div>
+
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="phone" class="text-white font-weight-bold">Phone</label>
+        <input id="phone"
+               th:field="*{phone}"
+               th:errorclass="is-invalid"
+               type="text"
+               class="form-control"
+               placeholder="Example number (Bulgaria): 043 012 345"/>
+        <div class="invalid-feedback errors alert alert-danger">
+          <div   th:each="err : ${#fields.errors('phone')}"
+                 th:text="${err}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6 mb-3">
         <label for="password" class="text-white font-weight-bold">Password</label>
         <input id="password"
                th:field="*{password}"
@@ -84,9 +121,10 @@
                type="password"
                class="form-control"
                placeholder="Password"/>
-        <p class="invalid-feedback errors alert alert-danger">
-          Password is required and should be at least 5 symbols.
-        </p>
+        <div class="invalid-feedback errors alert alert-danger">
+          <div   th:each="err : ${#fields.errors('password')}"
+                                                                       th:text="${err}"></div>
+        </div>
       </div>
       <div class="form-group col-md-6 mb-3">
         <label for="confirmPassword" class="text-white font-weight-bold">Repeat Password</label>
@@ -98,9 +136,10 @@
                 class="form-control"
                 placeholder="Repeat password"
         />
-        <p class="invalid-feedback errors alert alert-danger">
-          Passwords should match.
-        </p>
+        <div class="invalid-feedback errors alert alert-danger">
+          <div   th:each="err : ${#fields.errors('confirmPassword')}"
+                                                                       th:text="${err}"></div>
+        </div>
       </div>
     </div>
 
@@ -123,87 +162,6 @@
     </div>
   </form>
 </div>
-
-
-<!--<main id="content">-->
-<!--  &lt;!&ndash;Register Page&ndash;&gt;-->
-<!--  <section id="registerPage">-->
-<!--    <form class="registerForm"-->
-<!--          th:action="@{/users/register}"-->
-<!--          th:method="post"-->
-<!--          th:object="${userModel}">-->
-<!--      <img th:src="@{/images/logo.png}" alt="logo" />-->
-<!--      <h2>Register</h2>-->
-<!--      <div class="on-dark">-->
-<!--        <label for="username">Username:</label>-->
-<!--        <input id="username" name="username" type="text" placeholder="steven123"-->
-<!--               th:field="*{username}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="on-dark">-->
-<!--        <label for="firstName">First Name:</label>-->
-<!--        <input id="firstName" name="firstName" type="text" placeholder="Steven"-->
-<!--               th:field="*{firstName}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="on-dark">-->
-<!--        <label for="lastName">Last Name:</label>-->
-<!--        <input id="lastName" name="lastName" type="text" placeholder="Stevenov"-->
-<!--               th:field="*{lastName}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="on-dark">-->
-<!--        <label for="email">Email:</label>-->
-<!--        <input id="email" name="email" type="text" placeholder="steven@abv.bg"-->
-<!--               th:field="*{email}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="on-dark">-->
-<!--        <label for="password">Password:</label>-->
-<!--        <input id="password" name="password" type="password" placeholder="********"-->
-<!--               th:field="*{password}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-
-<!--      <div class="on-dark">-->
-<!--        <label for="confirmPassword">Confirm Password:</label>-->
-<!--        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="********"-->
-<!--               th:field="*{confirmPassword}"-->
-<!--               th:errorclass="is-invalid"-->
-<!--               value="">-->
-<!--        <p class="invalid-feedback errors alert alert-danger">-->
-<!--          First name is required and should be between 2 and 20 symbols.-->
-<!--        </p>-->
-<!--      </div>-->
-
-<!--      <button id="registerBtn" class="btn" type="submit">Register</button>-->
-
-<!--      <p class="field">-->
-<!--        <span>If you have profile click <a th:href="@{/users/login}">here</a></span>-->
-<!--      </p>-->
-<!--    </form>-->
-<!--  </section>-->
-<!--</main>-->
 </body>
 <div th:replace="fragments/footer">Footer</div>
 

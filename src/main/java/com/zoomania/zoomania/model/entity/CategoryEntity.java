@@ -20,4 +20,9 @@ public class  CategoryEntity extends BaseEntity {
         this.name = categoryEnum;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return name.name();
+    }
 }

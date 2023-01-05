@@ -12,10 +12,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,12 +27,18 @@ public class OfferService {
     private final UserRepository userRepository;
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
+    private final UserDetailsService userDetailsService;
 
-    public OfferService(OfferRepository offerRepository, UserRepository userRepository, ModelMapper mapper, CategoryRepository categoryRepository) {
+    public OfferService(OfferRepository offerRepository,
+                        UserRepository userRepository,
+                        ModelMapper mapper,
+                        CategoryRepository categoryRepository,
+                        UserDetailsService userDetailsService) {
         this.offerRepository = offerRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.categoryRepository = categoryRepository;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -44,7 +53,7 @@ public class OfferService {
         newOffer
                 .setCategory(categoryEntity)
                 .setSeller(seller)
-                .setCreatedOn(LocalDate.now());
+                .setCreatedOn(LocalDateTime.now());
 
         offerRepository.save(newOffer);
     }
@@ -67,9 +76,22 @@ public class OfferService {
                 .map(o -> mapper.map(o, OfferDetailsDTO.class));
     }
 
-    public Page<OfferDetailsDTO> getAllUserOffers(String username,Pageable pageable) {
+    public Page<OfferDetailsDTO> getAllUserOffers(String username, Pageable pageable) {
 
-        return this.offerRepository.findAllBySellerUsername(username,pageable)
+        return this.offerRepository.findAllBySellerUsername(username, pageable)
                 .map(o -> mapper.map(o, OfferDetailsDTO.class));
+    }
+
+    public OfferDetailsDTO getOfferById(Long id) {
+        OfferEntity offerEntity = this.offerRepository.findById(id)
+                .orElseThrow(RuntimeException::new);
+
+        UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId()).orElseThrow(RuntimeException::new);
+
+        OfferDetailsDTO offerDetailsDTO = mapper.map(offerEntity, OfferDetailsDTO.class);
+
+        return offerDetailsDTO
+                .setSellerFirstName(seller.getFirstName())
+                .setSellerLastName(seller.getLastName());
     }
 }

@@ -5,9 +5,8 @@ import com.zoomania.zoomania.util.validation.FieldMatch;
 import com.zoomania.zoomania.util.validation.UniqueUserEmail;
 import com.zoomania.zoomania.util.validation.UniqueUsername;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 @FieldMatch(
         first = "password",
@@ -19,20 +18,45 @@ public class UserRegisterDTO {
     @Size(min = 2,max = 20,message = "Must be between 2 and 20 symbols.")
     @UniqueUsername(message = "Username should be unique.")
     private String username;
-    @NotEmpty
-    @Size(min = 2,max = 20)
+    @NotEmpty(message = "First Name is required.")
+    @Size(min = 2,max = 20,message = "First Name must be between 2 nad 20 symbols.")
     private String firstName;
     @NotEmpty(message = "User email should be provided.")
     @Email(message = "User email should be valid.")
     @UniqueUserEmail(message = "User email should be unique.")
     private String email;
-    @NotEmpty
-    @Size(min = 2,max = 20)
+    @NotEmpty(message = "Last Name is required.")
+    @Size(min = 2,max = 20,message = "Last Name must be between 2 nad 20 symbols.")
     private String lastName;
-    @NotEmpty
-    @Size(min = 5)
+    @NotEmpty(message = "Phone is required.")
+    @Pattern(regexp = "[0-9]\\d{1,20}",message = "Phone is invalid.")
+    private String phone;
+    @Min(value = 10,message = "Minimum age is 10.")
+    @Max(value = 99,message = "Maximum age is 99.")
+    private Integer age;
+    @NotEmpty(message = "Password is required.")
+    @Size(min = 5,message = "Password must be at least 5 symbols.")
     private String password;
     private String confirmPassword;
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public UserRegisterDTO setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public UserRegisterDTO setAge(Integer age) {
+        this.age = age;
+        return this;
+    }
 
     public String getUsername() {
         return username;

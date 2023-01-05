@@ -11,6 +11,9 @@ public class UserEntity extends BaseEntity {
     private String username;
     @Column(nullable = false,unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
+    private String phone;
+    private Integer age;
     private String password;
     private String firstName;
     private String lastName;
@@ -19,6 +22,24 @@ public class UserEntity extends BaseEntity {
             fetch = FetchType.EAGER
     )
     private List<UserRoleEntity> userRoles = new ArrayList<>();
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public UserEntity setAge(Integer age) {
+        this.age = age;
+        return this;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public UserEntity setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
 
     public String getUsername() {
         return username;
