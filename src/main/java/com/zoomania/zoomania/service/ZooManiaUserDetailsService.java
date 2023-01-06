@@ -29,6 +29,7 @@ public class ZooManiaUserDetailsService implements UserDetailsService {
     private UserDetails map(UserEntity userEntity) {
 
         return new ZooManiaUserDetails(
+                userEntity.getId(),
                 userEntity.getPassword(),
                 userEntity.getUsername(),
                 userEntity.getFirstName(),

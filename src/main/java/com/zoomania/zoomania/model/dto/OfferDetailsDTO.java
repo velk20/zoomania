@@ -16,6 +16,16 @@ public class OfferDetailsDTO {
     private String category;
     private String sellerFirstName;
     private String sellerLastName;
+    private String sellerUsername;
+
+    public String getSellerUsername() {
+        return sellerUsername;
+    }
+
+    public OfferDetailsDTO setSellerUsername(String sellerUsername) {
+        this.sellerUsername = sellerUsername;
+        return this;
+    }
 
     public String getBreed() {
         return breed;

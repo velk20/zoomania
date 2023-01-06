@@ -59,27 +59,34 @@ public class OfferService {
     }
 
     public List<OfferDetailsDTO> getRecentOffers(int limit) {
-        List<OfferEntity> byOrderByCreatedOnDesc = this.offerRepository.findByOrderByCreatedOnDesc();
-        if (byOrderByCreatedOnDesc == null) {
+        List<OfferEntity> byOrderByCreatedOnDesc =
+                this.offerRepository.findByOrderByCreatedOnDesc();
+        if (byOrderByCreatedOnDesc == null || byOrderByCreatedOnDesc.size() == 0) {
             return null;
+        }
+        if (byOrderByCreatedOnDesc.size() < limit) {
+            return byOrderByCreatedOnDesc
+                    .stream()
+                    .map(this::map)
+                    .collect(Collectors.toList());
         }
 
         return byOrderByCreatedOnDesc.subList(0, limit)
                 .stream()
-                .map(o -> mapper.map(o, OfferDetailsDTO.class))
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
     public Page<OfferDetailsDTO> getAllOffers(Pageable pageable) {
         return this.offerRepository
                 .findAll(pageable)
-                .map(o -> mapper.map(o, OfferDetailsDTO.class));
+                .map(this::map);
     }
 
     public Page<OfferDetailsDTO> getAllUserOffers(String username, Pageable pageable) {
 
         return this.offerRepository.findAllBySellerUsername(username, pageable)
-                .map(o -> mapper.map(o, OfferDetailsDTO.class));
+                .map(this::map);
     }
 
     public OfferDetailsDTO getOfferById(Long id) {
@@ -88,10 +95,15 @@ public class OfferService {
 
         UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId()).orElseThrow(RuntimeException::new);
 
-        OfferDetailsDTO offerDetailsDTO = mapper.map(offerEntity, OfferDetailsDTO.class);
+        OfferDetailsDTO offerDetailsDTO = map(offerEntity);
 
         return offerDetailsDTO
                 .setSellerFirstName(seller.getFirstName())
-                .setSellerLastName(seller.getLastName());
+                .setSellerLastName(seller.getLastName())
+                .setSellerUsername(seller.getUsername());
+    }
+
+    private OfferDetailsDTO map(OfferEntity offerEntity) {
+        return mapper.map(offerEntity, OfferDetailsDTO.class);
     }
 }

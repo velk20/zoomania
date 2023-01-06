@@ -93,7 +93,7 @@ public class OfferController {
     ) {
         OfferDetailsDTO offerById = offerService.getOfferById(id);
         model.addAttribute("offer", offerById);
-
+        model.addAttribute("offerSellerUsername", offerById.getSellerUsername());
         return "details-offer";
     }
 }

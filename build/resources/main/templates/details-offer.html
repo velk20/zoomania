@@ -36,15 +36,19 @@
         <li><h5>Posted on: <span th:text="*{createdOn}">posted</span></h5></li>
         <li><h5>Seller: <span th:text="*{getSellerFullName()}">seller</span></h5></li>
       </ul>
+      <div th:if="${#authentication.name}==${offerSellerUsername}" class="my-3">
+        <a style="text-decoration: none" class="text-white btn btn-link bg-warning text-decoration-none"
+           th:href="@{/offers/{offerId}/edit(offerId=*{id})}">Edit
+        </a>
+        <a style="text-decoration: none" class="text-white btn btn-link bg-danger text-decoration-none"
+           th:href="@{/offers/{offerId}/delete(offerId=*{id})}">
+          Delete</a>
+
+      </div>
     </div>
 
+    </div>
   </div>
-  <!-- /.row -->
-
-</div>
-<!-- /.container -->
-
-
 </body>
 <div th:replace="fragments/footer">Footer</div>
 
