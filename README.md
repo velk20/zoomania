@@ -1,7 +1,7 @@
 # ZooMania - Spring Boot Web Application with Java and MySQL
 
 ## :eyeglasses: Project Introduction
-ZooMania is an online web (MVC) application where you can adopt your favorite pet
+ZooMania is an online web (MVC) application where you can adopt your favorite pet. For Databse I am useing MySQL 8.0 with mysql-connector-j for Java compatibility and also Spring Data JPA with Hibernate for easier Database manimupations. Application is secured with Spring Security also custom configured in the project.
 <br/><br/>
 
 ## 📝 Project Overview
@@ -20,13 +20,14 @@ ZooMania is an online web (MVC) application where you can adopt your favorite pe
 ### Run the project
 
 ```
-npm install
+First you are required to have MySQL 8.0 installed on your PC
 ```
 ```
-npm start
+Open the project and run it.
+The database must be populated with the data.sql file in the project with custom-written SQL queries.
 ```
 ```
-npm run start-json:server
+Open your client(browser) on localhost:8080
 ```
 
 ## 🧪 Test Accounts
