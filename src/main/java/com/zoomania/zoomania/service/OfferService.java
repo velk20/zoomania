@@ -89,6 +89,14 @@ public class OfferService {
                 .map(this::map);
     }
 
+    public CreateOrUpdateOfferDTO getEditOfferById(Long id) {
+        OfferEntity offerEntity = this.offerRepository
+                .findById(id)
+                .orElseThrow(RuntimeException::new);
+
+        return mapper.map(offerEntity, CreateOrUpdateOfferDTO.class);
+    }
+
     public OfferDetailsDTO getOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository.findById(id)
                 .orElseThrow(RuntimeException::new);
@@ -105,5 +113,34 @@ public class OfferService {
 
     private OfferDetailsDTO map(OfferEntity offerEntity) {
         return mapper.map(offerEntity, OfferDetailsDTO.class);
+    }
+
+    public boolean deleteOfferById(Long id) {
+        Optional<OfferEntity> byId = this.offerRepository.findById(id);
+        if (byId.isPresent()) {
+            this.offerRepository.delete(byId.get());
+            return true;
+        }
+        return false;
+    }
+
+    public void editOffer(Long id,CreateOrUpdateOfferDTO editOffer) {
+        Optional<OfferEntity> offerById = this.offerRepository.findById(id);
+        if (offerById.isEmpty()) {
+            throw new RuntimeException("No offer found!");
+        }
+
+        CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory()).orElseThrow();
+
+        OfferEntity offerEntity = offerById.get();
+        offerEntity
+                .setTitle(editOffer.getTitle())
+                .setBreed(editOffer.getBreed())
+                .setPrice(editOffer.getPrice())
+                .setDescription(editOffer.getDescription())
+                .setImageUrl(editOffer.getImageUrl())
+                .setCategory(categoryEntity);
+
+        this.offerRepository.save(offerEntity);
     }
 }

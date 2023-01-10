@@ -3,30 +3,28 @@ package com.zoomania.zoomania.model.dto;
 import com.zoomania.zoomania.model.enums.CategoryEnum;
 import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class CreateOrUpdateOfferDTO {
-    @NotEmpty
-    @Size(min = 3, max = 20)
+    @NotEmpty(message = "Title can not be empty.")
+    @Size(min = 3, max = 50)
     private String title;
-    @NotEmpty
-    @Size(min = 3, max = 20)
+    @NotEmpty(message = "Breed can not be empty.")
+    @Size(min = 3, max = 50)
     private String breed;
-    @NotNull
-    @Positive
+    @NotNull(message = "Price can not be empty.")
+    @DecimalMin(value = "0")
     private BigDecimal price;
-    @NotNull
+    @NotNull(message = "Category can not be empty.")
     private CategoryEnum category;
-    @NotEmpty
+    @NotEmpty(message = "Image Url can not be empty.")
     @URL
     private String imageUrl;
-    @NotEmpty
+    @NotEmpty(message = "Description can not be empty.")
     @Size(min = 3, max = 150)
     private String description;
+
 
     public String getBreed() {
         return breed;

@@ -35,7 +35,7 @@ public class OfferController {
             Model model,
             @PageableDefault(
                     sort = "createdOn",
-                    direction = Sort.Direction.ASC,
+                    direction = Sort.Direction.DESC,
                     page = 0,
                     size = 8
             )Pageable pageable) {
@@ -95,5 +95,49 @@ public class OfferController {
         model.addAttribute("offer", offerById);
         model.addAttribute("offerSellerUsername", offerById.getSellerUsername());
         return "details-offer";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editOffer(
+            Model model,
+            @PathVariable("id") Long id
+    ) {
+
+        if (!model.containsAttribute("editOffer")) {
+            CreateOrUpdateOfferDTO offerById = offerService.getEditOfferById(id);
+            model.addAttribute("editOffer", offerById);
+        }
+        model.addAttribute("offerId", id);
+
+        return "edit-offer";
+    }
+
+    @PatchMapping("/{id}/edit")
+    public String editOffer(
+                            @PathVariable("id") Long id,
+                            @Valid CreateOrUpdateOfferDTO editOffer,
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes
+    ) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("editOffer", editOffer);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editOffer",
+                    bindingResult);
+            return "redirect:/offers/{id}/edit";
+        }
+
+        offerService.editOffer(id,editOffer);
+
+        return "redirect:/offers/{id}/details";
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public String deleteOffer(
+            @PathVariable("id") Long id
+    ) {
+        boolean deleteOfferById = offerService.deleteOfferById(id);
+
+        return "redirect:/dashboard";
     }
 }

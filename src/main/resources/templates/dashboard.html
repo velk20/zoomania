@@ -24,11 +24,12 @@
               <!-- product title -->
               <h4 th:text="${offer.title}">Title</h4>
               <!-- price -->
-              <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
+              <span class="price lblue" th:if="${offer.price >0}" th:text="'$'+${offer.price}">$23.00</span>
+              <span class="price lblue" th:if="${offer.price == 0}" th:text="FREE">FREE</span>
             </div>
             <!-- add to cart btn -->
             <div class="ecom bg-lblue">
-              <a class="btn" th:href="@{/offers/{offerId}/details(offerId=${offer.id})}">Details</a>
+              <a class="btn"  th:href="@{/offers/{offerId}/details(offerId=${offer.id})}">Details</a>
             </div>
           </div>
       </div>
