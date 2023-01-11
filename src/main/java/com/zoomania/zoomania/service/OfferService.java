@@ -1,7 +1,8 @@
 package com.zoomania.zoomania.service;
 
+import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
-import com.zoomania.zoomania.model.dto.OfferDetailsDTO;
+import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +58,7 @@ public class OfferService {
         offerRepository.save(newOffer);
     }
 
-    public List<OfferDetailsDTO> getRecentOffers(int limit) {
+    public List<OfferDetailsView> getRecentOffers(int limit) {
         List<OfferEntity> byOrderByCreatedOnDesc =
                 this.offerRepository.findByOrderByCreatedOnDesc();
         if (byOrderByCreatedOnDesc == null || byOrderByCreatedOnDesc.size() == 0) {
@@ -77,13 +77,13 @@ public class OfferService {
                 .collect(Collectors.toList());
     }
 
-    public Page<OfferDetailsDTO> getAllOffers(Pageable pageable) {
+    public Page<OfferDetailsView> getAllOffers(Pageable pageable) {
         return this.offerRepository
                 .findAll(pageable)
                 .map(this::map);
     }
 
-    public Page<OfferDetailsDTO> getAllUserOffers(String username, Pageable pageable) {
+    public Page<OfferDetailsView> getAllUserOffers(String username, Pageable pageable) {
 
         return this.offerRepository.findAllBySellerUsername(username, pageable)
                 .map(this::map);
@@ -92,27 +92,27 @@ public class OfferService {
     public CreateOrUpdateOfferDTO getEditOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository
                 .findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(OfferNotFoundException::new);
 
         return mapper.map(offerEntity, CreateOrUpdateOfferDTO.class);
     }
 
-    public OfferDetailsDTO getOfferById(Long id) {
+    public OfferDetailsView getOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository.findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(OfferNotFoundException::new);
 
         UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId()).orElseThrow(RuntimeException::new);
 
-        OfferDetailsDTO offerDetailsDTO = map(offerEntity);
+        OfferDetailsView offerDetailsView = map(offerEntity);
 
-        return offerDetailsDTO
+        return offerDetailsView
                 .setSellerFirstName(seller.getFirstName())
                 .setSellerLastName(seller.getLastName())
                 .setSellerUsername(seller.getUsername());
     }
 
-    private OfferDetailsDTO map(OfferEntity offerEntity) {
-        return mapper.map(offerEntity, OfferDetailsDTO.class);
+    private OfferDetailsView map(OfferEntity offerEntity) {
+        return mapper.map(offerEntity, OfferDetailsView.class);
     }
 
     public boolean deleteOfferById(Long id) {
@@ -125,15 +125,13 @@ public class OfferService {
     }
 
     public void editOffer(Long id,CreateOrUpdateOfferDTO editOffer) {
-        Optional<OfferEntity> offerById = this.offerRepository.findById(id);
-        if (offerById.isEmpty()) {
-            throw new RuntimeException("No offer found!");
-        }
+        OfferEntity offerById = this.offerRepository.findById(id)
+                .orElseThrow(OfferNotFoundException::new);
+
 
         CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory()).orElseThrow();
 
-        OfferEntity offerEntity = offerById.get();
-        offerEntity
+        offerById
                 .setTitle(editOffer.getTitle())
                 .setBreed(editOffer.getBreed())
                 .setPrice(editOffer.getPrice())
@@ -141,6 +139,6 @@ public class OfferService {
                 .setImageUrl(editOffer.getImageUrl())
                 .setCategory(categoryEntity);
 
-        this.offerRepository.save(offerEntity);
+        this.offerRepository.save(offerById);
     }
 }

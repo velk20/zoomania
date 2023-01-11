@@ -1,11 +1,9 @@
-package com.zoomania.zoomania.model.dto;
-
-import com.zoomania.zoomania.model.enums.CategoryEnum;
+package com.zoomania.zoomania.model.view;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class OfferDetailsDTO {
+public class OfferDetailsView {
     private Long id;
     private String title;
     private BigDecimal price;
@@ -22,7 +20,7 @@ public class OfferDetailsDTO {
         return sellerUsername;
     }
 
-    public OfferDetailsDTO setSellerUsername(String sellerUsername) {
+    public OfferDetailsView setSellerUsername(String sellerUsername) {
         this.sellerUsername = sellerUsername;
         return this;
     }
@@ -31,7 +29,7 @@ public class OfferDetailsDTO {
         return breed;
     }
 
-    public OfferDetailsDTO setBreed(String breed) {
+    public OfferDetailsView setBreed(String breed) {
         this.breed = breed;
         return this;
     }
@@ -44,7 +42,7 @@ public class OfferDetailsDTO {
         return description;
     }
 
-    public OfferDetailsDTO setDescription(String description) {
+    public OfferDetailsView setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -53,7 +51,7 @@ public class OfferDetailsDTO {
         return imageUrl;
     }
 
-    public OfferDetailsDTO setImageUrl(String imageUrl) {
+    public OfferDetailsView setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         return this;
     }
@@ -62,7 +60,7 @@ public class OfferDetailsDTO {
         return createdOn;
     }
 
-    public OfferDetailsDTO setCreatedOn(LocalDate createdOn) {
+    public OfferDetailsView setCreatedOn(LocalDate createdOn) {
         this.createdOn = createdOn;
         return this;
     }
@@ -71,7 +69,7 @@ public class OfferDetailsDTO {
         return category;
     }
 
-    public OfferDetailsDTO setCategory(String category) {
+    public OfferDetailsView setCategory(String category) {
         this.category = category;
         return this;
     }
@@ -80,7 +78,7 @@ public class OfferDetailsDTO {
         return sellerFirstName;
     }
 
-    public OfferDetailsDTO setSellerFirstName(String sellerFirstName) {
+    public OfferDetailsView setSellerFirstName(String sellerFirstName) {
         this.sellerFirstName = sellerFirstName;
         return this;
     }
@@ -89,7 +87,7 @@ public class OfferDetailsDTO {
         return sellerLastName;
     }
 
-    public OfferDetailsDTO setSellerLastName(String sellerLastName) {
+    public OfferDetailsView setSellerLastName(String sellerLastName) {
         this.sellerLastName = sellerLastName;
         return this;
     }
@@ -98,7 +96,7 @@ public class OfferDetailsDTO {
         return id;
     }
 
-    public OfferDetailsDTO setId(Long id) {
+    public OfferDetailsView setId(Long id) {
         this.id = id;
         return this;
     }
@@ -107,7 +105,7 @@ public class OfferDetailsDTO {
         return title;
     }
 
-    public OfferDetailsDTO setTitle(String title) {
+    public OfferDetailsView setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -116,7 +114,7 @@ public class OfferDetailsDTO {
         return price;
     }
 
-    public OfferDetailsDTO setPrice(BigDecimal price) {
+    public OfferDetailsView setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }

@@ -23,6 +23,7 @@ public class UserEntity extends BaseEntity {
     )
     private List<UserRoleEntity> userRoles = new ArrayList<>();
 
+
     public Integer getAge() {
         return age;
     }

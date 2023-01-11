@@ -61,6 +61,10 @@ form.main-form {
 #navigation {
     background-color: #cf3709af;
 }
+#profileForm{
+    background-color: #cf3709af;
+
+}
 footer{
     background-color: #cf3709af;
 }
@@ -68,13 +72,13 @@ footer{
 #registerForm {
     margin-top: 20px;
     text-align: center;
+    justify-content: center;
     position: relative;
     border-radius: 20px;
     padding: 40px;
     box-sizing: border-box;
     background: #cf370991;
     box-shadow: 14px 14px 30px #464a4e, -14px -14px 30px #464a4e;
-    justify-content: center;
 }
 
 #loginForm {

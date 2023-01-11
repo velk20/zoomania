@@ -1,6 +1,6 @@
-package com.zoomania.zoomania.model.dto;
+package com.zoomania.zoomania.model.view;
 
-public class CategoryDTO {
+public class CategoryView {
     private Long id;
     private String name;
 
@@ -8,7 +8,7 @@ public class CategoryDTO {
         return id;
     }
 
-    public CategoryDTO setId(Long id) {
+    public CategoryView setId(Long id) {
         this.id = id;
         return this;
     }
@@ -17,7 +17,7 @@ public class CategoryDTO {
         return name;
     }
 
-    public CategoryDTO setName(String name) {
+    public CategoryView setName(String name) {
         this.name = name;
         return this;
     }

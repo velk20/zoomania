@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+    <meta charset="UTF-8">
+    <title>Your profile</title>
+</head>
+<body>
+<div th:replace="fragments/navbar">Navbar</div>
+
+<div class="container">
+
+    <form id="profileForm"
+          th:method="post"
+          th:object="${user}"
+          th:action="@{/users/profile/{username}/edit(username=${user.getUsername()})}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+        <div class="h4 text-center text-info">Profile, <th:block th:text="|*{firstName} *{lastName}|"></th:block></div>
+        <div class="row text-center justify-content-center">
+            <img th:src="@{/images/profile.jpg}" width="100" class="rounded-circle">
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="username" class="text-white font-weight-bold">Username</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        id="username"
+                        th:field="*{username}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                        placeholder="Username"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('username')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="email" class="text-white font-weight-bold">Email</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        id="email"
+                        th:field="*{email}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                        placeholder="Email"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('email')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="firstName" class="text-white font-weight-bold">Fiurst Name</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        id="firstName"
+                        th:field="*{firstName}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                        placeholder="First Name"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('firstName')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="lastName" class="text-white font-weight-bold">Last Name</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        id="lastName"
+                        th:field="*{lastName}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                        placeholder="Last Name"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('lastName')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="phone" class="text-white font-weight-bold">Phone number</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        id="phone"
+                        th:field="*{phone}"
+                        th:errorclass="is-invalid"
+                        type="text"
+                        class="form-control"
+                        placeholder="Phone number"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('phone')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-3 gap-4">
+                <input
+                        th:if="${user.username == #authentication.getName()} or ${#authorization.expression('hasRole(''ADMIN'')')}"
+                        type="submit"
+                        class="btn btn-warning px-4 ms-3" value="Edit profile">
+                <button class="btn btn-light btn-icon-text"><i class="bi bi-x"></i>
+                    <a class="text text-dark" style="text-decoration: none;" th:href="@{/}">Back</a></button>
+            </div>
+
+        </div>
+    </form>
+
+
+</div>
+
+
+
+</body>
+<div th:replace="fragments/footer">Footer</div>
+
+</html>

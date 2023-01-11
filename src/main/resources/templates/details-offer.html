@@ -63,9 +63,10 @@
   let deleteBtn = document.getElementById("deleteBtn");
   deleteBtn.addEventListener('click', onDelete);
   async function onDelete(event) {
+    event.preventDefault();
     let result = confirm("Are you sure you want to delete this offer?")
     if (result == false) {
-      event.preventDefault();
+      return
     }else{
       let offerId = deleteBtn.value;
 

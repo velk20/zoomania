@@ -1,32 +1,38 @@
 package com.zoomania.zoomania.web;
 
 import com.zoomania.zoomania.model.dto.UserRegisterDTO;
+import com.zoomania.zoomania.model.entity.UserEntity;
+import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/users")
 
 public class AuthController {
     private final UserService userService;
+    private final ModelMapper mapper;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, ModelMapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @ModelAttribute("userModel")
     public UserRegisterDTO initUserModel() {
         return new UserRegisterDTO();
     }
+
+
     @GetMapping("/login")
     public String login() {
         return "login";

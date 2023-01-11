@@ -1,9 +1,8 @@
 package com.zoomania.zoomania.web;
 
 import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
-import com.zoomania.zoomania.model.dto.OfferDetailsDTO;
+import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
-import com.zoomania.zoomania.repository.CategoryRepository;
 import com.zoomania.zoomania.service.CategoryService;
 import com.zoomania.zoomania.service.OfferService;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -91,7 +89,7 @@ public class OfferController {
             Model model,
             @PathVariable("id") Long id
     ) {
-        OfferDetailsDTO offerById = offerService.getOfferById(id);
+        OfferDetailsView offerById = offerService.getOfferById(id);
         model.addAttribute("offer", offerById);
         model.addAttribute("offerSellerUsername", offerById.getSellerUsername());
         return "details-offer";

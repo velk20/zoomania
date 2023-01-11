@@ -1,7 +1,6 @@
 package com.zoomania.zoomania.service;
 
-import com.zoomania.zoomania.model.dto.CategoryDTO;
-import com.zoomania.zoomania.model.entity.CategoryEntity;
+import com.zoomania.zoomania.model.view.CategoryView;
 import com.zoomania.zoomania.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,10 @@ public class CategoryService {
         this.mapper = mapper;
     }
 
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryView> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(c->mapper.map(c, CategoryDTO.class))
+                .map(c->mapper.map(c, CategoryView.class))
                 .collect(Collectors.toList());
     }
 }
