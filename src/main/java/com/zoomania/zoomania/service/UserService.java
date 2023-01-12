@@ -5,9 +5,14 @@ import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
 import com.zoomania.zoomania.model.view.UserDetailsView;
+import com.zoomania.zoomania.model.view.UserResponse;
 import com.zoomania.zoomania.repository.UserRepository;
 import com.zoomania.zoomania.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +33,7 @@ public class UserService {
     private final UserDetailsService userDetailsService;
     private final ModelMapper mapper;
 
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper) {
+    public UserService( UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -49,12 +54,36 @@ public class UserService {
         this.login(userEntity.getUsername());
     }
 
-    public List<UserDetailsView> getAllUsers() {
+    public UserResponse getAllUsersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        return this.userRepository.findAll()
-                .stream()
-                .map(this::map)
-                .collect(Collectors.toList());
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<UserEntity> users = userRepository.findAll(pageable);
+
+        // get content for page object
+        List<UserEntity> listOfUsers = users.getContent();
+
+        List<UserDetailsView> content=
+                listOfUsers
+                        .stream()
+                        .map(this::map)
+                        .collect(Collectors.toList());
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setContent(content);
+        userResponse.setPageNo(users.getNumber());
+        userResponse.setPageSize(users.getSize());
+        userResponse.setTotalElements(users.getTotalElements());
+        userResponse.setTotalPages(users.getTotalPages());
+        userResponse.setLast(users.isLast());
+
+        return userResponse;
+
     }
 
     public void login(String username) {
