@@ -36,7 +36,7 @@ fetch(`http://localhost:8080/api/users`, {
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                             </span>
                   </a>
-                  <a href="#" class="table-link danger">
+                  <a href="/users/profile/${user.username}/delete" class="table-link danger">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
