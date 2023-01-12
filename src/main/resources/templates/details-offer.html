@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Details Offer</title>
-  <th:block th:include="~{/fragments/head}"></th:block>
+    <th:block th:include="~{/fragments/head}"></th:block>
 
 </head>
 <body>
@@ -11,75 +11,118 @@
 
 <!-- Page Content -->
 <div th:object="${offer}" class="container">
+    <input type="hidden" name="offerId" id="offerId" th:value="${offer.id}">
 
-  <!-- Portfolio Item Heading -->
-  <h1 th:text="*{title}" class="my-4">Page Heading
-  </h1>
+    <!-- Portfolio Item Heading -->
+    <h1 th:text="*{title}" class="my-4">Page Heading
+    </h1>
 
-  <!-- Portfolio Item Row -->
-  <div class="row">
+    <!-- Portfolio Item Row -->
+    <div class="row">
 
-    <div class="col-md-8">
-      <img class="img-fluid" th:src="*{imageUrl}" alt="">
+        <div class="col-md-8">
+            <img class="img-fluid" th:src="*{imageUrl}" alt="">
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Description: </h3>
+            <h5 class="text-primary" th:text="*{description}"> desc</h5>
+            <h3 class="my-3">
+                <span>Price:</span>
+                <th:block>
+                    <span class="text-primary" th:if="*{price > 0}" th:text="'$'+*{price}"> price</span>
+                    <span class="text-primary" th:if="*{price == 0}" th:text="FREE"> free</span>
+                </th:block>
+            </h3>
+            <h3 class="my-3">Pet Details: </h3>
+            <ul class="my-3" style="list-style-type: none;">
+                <li><h5>Category: <span class="text-primary" th:text="*{category}">category</span></h5></li>
+                <li><h5>Breed: <span class="text-primary" th:text="*{breed}"> breed</span></h5></li>
+                <li><h5>Posted on: <span class="text-primary" th:text="*{createdOn}">posted</span></h5></li>
+                <li><h5>Seller: <span class="text-primary" th:text="*{getSellerFullName()}">seller</span></h5></li>
+            </ul>
+            <div th:if="${#authentication.name}==${offerSellerUsername}" class="my-3">
+                <a style="text-decoration: none" class="text-white btn btn-link bg-warning text-decoration-none"
+                   th:href="@{/offers/{offerId}/edit(offerId=*{id})}">Edit
+                </a>
+                <a style="text-decoration: none" class="text-white btn btn-link bg-danger text-decoration-none"
+                   id="deleteBtn"
+                   th:value="*{id}"
+                   th:onclick="onDelete()"
+                   th:href="@{/offers/{offerId}/delete(offerId=*{id})}">
+                    Delete</a>
+
+            </div>
+        </div>
+
     </div>
 
-    <div class="col-md-4">
-      <h3 class="my-3">Description: </h3>
-      <h5 class="text-primary" th:text="*{description}"> desc</h5>
-      <h3 class="my-3">
-        <span>Price:</span>
-        <th:block>
-          <span class="text-primary" th:if="*{price > 0}" th:text="'$'+*{price}"> price</span>
-          <span class="text-primary" th:if="*{price == 0}" th:text="FREE"> free</span>
-        </th:block>
-      </h3>
-      <h3 class="my-3">Pet Details: </h3>
-      <ul class="my-3" style="list-style-type: none;">
-        <li><h5>Category: <span class="text-primary" th:text="*{category}">category</span></h5></li>
-        <li><h5>Breed: <span class="text-primary" th:text="*{breed}"> breed</span></h5></li>
-        <li><h5>Posted on: <span class="text-primary" th:text="*{createdOn}">posted</span></h5></li>
-        <li><h5>Seller: <span class="text-primary" th:text="*{getSellerFullName()}">seller</span></h5></li>
-      </ul>
-      <div th:if="${#authentication.name}==${offerSellerUsername}" class="my-3">
-        <a style="text-decoration: none" class="text-white btn btn-link bg-warning text-decoration-none"
-           th:href="@{/offers/{offerId}/edit(offerId=*{id})}">Edit
-        </a>
-        <a style="text-decoration: none" class="text-white btn btn-link bg-danger text-decoration-none"
-           id="deleteBtn"
-           th:value="*{id}"
-           th:onclick="onDelete()"
-           th:href="@{/offers/{offerId}/delete(offerId=*{id})}">
-          Delete</a>
+    <section id="comments" class="comments">
 
-      </div>
-    </div>
+        <h1>Comments</h1>
+        <div>
+            <!-- Comments submission -->
+            <form id="commentForm" method="POST"
+                  action="/">
+                <div class="form-group">
+                    <h4>Leave a comment</h4>
+                    <label for="message">Message</label>
 
-    </div>
-  </div>
+                    <textarea name="message"
+                              id="message"
+                              cols="30"
+                              rows="5"
+                              class="form-control"
+                              style="background-color: white;"></textarea>
+                    <small id="messageError" class="invalid-feedback">
+                        Message should be at least 10 characters.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit"
+                           class="btn btn-primary"
+                           id="postComment"
+                           value="Post Comment"/>
+                </div>
+            </form>
+            <!-- Comments submission -->
+        </div>
+
+        <!-- All comments section -->
+        <div>
+            <span id="commentContainer"><!-- Comments section, filled in by script --></span>
+        </div>
+        <!-- EO: All comments section -->
+    </section>
+</div>
+<script th:src="@{/js/comments.js}"></script>
+
 </body>
 <div th:replace="fragments/footer">Footer</div>
 
-<script>
-  let deleteBtn = document.getElementById("deleteBtn");
-  deleteBtn.addEventListener('click', onDelete);
-  async function onDelete(event) {
-    event.preventDefault();
-    let result = confirm("Are you sure you want to delete this offer?")
-    if (result == false) {
-      return
-    }else{
-      let offerId = deleteBtn.value;
+<!--<script>-->
+<!--    let deleteBtn = document.getElementById("deleteBtn");-->
+<!--    deleteBtn.addEventListener('click', onDelete);-->
 
-      const URL = `http://localhost:8080/offers/${offerId}/details`;
-      const params = {
-        method: "DELETE"
-      }
-      fetch(URL,params)
-              .then(()=>window.location.replace("http://localhost:8080/offers/all"))
-              .then(()=>console.log("Offer was delete"))
-              .catch(err=>console.log(err))
-    }
-  }
-</script>
+<!--    async function onDelete(event) {-->
+<!--        event.preventDefault();-->
+<!--        let result = confirm("Are you sure you want to delete this offer?")-->
+<!--        if (result == false) {-->
+<!--            return-->
+<!--        } else {-->
+<!--            let offerId = deleteBtn.value;-->
+
+<!--            const URL = `http://localhost:8080/offers/${offerId}/details`;-->
+<!--            const params = {-->
+<!--                method: "DELETE"-->
+<!--            }-->
+<!--            fetch(URL, params)-->
+<!--                .then(() => window.location.replace("http://localhost:8080/offers/all"))-->
+<!--                .then(() => console.log("Offer was delete"))-->
+<!--                .catch(err => console.log(err))-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 </html>
 

@@ -99,6 +99,15 @@ footer{
     background-image: url('/images/header-bg.png');
 }
 
+#comments{
+    margin-top: 20px;
+    background-color: rgba(241, 241, 241, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    grid-column: 1/4;
+    grid-row: 4;
+}
+
 /*Dashobard*/
 /* Background color classes */
 .bg-white {
