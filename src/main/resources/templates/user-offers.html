@@ -23,7 +23,7 @@
           <!-- Item details -->
           <div class="item-dtls">
             <!-- product title -->
-            <h4 th:text="${offer.title}">Title</h4>
+            <h4 ><a th:href="@{/offers/{offerId}/details(offerId=${offer.id})}" th:text="${offer.title}"></a></h4>
             <!-- price -->
             <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
           </div>

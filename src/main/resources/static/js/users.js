@@ -11,7 +11,7 @@ fetch(`http://localhost:8080/api/users`, {
                 <td>
                   <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
                   <a href="#" class="user-link">${user.firstName + ' '+user.lastName}</a>
-                  <span class="user-subhead">Member</span>
+                  <span class="user-subhead">${user.userRoles}</span>
                 </td>
                 <td><h6>${user.phone}</h6></td>
                 <td class="text-center">
