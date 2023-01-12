@@ -25,7 +25,7 @@
 
                 <label for="username" class="text-white font-weight-bold">Username</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        th:disabled="${user.username != #authentication.getName()}"
                         id="username"
                         th:field="*{username}"
                         th:errorclass="is-invalid"
@@ -43,7 +43,7 @@
 
                 <label for="email" class="text-white font-weight-bold">Email</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        th:disabled="${user.username != #authentication.getName()}"
                         id="email"
                         th:field="*{email}"
                         th:errorclass="is-invalid"
@@ -59,9 +59,9 @@
         <div class="row">
             <div class="form-group col-md-12 mb-3">
 
-                <label for="firstName" class="text-white font-weight-bold">Fiurst Name</label>
+                <label for="firstName" class="text-white font-weight-bold">First Name</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        th:disabled="${user.username != #authentication.getName()}"
                         id="firstName"
                         th:field="*{firstName}"
                         th:errorclass="is-invalid"
@@ -79,7 +79,7 @@
 
                 <label for="lastName" class="text-white font-weight-bold">Last Name</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        th:disabled="${user.username != #authentication.getName()}"
                         id="lastName"
                         th:field="*{lastName}"
                         th:errorclass="is-invalid"
@@ -98,7 +98,7 @@
 
                 <label for="phone" class="text-white font-weight-bold">Phone number</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()} or ${#authentication.getAuthorities().contains('ADMIN')}"
+                        th:disabled="${user.username != #authentication.getName()}"
                         id="phone"
                         th:field="*{phone}"
                         th:errorclass="is-invalid"
@@ -114,9 +114,13 @@
         <div class="row">
             <div class="form-group col-md-12 mb-3 gap-4">
                 <input
-                        th:if="${user.username == #authentication.getName()} or ${#authorization.expression('hasRole(''ADMIN'')')}"
+                        th:if="${user.username == #authentication.getName()}"
                         type="submit"
                         class="btn btn-warning px-4 ms-3" value="Edit profile">
+                <button sec:authorize="hasRole('ADMIN')" class="btn btn-danger">
+                    <a class="text-white" style="text-decoration: none;"
+                       th:href="@{/users/profile/{username}/delete(username=${user.username})}">Delete User</a>
+                </button>
                 <button class="btn btn-light btn-icon-text"><i class="bi bi-x"></i>
                     <a class="text text-dark" style="text-decoration: none;" th:href="@{/}">Back</a></button>
             </div>

@@ -34,6 +34,7 @@ function commentAsHtml(comment) {
     commentHtml += `<h4>${comment.authorName}</h4>\n`
     commentHtml += `<p>${comment.message}</p>\n`
     commentHtml += '</div>\n'
+    commentHtml += '<hr>\n'
 
     return commentHtml
 }
