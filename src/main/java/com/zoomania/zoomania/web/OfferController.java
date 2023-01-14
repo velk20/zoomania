@@ -1,5 +1,6 @@
 package com.zoomania.zoomania.web;
 
+import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
@@ -8,11 +9,14 @@ import com.zoomania.zoomania.service.OfferService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -95,6 +99,7 @@ public class OfferController {
         return "details-offer";
     }
 
+    @PreAuthorize("@offerService.isOwner(#principal.username,#id)")
     @GetMapping("/{id}/edit")
     public String editOffer(
             Model model,
@@ -137,5 +142,12 @@ public class OfferController {
         boolean deleteOfferById = offerService.deleteOfferById(id);
 
         return "redirect:/dashboard";
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({OfferNotFoundException.class})
+    public String onProductNotFound(OfferNotFoundException onfe,Model model){
+        model.addAttribute("message", onfe.getMessage());
+        return "error";
     }
 }

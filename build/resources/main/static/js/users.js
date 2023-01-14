@@ -68,51 +68,6 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                 </td>
               </tr>
             `;
-            //
-            // <nav>
-            //     <ul className="pagination">
-            //         <li className="page-item" th:classappend="${offers.isFirst()} ? 'disabled' : ''">
-            //             <a th:unless="${offers.isFirst()}"
-            //                th:href="@{/offers/all(size=${offers.getSize()},page=0)}"
-            //                className="page-link" href="#">First</a>
-            //             <a th:if="${offers.isFirst()}"
-            //                className="page-link" href="#">First</a>
-            //         </li>
-            //     </ul>
-            // </nav>
-            // <nav>
-            //     <ul className="pagination">
-            //         <li className="page-item" th:classappend="${offers.hasPrevious() ? '' : 'disabled'}">
-            //             <a th:if="${offers.hasPrevious()}"
-            //                th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getNumber() - 1})}"
-            //                className="page-link" href="#">Previous</a>
-            //             <a th:unless="${offers.hasPrevious()}"
-            //                className="page-link" href="#">Previous</a>
-            //         </li>
-            //     </ul>
-            // </nav>
-            // <nav>
-            //     <ul className="pagination">
-            //         <li className="page-item" th:classappend="${offers.hasNext() ? '' : 'disabled'}">
-            //             <a th:if="${offers.hasNext()}"
-            //                th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getNumber() + 1})}"
-            //                className="page-link" href="#">Next</a>
-            //             <a th:unless="${offers.hasNext()}"
-            //                className="page-link" href="#">Next</a>
-            //         </li>
-            //     </ul>
-            // </nav>
-            // <nav>
-            //     <ul className="pagination">
-            //         <li className="page-item" th:classappend="${offers.isLast()} ? 'disabled' : ''">
-            //             <a th:unless="${offers.isLast()}"
-            //                th:href="@{/offers/all(size=${offers.getSize()},page=${offers.getTotalPages() - 1})}"
-            //                className="page-link" href="#">Last</a>
-            //             <a th:if="${offers.isLast()}"
-            //                className="page-link" href="#">Last</a>
-            //         </li>
-            //     </ul>
-            // </nav>
         }
     })
     .then(() => {

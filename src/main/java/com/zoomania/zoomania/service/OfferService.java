@@ -1,7 +1,9 @@
 package com.zoomania.zoomania.service;
 
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.enums.UserRoleEnum;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +49,7 @@ public class OfferService {
         OfferEntity newOffer = mapper.map(addOfferDTO, OfferEntity.class);
 
         UserEntity seller = userRepository.findByUsername(userDetails.getUsername()).
-                orElseThrow();
+                orElseThrow(UserNotFoundException::new);
 
         CategoryEntity categoryEntity = categoryRepository.findByName(addOfferDTO.getCategory()).orElseThrow();
 
@@ -92,16 +95,17 @@ public class OfferService {
     public CreateOrUpdateOfferDTO getEditOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository
                 .findById(id)
-                .orElseThrow(OfferNotFoundException::new);
+                .orElseThrow(() -> new OfferNotFoundException(id));
 
         return mapper.map(offerEntity, CreateOrUpdateOfferDTO.class);
     }
 
     public OfferDetailsView getOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository.findById(id)
-                .orElseThrow(OfferNotFoundException::new);
+                .orElseThrow(() -> new OfferNotFoundException(id));
 
-        UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId()).orElseThrow(RuntimeException::new);
+        UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId())
+                .orElseThrow(UserNotFoundException::new);
 
         OfferDetailsView offerDetailsView = map(offerEntity);
 
@@ -111,6 +115,27 @@ public class OfferService {
                 .setSellerUsername(seller.getUsername());
     }
 
+    public boolean isOwner(String username, Long offerId) {
+
+        boolean isOwner = offerRepository.
+                findById(offerId).
+                filter(o -> o.getSeller().getUsername().equals(username)).
+                isPresent();
+
+        if (isOwner) {
+            return true;
+        }
+
+        return userRepository.
+                findByUsername(username).
+                filter(this::isAdmin).
+                isPresent();
+    }
+    private boolean isAdmin(UserEntity user) {
+        return user.getUserRoles().
+                stream().
+                anyMatch(r -> r.getUserRoleEnum() == UserRoleEnum.ADMIN);
+    }
     private OfferDetailsView map(OfferEntity offerEntity) {
         return mapper.map(offerEntity, OfferDetailsView.class);
     }
@@ -126,7 +151,7 @@ public class OfferService {
 
     public void editOffer(Long id,CreateOrUpdateOfferDTO editOffer) {
         OfferEntity offerById = this.offerRepository.findById(id)
-                .orElseThrow(OfferNotFoundException::new);
+                .orElseThrow(() -> new OfferNotFoundException(id));
 
 
         CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory()).orElseThrow();

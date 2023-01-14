@@ -29,7 +29,7 @@ public class CommentService {
     }
 
     public List<CommentDisplayView> getAllCommentsForOffer(Long offerId) {
-        OfferEntity offer = offerRepository.findById(offerId).orElseThrow(OfferNotFoundException::new);
+        OfferEntity offer = offerRepository.findById(offerId).orElseThrow(() -> new OfferNotFoundException(offerId));
 
         List<CommentEntity> comments = commentRepository.findAllByOffer(offer).orElseThrow(RuntimeException::new);
         return comments.stream().map(comment -> new CommentDisplayView(comment.getId(), comment.getAuthor().getFullName(),
@@ -41,7 +41,8 @@ public class CommentService {
                 .findByUsername(commentCreationDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
 
-        OfferEntity offer = offerRepository.findById(commentCreationDto.getOfferId()).orElseThrow(OfferNotFoundException::new);
+        OfferEntity offer = offerRepository.findById(commentCreationDto.getOfferId())
+                .orElseThrow(() -> new OfferNotFoundException(commentCreationDto.getOfferId()));
 
         CommentEntity commentEntity = new CommentEntity()
                 .setCreated(LocalDateTime.now())

@@ -15,7 +15,7 @@
                 <div class="col-md-12 justify-content-center">
                     <img class="img-error" src="https://bootdey.com/img/Content/fdfadfadsfadoh.png">
                     <h2>Oops, something went wrong!</h2>
-                    <p>Sorry, an error has occurred, Requested page not found!</p>
+                    <h4 class="text-danger"><th:block th:text="${message}"></th:block> </h4>
                     <div class="error-actions">
                         <a th:href="@{/}" class="btn btn-primary btn-lg">
                             <span class="glyphicon glyphicon-arrow-left"></span>
