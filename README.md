@@ -57,6 +57,18 @@ Open your client(browser) on localhost:8080
 <br/><br/>
 <kbd><img src="https://user-images.githubusercontent.com/48069264/211287225-02ba5ff3-3e06-4a6c-973b-48548cc1f414.png"/></kbd>
 <br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569221-99757e3a-5083-40a8-b066-e54a86a03312.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569251-c79da0b3-78e4-4ebe-9aaf-89c8eaae6efd.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569260-4c592bcd-2792-4136-9fe8-b62e1e737dd7.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569272-2a71c3bb-732d-41a0-92ff-86ceb9822a22.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569281-111e31fe-b42d-4876-a648-d22efe6b8da5.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569292-4cf2cec5-7691-4296-b9f1-b216578d2b91.png"/></kbd>
+<br/><br/>
 
 ## :v: Leave a feedback!
 
