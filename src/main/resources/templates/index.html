@@ -14,8 +14,8 @@
         <div id="landingPage" class="row gx-5 align-items-center justify-content-center justify-content-lg-between welcome-content">
             <div class="col-12 col-lg-5 text-center" >
                 <h2 class="display-4 lh-1 mb-4 text-white">We Care <br><strong>Your Pets</strong></h2>
-                <h4 class="lead fw-normal mb-5 mb-lg-0 text-white" >We offer everything your pet would want and so
-                    much more.
+                <h4 class="lead fw-normal mb-5 mb-lg-0 text-white" >
+                    Use our web platform to sell, buy or adopt your next lovely friend.
                 </h4>
             </div>
             <div class="col-sm-8 col-md-6">
@@ -43,7 +43,8 @@
                         <!-- product title -->
                         <h4 th:text="${offer.title}">Title</h4>
                         <!-- price -->
-                        <span class="price lblue" th:text="'$'+${offer.price}">$23.00</span>
+                        <span class="price lblue" th:if="${offer.price >0}" th:text="'$'+${offer.price}">$23.00</span>
+                        <span class="price lblue" th:if="${offer.price == 0}" th:text="FREE">FREE</span>
                     </div>
                     <!-- add to cart btn -->
                     <div class="ecom bg-lblue">

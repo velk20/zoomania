@@ -1,11 +1,15 @@
 package com.zoomania.zoomania.service;
 
 import com.zoomania.zoomania.model.dto.UserRegisterDTO;
+import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
+import com.zoomania.zoomania.model.view.OfferDetailsView;
+import com.zoomania.zoomania.model.view.OfferResponse;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.model.view.UserResponse;
+import com.zoomania.zoomania.repository.OfferRepository;
 import com.zoomania.zoomania.repository.UserRepository;
 import com.zoomania.zoomania.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
@@ -32,13 +36,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final ModelMapper mapper;
+    private final OfferService offerService;
 
-    public UserService( UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper, OfferService offerService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.mapper = mapper;
+        this.offerService = offerService;
     }
 
     public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
@@ -46,9 +52,9 @@ public class UserService {
 
         UserEntity userEntity = mapper.map(userRegisterDTO, UserEntity.class);
         userEntity
-               .setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()))
-               .addRole(byUserRoleEnum)
-               .setActive(true);
+                .setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()))
+                .addRole(byUserRoleEnum)
+                .setActive(true);
 
         userRepository.save(userEntity);
         this.login(userEntity.getUsername());
@@ -56,19 +62,14 @@ public class UserService {
 
     public UserResponse getAllUsersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        // create Pageable instance
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
 
         Page<UserEntity> users = userRepository.findAll(pageable);
 
         // get content for page object
         List<UserEntity> listOfUsers = users.getContent();
 
-        List<UserDetailsView> content=
+        List<UserDetailsView> content =
                 listOfUsers
                         .stream()
                         .map(this::map)
@@ -107,7 +108,7 @@ public class UserService {
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
 
-        return mapper.map(user,UserDetailsView.class);
+        return mapper.map(user, UserDetailsView.class);
     }
 
     private UserDetailsView map(UserEntity entity) {
@@ -116,4 +117,29 @@ public class UserService {
         return userDetailsView;
     }
 
+    public OfferResponse getAllOffersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
+
+        Page<OfferDetailsView> offers = offerService.getAllOffers(pageable);
+
+        // get content for page object
+        List<OfferDetailsView> listOfOffers = offers.getContent();
+
+        return new OfferResponse()
+                .setContent(listOfOffers)
+                .setPageNo(offers.getNumber())
+                .setPageSize(offers.getSize())
+                .setTotalElements(offers.getTotalElements())
+                .setTotalPages(offers.getTotalPages())
+                .setLast(offers.isLast());
+    }
+
+    private static Pageable getPageable(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // create Pageable instance
+        return PageRequest.of(pageNo, pageSize, sort);
+    }
 }

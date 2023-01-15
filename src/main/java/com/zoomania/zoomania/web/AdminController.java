@@ -13,4 +13,9 @@ public class AdminController {
     public String adminUsers() {
         return "admin-users";
     }
+
+    @GetMapping("/offers")
+    public String adminOffers() {
+        return "admin-offers";
+    }
 }
