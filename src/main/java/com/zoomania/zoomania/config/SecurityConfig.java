@@ -37,6 +37,7 @@ public class SecurityConfig {
                         antMatchers("/offers/all").permitAll().
                         antMatchers("/offers/{id}/details").permitAll().
                         antMatchers("/offers/**").authenticated().
+                antMatchers("/admin/**").hasRole("ADMIN").
                         antMatchers("/users/login", "/users/register").anonymous().
                 // all other pages are available for logger in users
                         anyRequest().
