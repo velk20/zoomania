@@ -28,8 +28,15 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
 }).then(res => res.json())
     .then(data => {
         currentData = data;
-        for (let user of data.content) {
+        if (data.content.length == 0) {
             tableBody.innerHTML += `
+<div class="d-block justify-content-center text-center">
+<h3 class="text-center justify-content-center text-danger">No more users found!</h3>
+</div>
+`
+        }else{
+            for (let user of data.content) {
+                tableBody.innerHTML += `
               <tr>
                 <td>
                   <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
@@ -68,6 +75,8 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                 </td>
               </tr>
             `;
+            }
+
         }
     })
     .then(() => {
