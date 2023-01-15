@@ -69,6 +69,10 @@ Open your client(browser) on localhost:8080
 <br/><br/>
 <kbd><img src="https://user-images.githubusercontent.com/48069264/212569292-4cf2cec5-7691-4296-b9f1-b216578d2b91.png"/></kbd>
 <br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569851-de819a70-33b6-47f4-9fea-b6d44e6e2da4.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/212569856-5586a258-c902-4d15-9c57-b2214d27e494.png"/></kbd>
+<br/><br/>
 
 ## :v: Leave a feedback!
 
