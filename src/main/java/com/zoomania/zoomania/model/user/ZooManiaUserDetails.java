@@ -14,11 +14,13 @@ public class ZooManiaUserDetails implements UserDetails {
     private final Boolean isActive;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public ZooManiaUserDetails(Long id, String password,
+    public ZooManiaUserDetails(Long id,
+                               String password,
                                String username,
                                String firstName,
                                String lastName,
-                               Boolean isActive, Collection<? extends GrantedAuthority> authorities) {
+                               Boolean isActive,
+                               Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.password = password;
         this.username = username;

@@ -1,5 +1,8 @@
 package com.zoomania.zoomania.service;
 
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
+import com.zoomania.zoomania.model.dto.ChangeUserPasswordDTO;
+import com.zoomania.zoomania.model.dto.UpdateUserDTO;
 import com.zoomania.zoomania.model.dto.UserRegisterDTO;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
@@ -26,7 +29,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -108,12 +113,13 @@ public class UserService {
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
 
-        return mapper.map(user, UserDetailsView.class);
+        return this.map(user);
     }
 
     private UserDetailsView map(UserEntity entity) {
         UserDetailsView userDetailsView = mapper.map(entity, UserDetailsView.class);
-        userDetailsView.setUserRoles(entity.getUserRoles().stream().map(u -> u.getUserRoleEnum().name()).collect(Collectors.toList()));
+        userDetailsView.setActive(entity.isActive());
+        userDetailsView.setAdmin(entity.getUserRoles().stream().anyMatch(r->r.getUserRoleEnum().equals(UserRoleEnum.ADMIN)));
         return userDetailsView;
     }
 
@@ -141,5 +147,54 @@ public class UserService {
 
         // create Pageable instance
         return PageRequest.of(pageNo, pageSize, sort);
+    }
+// ! MAKE PASSWORD CHANGER FUNCTIONALITY AS PAGE !!!!!!!!!!!
+    public UserDetailsView editUser(String username, UpdateUserDTO editUser) {
+        UserEntity userEntity = this.userRepository
+                .findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+
+        userEntity.setPhone(editUser.getPhone())
+                .setUsername(editUser.getUsername())
+                .setLastName(editUser.getLastName())
+                .setFirstName(editUser.getFirstName())
+                .setAge(editUser.getAge())
+                .setEmail(editUser.getEmail())
+                .setActive(editUser.isActive());
+
+        if (editUser.isAdmin()) {
+            if (userEntity.getUserRoles().stream()
+                    .map(UserRoleEntity::getUserRoleEnum)
+                    .noneMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
+                userEntity.addRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
+            }
+        }else{
+            if (userEntity.getUserRoles().stream()
+                    .map(UserRoleEntity::getUserRoleEnum)
+                    .anyMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
+                userEntity.removeRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
+            }
+        }
+
+        UserEntity editedUser = this.userRepository.save(userEntity);
+        this.login(editUser.getUsername());
+        return map(editedUser);
+    }
+
+    public boolean changeUserPassword(ChangeUserPasswordDTO changeUserPasswordDTO) {
+        UserEntity userEntity = this.userRepository
+                .findByUsername(changeUserPasswordDTO.getUsername())
+                .orElseThrow(UserNotFoundException::new);
+
+        boolean isOldPasswordMatch =
+                passwordEncoder.matches(changeUserPasswordDTO.getOldPassword(),userEntity.getPassword());
+
+        if (!isOldPasswordMatch) {
+            return false;
+        }else{
+            userEntity.setPassword(passwordEncoder.encode(changeUserPasswordDTO.getNewPassword()));
+            this.userRepository.save(userEntity);
+            return true;
+        }
     }
 }

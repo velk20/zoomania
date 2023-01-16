@@ -111,6 +111,61 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="form-group col-md-12 mb-3">
+
+                <label for="age" class="text-white font-weight-bold">Age</label>
+                <input
+                        th:disabled="${user.username != #authentication.getName()}"
+                        id="age"
+                        th:field="*{age}"
+                        th:errorclass="is-invalid"
+                        type="number"
+                        class="form-control"
+                        placeholder="Age"/>
+                <div class="invalid-feedback errors alert alert-danger">
+                    <div th:each="err : ${#fields.errors('age')}"
+                         th:text="${err}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" class="row">
+            <div class="form-check col-md-6 mb-3" style="color: #01b4f5">
+                <label for="isAdmin"
+                       class="form-label text-white"><strong>Role: </strong></label>
+
+                    <input
+                            id="isAdmin"
+                            class=" text-white bg-info"
+                            style="margin: 10px;" type="checkbox"
+                            th:field="*{admin}"
+                            th:text="${T(com.zoomania.zoomania.model.enums.UserRoleEnum).ADMIN}"
+                            th:value="${T(com.zoomania.zoomania.model.enums.UserRoleEnum).ADMIN}"
+                            th:checked="${#bools.isTrue(user.isAdmin())}"/>
+            </div>
+
+            <div class="form-check col-md-6 mb-3" style="color: #01b4f5">
+                <label for="isActive"
+                       class="form-label text-white"><strong>Active: </strong></label>
+
+                    <input class="text-white  bg-info"
+                           style="margin: 10px;" type="checkbox"
+                           id="isActive"
+                           th:field="*{active}"
+                           th:text="${#bools.isTrue(user.isActive())} ? 'User is currently active' : 'User is NOT currently active'"
+                           th:value="${#bools.isTrue(user.isActive())}"
+                           th:checked="${#bools.isTrue(user.isActive())}"/>
+            </div>
+        </div>
+        <div class="row d-block justify-content-center text-center">
+            <div class="justify-content-center text-center">
+                <h6 class="text-white">If you want to change the password,
+                    <a th:href="@{/users/profile/{username}/change_password(username=${user.username})}">click here</a></h6>
+            </div>
+        </div>
+
         <div class="row">
             <div class="form-group col-md-12 mb-3 gap-4">
                 <input

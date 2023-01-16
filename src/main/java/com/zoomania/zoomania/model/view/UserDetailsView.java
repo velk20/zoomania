@@ -1,5 +1,8 @@
 package com.zoomania.zoomania.model.view;
 
+import com.zoomania.zoomania.model.entity.UserRoleEntity;
+import com.zoomania.zoomania.model.enums.UserRoleEnum;
+
 import java.util.List;
 
 public class UserDetailsView {
@@ -11,15 +14,15 @@ public class UserDetailsView {
     private String firstName;
     private String lastName;
     private boolean isActive;
-    private List<String> userRoles;
+    private boolean isAdmin;
 
-    public List<String> getUserRoles() {
-        return userRoles;
+    public UserDetailsView setAdmin(boolean admin) {
+        isAdmin = admin;
+        return this;
     }
 
-    public UserDetailsView setUserRoles(List<String> userRoles) {
-        this.userRoles = userRoles;
-        return this;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
     public boolean isActive() {

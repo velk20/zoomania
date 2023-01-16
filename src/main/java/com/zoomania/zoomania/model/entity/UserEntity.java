@@ -110,6 +110,11 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public UserEntity removeRole(UserRoleEntity userRole) {
+        this.userRoles.remove(userRole);
+        return this;
+    }
+
     public String getFullName() {
         return firstName + ' ' + lastName;
     }
