@@ -124,7 +124,7 @@ public class OfferControllerIT {
 
     @Test
     void testGetOfferDetailsWithWrongId_NotFound() throws  Exception {
-        mockMvc.perform(get("/offers/122/details")
+        mockMvc.perform(get(String.format("/offers/%d/details",testOffer.getId()+100))
                 .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(model().attributeExists("message"))
