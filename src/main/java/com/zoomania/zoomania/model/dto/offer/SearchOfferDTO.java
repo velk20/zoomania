@@ -1,11 +1,12 @@
 package com.zoomania.zoomania.model.dto.offer;
 
+import javax.validation.constraints.Positive;
+
 public class SearchOfferDTO {
-
     private String name;
-
+    @Positive
     private Integer minPrice;
-
+    @Positive
     private Integer maxPrice;
 
 
