@@ -102,7 +102,8 @@ public class OfferService {
     }
 
     public OfferDetailsView getOfferById(Long id) {
-        OfferEntity offerEntity = this.offerRepository.findById(id)
+        OfferEntity offerEntity = this.offerRepository
+                .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
         UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId())

@@ -115,7 +115,7 @@ public class OfferControllerIT {
 
     @Test
     void testGetOfferDetails() throws  Exception {
-        mockMvc.perform(get("/offers/1/details")
+        mockMvc.perform(get(String.format("/offers/%d/details",this.testOffer.getId()))
                 .with(csrf()))
                 .andExpect(model().attributeExists("offer"))
                 .andExpect(model().attributeExists("offerSellerUsername"))
@@ -124,7 +124,7 @@ public class OfferControllerIT {
 
     @Test
     void testGetOfferDetailsWithWrongId_NotFound() throws  Exception {
-        mockMvc.perform(get("/offers/12/details")
+        mockMvc.perform(get("/offers/122/details")
                 .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(model().attributeExists("message"))
@@ -135,7 +135,7 @@ public class OfferControllerIT {
     @WithUserDetails(value = "testAdmin",
             userDetailsServiceBeanName = "testUserDataService")
     void testGetOfferEditPage() throws Exception {
-        mockMvc.perform(get("/offers/1/edit")
+        mockMvc.perform(get(String.format("/offers/%d/edit",testAdminOffer.getId()))
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit-offer"));
