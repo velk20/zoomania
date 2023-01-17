@@ -1,4 +1,4 @@
-package com.zoomania.zoomania.model.dto;
+package com.zoomania.zoomania.model.dto.user;
 
 import com.zoomania.zoomania.util.validation.UniqueUserEmail;
 import com.zoomania.zoomania.util.validation.UniqueUsername;

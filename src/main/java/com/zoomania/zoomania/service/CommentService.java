@@ -2,7 +2,7 @@ package com.zoomania.zoomania.service;
 
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
-import com.zoomania.zoomania.model.dto.CommentCreationDTO;
+import com.zoomania.zoomania.model.dto.comment.CommentCreationDTO;
 import com.zoomania.zoomania.model.entity.CommentEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;

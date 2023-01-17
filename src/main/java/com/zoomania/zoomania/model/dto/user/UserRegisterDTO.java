@@ -1,11 +1,10 @@
-package com.zoomania.zoomania.model.dto;
+package com.zoomania.zoomania.model.dto.user;
 
 
 import com.zoomania.zoomania.util.validation.FieldMatch;
 import com.zoomania.zoomania.util.validation.UniqueUserEmail;
 import com.zoomania.zoomania.util.validation.UniqueUsername;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @FieldMatch(

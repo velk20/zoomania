@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <th:block th:include="~{/fragments/head}"></th:block>
+
+</head>
+<body>
+<div th:replace="fragments/navbar">Navbar</div>
+
+<div class="container">
+    <h2 class="text-center text-white">Search for offers</h2>
+    <form
+            th:method="GET"
+            th:action="@{/offers/search}"
+            th:object="${searchOfferModel}"
+            class="form-inline"
+            style="justify-content: center; margin-top: 50px;"
+    >
+        <div style="position: relative">
+            <input
+                    th:field="*{name}"
+                    th:errorclass="is-invalid"
+                    class="form-control mr-sm-2"
+                    style="width: 280px;"
+                    type="search"
+                    placeholder="Offer name..."
+                    aria-label="Search"
+                    id="name"
+            />
+            <input
+                    th:field="*{minPrice}"
+                    th:errorclass="is-invalid"
+                    class="form-control mr-sm-2"
+                    style="width: 280px;"
+                    type="search"
+                    placeholder="Min price..."
+                    aria-label="Search"
+                    id="minPrice"
+            />
+            <input
+                    th:field="*{maxPrice}"
+                    th:errorclass="is-invalid"
+                    class="form-control mr-sm-2"
+                    style="width: 280px;"
+                    type="search"
+                    placeholder="Max price..."
+                    aria-label="Search"
+                    id="maxPrice"
+            />
+            <small
+                    id="searchOfferHelpInline"
+                    class="bg-danger text-light rounded invalid-feedback"
+                    style="width: 97%; position: absolute; padding: 3px 15px; text-align: center;"
+            >
+                Try writing something this time.
+            </small>
+        </div>
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+
+    </form>
+</div>
+
+<div th:if="${offers != null}" class="shop-items">
+    <div class="container-fluid">
+        <h1 th:unless="${offers.getContent().size == 0}" class="text-center text-primary"><th:block
+                th:text="${offers.getTotalElements()}"></th:block>
+            offers found</h1>
+        <h1 th:if="${offers.getContent().size == 0}" class="text-center text-danger">There are no offers found.</h1>
+
+        <div class="row">
+            <div th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
+                <!-- Restaurant Item -->
+                <div class="item">
+                    <!-- Item's image -->
+                    <img class="img-responsive" th:src="${offer.imageUrl}" alt="">
+                    <!-- Item details -->
+                    <div class="item-dtls">
+                        <!-- product title -->
+                        <h4 th:text="${offer.title}">Title</h4>
+                        <!-- price -->
+                        <span class="price lblue" th:if="${offer.price >0}" th:text="'$'+${offer.price}">$23.00</span>
+                        <span class="price lblue" th:if="${offer.price == 0}" th:text="FREE">FREE</span>
+                    </div>
+                    <!-- add to cart btn -->
+                    <div class="ecom bg-lblue">
+                        <a class="btn"  th:href="@{/offers/{offerId}/details(offerId=${offer.id})}">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="paginationNav" class="container-fluid row justify-content-center mar"
+  th:object="${searchOfferModel}"  >
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${offers.isFirst()} ? 'disabled' : ''">
+                    <a th:unless="${offers.isFirst()}"
+                       th:href="@{/offers/search(size=${offers.getSize()},page=0,name=*{name},minPrice=*{minPrice},maxPrice=*{maxPrice})}"
+                       class="page-link" href="#">First</a>
+                    <a th:if="${offers.isFirst()}"
+                       class="page-link" href="#">First</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${offers.hasPrevious() ? '' : 'disabled'}">
+                    <a th:if="${offers.hasPrevious()}"
+                       th:href="@{/offers/search(size=${offers.getSize()},page=${offers.getNumber() - 1},name=*{name},minPrice=*{minPrice},maxPrice=*{maxPrice})}"
+                       class="page-link" href="#">Previous</a>
+                    <a th:unless="${offers.hasPrevious()}"
+                       class="page-link" href="#">Previous</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${offers.hasNext() ? '' : 'disabled'}">
+                    <a th:if="${offers.hasNext()}"
+                       th:href="@{/offers/search(size=${offers.getSize()},page=${offers.getNumber() + 1},name=*{name},minPrice=*{minPrice},maxPrice=*{maxPrice})}"
+                       class="page-link" href="#">Next</a>
+                    <a th:unless="${offers.hasNext()}"
+                       class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${offers.isLast()} ? 'disabled' : ''">
+                    <a th:unless="${offers.isLast()}"
+                       th:href="@{/offers/search(size=${offers.getSize()},page=${offers.getTotalPages() - 1},name=*{name},minPrice=*{minPrice},maxPrice=*{maxPrice})}"
+                       class="page-link" href="#">Last</a>
+                    <a th:if="${offers.isLast()}"
+                       class="page-link" href="#">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+
+
+<div th:replace="fragments/footer">Footer</div>
+</body>
+</html>

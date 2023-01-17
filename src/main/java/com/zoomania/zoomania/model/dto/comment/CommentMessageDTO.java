@@ -1,4 +1,4 @@
-package com.zoomania.zoomania.model.dto;
+package com.zoomania.zoomania.model.dto.comment;
 
 public class CommentMessageDTO {
     private String message;

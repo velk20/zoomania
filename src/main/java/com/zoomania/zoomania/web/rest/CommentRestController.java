@@ -1,13 +1,12 @@
 package com.zoomania.zoomania.web.rest;
 
-import com.zoomania.zoomania.model.dto.CommentCreationDTO;
-import com.zoomania.zoomania.model.dto.CommentMessageDTO;
+import com.zoomania.zoomania.model.dto.comment.CommentCreationDTO;
+import com.zoomania.zoomania.model.dto.comment.CommentMessageDTO;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
 import com.zoomania.zoomania.model.view.CommentDisplayView;
 import com.zoomania.zoomania.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

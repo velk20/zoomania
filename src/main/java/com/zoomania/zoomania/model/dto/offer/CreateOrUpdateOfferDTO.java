@@ -1,4 +1,4 @@
-package com.zoomania.zoomania.model.dto;
+package com.zoomania.zoomania.model.dto.offer;
 
 import com.zoomania.zoomania.model.enums.CategoryEnum;
 import org.hibernate.validator.constraints.URL;

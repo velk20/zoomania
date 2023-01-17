@@ -1,7 +1,8 @@
 package com.zoomania.zoomania.web;
 
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
-import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
 import com.zoomania.zoomania.service.CategoryService;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -133,6 +133,36 @@ public class OfferController {
         offerService.editOffer(id,editOffer);
 
         return "redirect:/offers/{id}/details";
+    }
+
+    @GetMapping("/search")
+    public String searchQuery(@Valid SearchOfferDTO searchOfferDTO,
+                              BindingResult bindingResult,
+                              Model model,
+                              @PageableDefault(
+                                      sort = "createdOn",
+                                      direction = Sort.Direction.DESC,
+                                      page = 0,
+                                      size = 8
+                              )Pageable pageable) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("searchOfferModel", searchOfferDTO);
+            model.addAttribute(
+                    "org.springframework.validation.BindingResult.searchOfferModel",
+                    bindingResult);
+            return "search-offer";
+        }
+
+        if (!model.containsAttribute("searchOfferModel")) {
+            model.addAttribute("searchOfferModel", searchOfferDTO);
+        }
+
+        if (!searchOfferDTO.isEmpty()) {
+            model.addAttribute("offers", offerService.searchOffer(searchOfferDTO,pageable));
+        }
+
+        return "search-offer";
     }
 
     @DeleteMapping("/{id}/delete")

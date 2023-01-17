@@ -1,10 +1,9 @@
 package com.zoomania.zoomania.service;
 
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
-import com.zoomania.zoomania.model.dto.ChangeUserPasswordDTO;
-import com.zoomania.zoomania.model.dto.UpdateUserDTO;
-import com.zoomania.zoomania.model.dto.UserRegisterDTO;
-import com.zoomania.zoomania.model.entity.OfferEntity;
+import com.zoomania.zoomania.model.dto.user.ChangeUserPasswordDTO;
+import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
+import com.zoomania.zoomania.model.dto.user.UserRegisterDTO;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
@@ -12,7 +11,6 @@ import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.view.OfferResponse;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.model.view.UserResponse;
-import com.zoomania.zoomania.repository.OfferRepository;
 import com.zoomania.zoomania.repository.UserRepository;
 import com.zoomania.zoomania.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
@@ -29,9 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

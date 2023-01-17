@@ -2,7 +2,8 @@ package com.zoomania.zoomania.service;
 
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
-import com.zoomania.zoomania.model.dto.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
@@ -10,6 +11,7 @@ import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.repository.CategoryRepository;
 import com.zoomania.zoomania.repository.OfferRepository;
+import com.zoomania.zoomania.repository.OfferSpecification;
 import com.zoomania.zoomania.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -165,5 +166,11 @@ public class OfferService {
                 .setCategory(categoryEntity);
 
         this.offerRepository.save(offerById);
+    }
+
+    public Page<OfferDetailsView> searchOffer(SearchOfferDTO searchOfferDTO,Pageable pageable) {
+        return this.offerRepository
+                .findAll(new OfferSpecification(searchOfferDTO), pageable)
+                .map(this::map);
     }
 }

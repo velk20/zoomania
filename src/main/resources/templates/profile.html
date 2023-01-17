@@ -12,7 +12,7 @@
 <div class="container">
 
     <form id="profileForm"
-          th:method="post"
+          th:method="patch"
           th:object="${user}"
           th:action="@{/users/profile/{username}/edit(username=${user.getUsername()})}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
@@ -161,8 +161,8 @@
         </div>
         <div class="row d-block justify-content-center text-center">
             <div class="justify-content-center text-center">
-                <h6 class="text-white">If you want to change the password,
-                    <a th:href="@{/users/profile/{username}/change_password(username=${user.username})}">click here</a></h6>
+                <h5 class="text-white">If you want to change the password,
+                    <a th:href="@{/users/profile/{username}/change_password(username=${user.username})}">click here</a></h5>
             </div>
         </div>
 
@@ -174,7 +174,7 @@
                         class="btn btn-warning px-4 ms-3" value="Edit profile">
                 <button sec:authorize="hasRole('ADMIN')" class="btn btn-danger">
                     <a class="text-white" style="text-decoration: none;"
-                       th:href="@{/users/profile/{username}/delete(username=${user.username})}">Delete User</a>
+                       th:href="@{/users/profile/{username}/delete(username=${user.username})}">Delete Profile</a>
                 </button>
                 <button class="btn btn-light btn-icon-text"><i class="bi bi-x"></i>
                     <a class="text text-dark" style="text-decoration: none;" th:href="@{/}">Back</a></button>
