@@ -1,5 +1,7 @@
 const queryString = window.location.href;
 const parameters = new URLSearchParams(queryString);
+let csrfHeaderName = document.head.querySelector('[name=_csrf_header]').content
+let csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
 
 let pageNo = parameters.get('pageNo')
 if (pageNo == null) {
@@ -66,7 +68,9 @@ fetch(`http://localhost:8080/api/offers?pageSize=${pageSize}&pageNo=${pageNo}&so
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                             </span>
                   </a>
-                  <a href="/offers/${offer.id}/delete" class="table-link danger">
+                  <a
+                  onclick="onDelete(event,${offer.id})"
+                  class="table-link danger">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -188,4 +192,50 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     commentHtml += '<nav>\n'
 
     return commentHtml
+}
+
+ function onDelete(event,offerId) {
+    if (confirm("Are you sure you want to delete this offer?")) {
+
+// Instantiating new EasyHTTP class
+        const http = new DeleteHTTP;
+
+// Update Post
+        http.delete(`http://localhost:8080/offers/${offerId}/delete`)
+
+            // Resolving promise for response data
+            .then(data => console.log(data))
+
+            // Resolving promise for error
+            .catch(err => console.log(err));
+
+        window.location.reload();
+    }else{
+        event.preventDefault()
+    }
+
+}
+// ES6 class
+class DeleteHTTP {
+
+    // Make an HTTP PUT Request
+    async delete(url) {
+
+        // Awaiting fetch which contains
+        // method, headers and content-type
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                [csrfHeaderName]: csrfHeaderValue
+            }
+        });
+
+        // Awaiting for the resource to be deleted
+        const resData = 'resource deleted...';
+
+        // Return response data
+        return resData;
+    }
 }

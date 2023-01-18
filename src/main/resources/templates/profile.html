@@ -15,7 +15,8 @@
           th:method="patch"
           th:object="${user}"
           th:action="@{/users/profile/{username}/edit(username=${user.getUsername()})}"
-          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
+    style="margin-bottom: 80px">
         <div class="h4 text-center text-info">Profile, <th:block th:text="|*{firstName} *{lastName}|"></th:block></div>
         <div class="row text-center justify-content-center">
             <img th:src="@{/images/profile.jpg}" width="100" class="rounded-circle">
@@ -25,7 +26,7 @@
 
                 <label for="username" class="text-white font-weight-bold">Username</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="username"
                         th:field="*{username}"
                         th:errorclass="is-invalid"
@@ -43,7 +44,7 @@
 
                 <label for="email" class="text-white font-weight-bold">Email</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="email"
                         th:field="*{email}"
                         th:errorclass="is-invalid"
@@ -61,7 +62,7 @@
 
                 <label for="firstName" class="text-white font-weight-bold">First Name</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="firstName"
                         th:field="*{firstName}"
                         th:errorclass="is-invalid"
@@ -79,7 +80,7 @@
 
                 <label for="lastName" class="text-white font-weight-bold">Last Name</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="lastName"
                         th:field="*{lastName}"
                         th:errorclass="is-invalid"
@@ -98,7 +99,7 @@
 
                 <label for="phone" class="text-white font-weight-bold">Phone number</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="phone"
                         th:field="*{phone}"
                         th:errorclass="is-invalid"
@@ -117,7 +118,7 @@
 
                 <label for="age" class="text-white font-weight-bold">Age</label>
                 <input
-                        th:disabled="${user.username != #authentication.getName()}"
+                        th:readonly="${user.username != #authentication.getName()}"
                         id="age"
                         th:field="*{age}"
                         th:errorclass="is-invalid"
@@ -168,11 +169,14 @@
 
         <div class="row">
             <div class="form-group col-md-12 mb-3 gap-4">
+                <sec:authorize access="hasRole('ADMIN')" var="isAdmin"></sec:authorize>
                 <input
-                        th:if="${user.username == #authentication.getName()}"
+                        th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${user.username == #authentication.getName()}"
                         type="submit"
                         class="btn btn-warning px-4 ms-3" value="Edit profile">
-                <button sec:authorize="hasRole('ADMIN')" class="btn btn-danger">
+                <button
+                        th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${user.username == #authentication.getName()}"
+                        class="btn btn-danger">
                     <a class="text-white" style="text-decoration: none;"
                        th:href="@{/users/profile/{username}/delete(username=${user.username})}">Delete Profile</a>
                 </button>

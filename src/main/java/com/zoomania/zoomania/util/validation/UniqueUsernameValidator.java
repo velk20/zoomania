@@ -22,13 +22,15 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Optional<UserEntity> userEntityOptional = userRepository.findByUsername(value);
-        if (userEntityOptional.isEmpty()) {
-            return true;
-        }else{
+        if (userEntityOptional.isPresent()) {
             UserEntity currentLoggedUser =
-                    this.userRepository.findByUsername(authentication.getName())
+                    this.userRepository
+                            .findByUsername(authentication.getName())
                             .orElseThrow(UserNotFoundException::new);
-            return currentLoggedUser.getUsername().equals(value);
+            if (!currentLoggedUser.getUsername().equals(value)) {
+                return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            }
         }
+        return true;
     }
 }

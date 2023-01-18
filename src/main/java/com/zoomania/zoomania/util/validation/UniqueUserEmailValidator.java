@@ -5,6 +5,7 @@ import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.repository.UserRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.validation.ConstraintValidator;
@@ -26,13 +27,15 @@ public class UniqueUserEmailValidator implements ConstraintValidator<UniqueUserE
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Optional<UserEntity> userEntityOptional = userRepository.findByEmail(value);
-        if (userEntityOptional.isEmpty()) {
-            return true;
-        }else{
-           UserEntity currentLoggedUser =
-                    this.userRepository.findByUsername(authentication.getName())
+        if (userEntityOptional.isPresent()) {
+            UserEntity currentLoggedUser =
+                    this.userRepository
+                            .findByUsername(authentication.getName())
                             .orElseThrow(UserNotFoundException::new);
-            return currentLoggedUser.getEmail().equals(value);
+            if (!currentLoggedUser.getEmail().equals(value)) {
+                return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            }
         }
+        return true;
     }
 }

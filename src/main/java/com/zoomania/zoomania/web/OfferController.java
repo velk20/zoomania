@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/offers")
@@ -99,11 +100,12 @@ public class OfferController {
         return "details-offer";
     }
 
-    @PreAuthorize("@offerService.isOwner(#principal.username,#id)")
+    @PreAuthorize("@offerService.isOwner(#principal.name,#id)")
     @GetMapping("/{id}/edit")
     public String editOffer(
             Model model,
-            @PathVariable("id") Long id
+            @PathVariable("id") Long id,
+            Principal principal
     ) {
 
         if (!model.containsAttribute("editOffer")) {
@@ -165,13 +167,15 @@ public class OfferController {
         return "search-offer";
     }
 
+    @PreAuthorize("@offerService.isOwner(#principal.name,#id)")
     @DeleteMapping("/{id}/delete")
     public String deleteOffer(
-            @PathVariable("id") Long id
+            @PathVariable("id") Long id,
+            Principal principal
     ) {
-        boolean deleteOfferById = offerService.deleteOfferById(id);
+        offerService.deleteOfferById(id);
 
-        return "redirect:/dashboard";
+        return "redirect:/offers/all";
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND)

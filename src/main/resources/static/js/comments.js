@@ -2,8 +2,8 @@ const offerId = document.getElementById('offerId').value
 const commentForm = document.getElementById('commentForm')
 commentForm.addEventListener("submit", handleFormSubmission)
 
-const csrfHeaderName = document.head.querySelector('[name=_csrf_header]').content
-const csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
+let csrfHeaderName = document.head.querySelector('[name=_csrf_header]').content
+let csrfHeaderValue = document.head.querySelector('[name=_csrf]').content
 
 const commentContainer = document.getElementById('commentContainer')
 

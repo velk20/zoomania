@@ -23,11 +23,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,13 +107,14 @@ public class UserService {
     public UserDetailsView getUser(String username) {
         UserEntity user = userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
+                .orElseThrow(() -> new UserNotFoundException(username + " was not found!"));
 
         return this.map(user);
     }
 
     private UserDetailsView map(UserEntity entity) {
         UserDetailsView userDetailsView = mapper.map(entity, UserDetailsView.class);
+        userDetailsView.setUserRoles(entity.getUserRoles().stream().map(r->r.getUserRoleEnum().name()).collect(Collectors.toList()));
         userDetailsView.setActive(entity.isActive());
         userDetailsView.setAdmin(entity.getUserRoles().stream().anyMatch(r->r.getUserRoleEnum().equals(UserRoleEnum.ADMIN)));
         return userDetailsView;
@@ -144,7 +145,6 @@ public class UserService {
         // create Pageable instance
         return PageRequest.of(pageNo, pageSize, sort);
     }
-// ! MAKE PASSWORD CHANGER FUNCTIONALITY AS PAGE !!!!!!!!!!!
     public UserDetailsView editUser(String username, UpdateUserDTO editUser) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(username)

@@ -142,13 +142,11 @@ public class OfferService {
         return mapper.map(offerEntity, OfferDetailsView.class);
     }
 
-    public boolean deleteOfferById(Long id) {
-        Optional<OfferEntity> byId = this.offerRepository.findById(id);
-        if (byId.isPresent()) {
-            this.offerRepository.delete(byId.get());
-            return true;
-        }
-        return false;
+    public void deleteOfferById(Long id) {
+        OfferEntity offer = this.offerRepository.findById(id)
+                .orElseThrow(() -> new OfferNotFoundException(id));
+
+            this.offerRepository.delete(offer);
     }
 
     public void editOffer(Long id,CreateOrUpdateOfferDTO editOffer) {

@@ -15,6 +15,16 @@ public class UserDetailsView {
     private String lastName;
     private boolean isActive;
     private boolean isAdmin;
+    private List<String> userRoles;
+
+    public List<String> getUserRoles() {
+        return userRoles;
+    }
+
+    public UserDetailsView setUserRoles(List<String> userRoles) {
+        this.userRoles = userRoles;
+        return this;
+    }
 
     public UserDetailsView setAdmin(boolean admin) {
         isAdmin = admin;

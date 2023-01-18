@@ -1,9 +1,12 @@
 package com.zoomania.zoomania.web;
 
+import com.zoomania.zoomania.exceptions.OfferNotFoundException;
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.user.ChangeUserPasswordDTO;
 import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -87,5 +90,12 @@ public class ProfileController {
         }
 
         return "redirect:/users/profile/" + username;
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UserNotFoundException.class})
+    public String onProductNotFound(UserNotFoundException unfe,Model model){
+        model.addAttribute("message", unfe.getMessage());
+        return "error";
     }
 }
