@@ -322,6 +322,7 @@ footer{
 }
 .shop-items .item img {
     width: 100%;
+    max-height: 200px;
     max-width: 360px;
     margin: 0 auto;
     border: 1px solid #eee;
