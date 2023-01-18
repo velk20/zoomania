@@ -14,7 +14,7 @@
   <div class="container-fluid">
     <h1  th:if="${offers.hasContent()}" class="text-center text-white">My offers</h1>
 
-    <div class="row text-center justify-content-center">
+    <div class="row ">
       <div th:if="${offers.hasContent()}" th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
         <!-- Restaurant Item -->
         <div class="item">
@@ -31,7 +31,10 @@
           <!-- add to cart btn -->
           <div class="ecom bg-blue">
             <a class="btn bg-warning" th:href="@{/offers/{offerId}/edit(offerId=${offer.id})}">Edit</a>
-            <a class="btn bg-danger" th:href="@{/offers/{offerId}/delete(offerId=${offer.id})}">Delete</a>
+            <a class="btn bg-danger"
+               id="deleteBtn"
+               th:data-id="${offer.id}">
+              Delete</a>
           </div>
         </div>
       </div>
@@ -91,5 +94,6 @@
 </div>
 </body>
 <div th:replace="fragments/footer">Footer</div>
+<script th:src="@{/js/deleteOffer.js}"></script>
 
 </html>
