@@ -1,5 +1,6 @@
 package com.zoomania.zoomania.service;
 
+import com.zoomania.zoomania.exceptions.ImageNotFoundException;
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.offer.CreateOrUpdateOfferDTO;
@@ -17,12 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,18 +31,18 @@ public class OfferService {
     private final UserRepository userRepository;
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
-    private final UserDetailsService userDetailsService;
+    private final CloudinaryService cloudinaryService;
 
     public OfferService(OfferRepository offerRepository,
                         UserRepository userRepository,
                         ModelMapper mapper,
                         CategoryRepository categoryRepository,
-                        UserDetailsService userDetailsService) {
+                        CloudinaryService cloudinaryService) {
         this.offerRepository = offerRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.categoryRepository = categoryRepository;
-        this.userDetailsService = userDetailsService;
+        this.cloudinaryService = cloudinaryService;
     }
 
 
@@ -54,7 +54,11 @@ public class OfferService {
 
         CategoryEntity categoryEntity = categoryRepository.findByName(addOfferDTO.getCategory()).orElseThrow();
 
+
+        String imageUrl = getImageUrl(addOfferDTO);
+
         newOffer
+                .setImageUrl(imageUrl)
                 .setCategory(categoryEntity)
                 .setSeller(seller)
                 .setCreatedOn(LocalDateTime.now());
@@ -156,15 +160,27 @@ public class OfferService {
 
         CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory()).orElseThrow();
 
+        String imageUrl = getImageUrl(editOffer);
+
         offerById
                 .setTitle(editOffer.getTitle())
                 .setBreed(editOffer.getBreed())
                 .setPrice(editOffer.getPrice())
                 .setDescription(editOffer.getDescription())
-                .setImageUrl(editOffer.getImageUrl())
+                .setImageUrl(imageUrl)
                 .setCategory(categoryEntity);
 
         this.offerRepository.save(offerById);
+    }
+
+    private String getImageUrl(CreateOrUpdateOfferDTO editOffer) {
+        String imageUrl = null;
+        try {
+             imageUrl = this.cloudinaryService.uploadPhoto(editOffer.getImageUrl());
+        } catch (IOException e) {
+            throw new ImageNotFoundException(e.getMessage());
+        }
+        return imageUrl;
     }
 
     public Page<OfferDetailsView> searchOffer(SearchOfferDTO searchOfferDTO,Pageable pageable) {
