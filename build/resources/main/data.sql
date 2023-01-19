@@ -56,6 +56,7 @@ VALUES (1,1),
        (10,2),(11,2),(12,2),(13,2),(14,2),(15,2);
 
 insert into offers(id, created_on, description, image_url, price, title, category_id, seller_id, breed)
+#         Dogs
 values (1,'2023-01-03','','https://images.unsplash.com/photo-1585943870180-be99fca07f23?ixlib=rb-4.0
 .3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',250,'Alonso',1,1,'Affenpinscher'),
     (2,'2023-01-04','','https://images.unsplash.com/photo-1616832212184-aeeb37024620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'
@@ -65,7 +66,7 @@ values (1,'2023-01-03','','https://images.unsplash.com/photo-1585943870180-be99f
        (4,'2023-01-06','','https://images.unsplash.com/photo-1609075939132-1f7e076a5f2c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
        ,350,'Calyn',1,4,'Spaniel'),
 
-
+#         Cats
        (5,'2023-01-07','','https://images.unsplash.com/photo-1605254252163-9208d6fd3fd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
        ,0,'Teny',2,5,
         'Street Superb'),
@@ -76,7 +77,7 @@ values (1,'2023-01-03','','https://images.unsplash.com/photo-1585943870180-be99f
        (8,'2023-01-10','','https://images.unsplash.com/photo-1649472729650-9803247c67d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80'
        ,100,'Liona',2,1,'Korat'),
 
-
+#         Fish
        (9,'2023-01-11','','https://images.unsplash.com/photo-1602143221967-ff9a1a490e00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
        ,20,'Gary Ellis',3,6,'Guppies'),
        (10,'2023-01-12','','https://images.unsplash.com/photo-1672572442059-c46f99bc5354?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80'
@@ -84,7 +85,7 @@ values (1,'2023-01-03','','https://images.unsplash.com/photo-1585943870180-be99f
        (11,'2023-01-13','','https://images.unsplash.com/photo-1571752726668-05843b3d0073?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1165&q=80'
        ,50,'Dori',3,8,'Blue Fish'),
 
-
+#         Birds
        (12,'2023-01-14','','https://images.unsplash.com/photo-1626133830160-2d463a6b64a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
        ,60,'Elis',4,9,'African Gray Parrot'),
        (13,'2023-01-15','','https://images.unsplash.com/photo-1662392526190-1c71941da130?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80'
