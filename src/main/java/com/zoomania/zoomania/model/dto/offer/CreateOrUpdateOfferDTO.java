@@ -1,6 +1,7 @@
 package com.zoomania.zoomania.model.dto.offer;
 
 import com.zoomania.zoomania.model.enums.CategoryEnum;
+import com.zoomania.zoomania.util.validation.Image;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,7 @@ public class CreateOrUpdateOfferDTO {
     private BigDecimal price;
     @NotNull(message = "Category can not be empty.")
     private CategoryEnum category;
-    @NotNull(message = "Image can not be empty.")
+    @Image( message = "Image can not be empty.")
     private MultipartFile imageUrl;
     @NotEmpty(message = "Description can not be empty.")
     @Size(min = 3, max = 150)

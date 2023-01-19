@@ -44,9 +44,10 @@
                                                th:field="*{title}"
                                                th:errorclass="is-invalid"
                                                class="form-control">
-                                        <p class="invalid-feedback errors alert alert-danger">
-                                            Title is required.
-                                        </p>
+                                        <div class="invalid-feedback errors alert alert-danger">
+                                            <div th:each="err : ${#fields.errors('title')}"
+                                                 th:text="${err}"></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -56,9 +57,10 @@
                                                th:field="*{price}"
                                                th:errorclass="is-invalid"
                                                class="form-control">
-                                        <p class="invalid-feedback errors alert alert-danger">
-                                            Price must be positive number.
-                                        </p>
+                                        <div class="invalid-feedback errors alert alert-danger">
+                                            <div th:each="err : ${#fields.errors('price')}"
+                                                 th:text="${err}"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -79,9 +81,10 @@
                                                 Category
                                             </option>
                                         </select>
-                                        <p class="invalid-feedback errors alert alert-danger">
-                                            Category type is required.
-                                        </p>
+                                        <div class="invalid-feedback errors alert alert-danger">
+                                            <div th:each="err : ${#fields.errors('category')}"
+                                                 th:text="${err}"></div>
+                                        </div>
                                       </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -93,9 +96,10 @@
                                                     th:field="*{breed}"
                                                     th:errorclass="is-invalid"
                                                    class="form-control" name="breed" type="text">
-                                            <p class="invalid-feedback errors alert alert-danger">
-                                                Breed is required.
-                                            </p>
+                                            <div class="invalid-feedback errors alert alert-danger">
+                                                <div th:each="err : ${#fields.errors('breed')}"
+                                                     th:text="${err}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -105,16 +109,17 @@
                                     <div class="mb-8">
                                         <div class="form-group">
                                             <label for="image"
-                                                   class="form-label text-white"><strong>Image URL</strong></label>
+                                                   class="form-label text-white"><strong>Upload Image</strong></label>
                                             <input id="image"
                                                    type="file"
                                                       th:field="*{imageUrl}"
                                                       th:errorclass="is-invalid"
                                                       class="form-control"
                                                       name="image"/>
-                                            <p class="invalid-feedback errors alert alert-danger">
-                                                Valid ImageUrl is required.
-                                            </p>
+                                            <div class="invalid-feedback errors alert alert-danger">
+                                                <div th:each="err : ${#fields.errors('imageUrl')}"
+                                                     th:text="${err}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -131,9 +136,10 @@
                                                       th:errorclass="is-invalid"
                                                       class="form-control" rows="3"
                                                       name="description"></textarea>
-                                            <p class="invalid-feedback errors alert alert-danger">
-                                                Description is required.
-                                            </p>
+                                            <div class="invalid-feedback errors alert alert-danger">
+                                                <div th:each="err : ${#fields.errors('description')}"
+                                                     th:text="${err}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
