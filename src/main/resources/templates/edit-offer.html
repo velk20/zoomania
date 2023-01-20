@@ -35,7 +35,8 @@
                         type="file"
                         class="form-control"
                         placeholder="Upload Image, if you want to change it"/>
-
+                <small class="text-center">Only if you want to change the current
+                    images than place your new once here. Old images will be deleted.</small>
             </div>
         </div>
         <div class="row">
@@ -139,5 +140,12 @@
 </div>
 </body>
 <div th:replace="fragments/footer">Footer</div>
-
+<script>
+    $("#images").on("change", function() {
+        if ($("#images")[0].files.length > 3) {
+            alert("You can select only 3 images");
+            $("#images").val(null);
+        }
+    });
+</script>
 </html>
