@@ -16,7 +16,7 @@ spring:
     #        The DB will be instasiate first before inserst
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   sql:
     init:
       mode: always
