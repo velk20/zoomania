@@ -19,7 +19,7 @@ spring:
       ddl-auto: update
   sql:
     init:
-      mode: never
+      mode: always
   # For uploading files to our server
   servlet:
     multipart:

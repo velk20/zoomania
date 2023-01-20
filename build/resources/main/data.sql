@@ -55,43 +55,88 @@ VALUES (1,1),
        (9,2),
        (10,2),(11,2),(12,2),(13,2),(14,2),(15,2);
 
-# insert into offers(id, created_on, description, image_url, price, title, category_id, seller_id, breed)
-# #         Dogs
-# values (1,'2023-01-03','','https://images.unsplash.com/photo-1585943870180-be99fca07f23?ixlib=rb-4.0
-# .3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',250,'Alonso',1,1,'Affenpinscher'),
-#     (2,'2023-01-04','','https://images.unsplash.com/photo-1616832212184-aeeb37024620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80'
-#     ,150,'Fluffy',1,2,'Akita'),
-#        (3,'2023-01-05','','https://images.unsplash.com/photo-1573995974701-1af577c7de08?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-#        ,270,'Alis',1,3,'Alaskan'),
-#        (4,'2023-01-06','','https://images.unsplash.com/photo-1609075939132-1f7e076a5f2c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-#        ,350,'Calyn',1,4,'Spaniel'),
+
+insert into offers(id, breed, created_on, offers.description, price, title, category_id, seller_id)
+#         Dogs
+values (1,'Affenpinscher','2023-01-03 00:00:00.000000','loremt',250,'Alonso',1,1),
+       (2,'Akita','2023-01-04 00:00:00.000000','dsadasd ',150,'Fluffy',1,2),
+       (3,'Alaskan','2023-01-05 00:00:00.000000','dsagalasdla ',270,'Alis',1,3),
+       (4,'Spaniel','2023-01-06 00:00:00.000000','ldksaldkal ',350,'Calyn',1,4),
+
+#         Cats
+       (5,'Street Superb','2023-01-07 00:00:00.000000','dsandaskd',0,'Teny',2,5),
+       (6,'Birman','2023-01-08 00:00:00.000000','lpwkqpeokqwpe',150,'Antonin',2,1),
+       (7,'Chartreux','2023-01-09 00:00:00.000000','girjigjwop',90,'Camille',2,1),
+       (8,'Korat','2023-01-10 00:00:00.000000','ogkrpe',100,'Liona',2,1),
+
+#         Fish
+       (9,'Guppies','2023-01-11 00:00:00.000000','ijgrwjg',20,'Gary Ellis',3,6),
+       (10,'Zia','2023-01-12 00:00:00.000000','gkfrogk',25,'Sohrab',3,7),
+       (11,'Blue Fish','2023-01-13 00:00:00.000000','kgjrfog',50,'Dori',3,8),
+
+#         Birds
+       (12,'African Gray Parrot','2023-01-14 00:00:00.000000','keopwke',60,'Elis',4,9),
+       (13,'Black-throated Sparrow','2023-01-15 00:00:00.000000','mkldmfkds',15,'Eric',4,10),
+       (14,'Wemyss','2023-01-16 00:00:00.000000','9i213903i',20,'Martin',4,11),
+       (15,'Ewing','2023-01-17 00:00:00.000000','t990r',0,'Skyler',4,12);
+
+# insert into offer_images(id, image_url, public_id, offer_id)
+# value (1,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674246712/Affenpinscher-puppy-standing-outdoors-in-the
+# -grass-1_pvz2zo.jpg','Affenpinscher-puppy-standing-outdoors-in-the-grass-1_pvz2zo',1),
+#     (2,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674246713/Affenpinscher-running_gjxiyr.jpg',
+#     'Affenpinscher-running_gjxiyr',1),
+#     (3,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247052/Akita1_vngnue.jpg',
+#     'Akita1_vngnue',2),
+#     (4,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247060/akita2_gyyvr2.jpg',
+#     'akita2_gyyvr2',2),
+#     (5,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247467/alaskan3_ipmsdm.jpg',
+#     'alaskan3_ipmsdm',3),
+#     (6,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247467/alaskan2_i08wdr.jpg',
+#     'alaskan2_i08wdr',3),
+#     (7,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247468/alaskan1_r8takd.jpg',
+#     'alaskan1_r8takd',3),
+#     (8,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247670/Spaniel1_qnfxui.jpg',
+#     'Spaniel1_qnfxui',4),
+#     (9,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247670/Spaniel2_jxaxbr.jpg',
+#     'Spaniel2_jxaxbr',4),
+#     (10,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247670/Spaniel_nxbfvr.jpg',
+#     'Spaniel_nxbfvr',4),
 #
-# #         Cats
-#        (5,'2023-01-07','','https://images.unsplash.com/photo-1605254252163-9208d6fd3fd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-#        ,0,'Teny',2,5,
-#         'Street Superb'),
-#        (6,'2023-01-08','','https://images.unsplash.com/photo-1622177577032-326d38124646?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
-#        ,150,'Antonin',2,1,'Birman'),
-#        (7,'2023-01-09','','https://images.unsplash.com/photo-1601295617660-d7ce06fdba5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1166&q=80'
-#        ,90,'Camille',2,1,'Chartreux'),
-#        (8,'2023-01-10','','https://images.unsplash.com/photo-1649472729650-9803247c67d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80'
-#        ,100,'Liona',2,1,'Korat'),
-#
-# #         Fish
-#        (9,'2023-01-11','','https://images.unsplash.com/photo-1602143221967-ff9a1a490e00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-#        ,20,'Gary Ellis',3,6,'Guppies'),
-#        (10,'2023-01-12','','https://images.unsplash.com/photo-1672572442059-c46f99bc5354?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80'
-#        ,25,'Sohrab',3,7,'Zia'),
-#        (11,'2023-01-13','','https://images.unsplash.com/photo-1571752726668-05843b3d0073?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1165&q=80'
-#        ,50,'Dori',3,8,'Blue Fish'),
-#
-# #         Birds
-#        (12,'2023-01-14','','https://images.unsplash.com/photo-1626133830160-2d463a6b64a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-#        ,60,'Elis',4,9,'African Gray Parrot'),
-#        (13,'2023-01-15','','https://images.unsplash.com/photo-1662392526190-1c71941da130?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80'
-#        ,15,'Eric',4,10,'Black-throated Sparrow'),
-#        (14,'2023-01-16','','https://images.unsplash.com/photo-1656085422329-29eee95ddb66?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1188&q=80'
-#        ,20,'Martin',4,11,'Wemyss'),
-#        (15,'2023-01-17','','https://images.unsplash.com/photo-1652533879656-471594a2a444?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
-#        ,0,'Skyler',4,12,
-#         'Ewing');
+#     (11,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247814/Street_Superb1_isjmd7.jpg',
+#     'Street_Superb1_isjmd7',5),
+#     (12,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247814/Street_Superb_cfqqec.jpg',
+#     'Street_Superb_cfqqec',5),
+#     (13,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247920/Birman2_eswzjb.jpg',
+#     'Birman2_eswzjb',6),
+#     (14,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674247920/Birman_bckavj.jpg',
+#     'Birman_bckavj',6),
+#     (15,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248002/Chartreux_ma7db3.jpg',
+#     'Chartreux_ma7db3',7),
+#     (16,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248002/Chartreux1_ma42u4.jpg',
+#     'Chartreux1_ma42u4',7),
+#     (17,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248101/Korat_cnziva.jpg',
+#     'Korat_cnziva',8),
+#     (18,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248102/Korat11_pv6s2r.jpg',
+#     'Korat11_pv6s2r',8),
+#     (19,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248202/guppy-fish-types-varieties_sifaor.jpg',
+#     'guppy-fish-types-varieties_sifaor',9),
+#     (20,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248295/Zia11_jaih41.jpg',
+#     'Zia11_jaih41',10),
+#     (21,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248295/Zia_zjsvwj.jpg',
+#     'Zia_zjsvwj',10),
+#     (22,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248480/dori2_zngnuy.jpg',
+#     'dori2_zngnuy',11),
+#     (23,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248480/dori1_iyisbb.jpg',
+#     'dori1_iyisbb',11),
+#     (24,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248575/African_Gray_Parrot1_gok1di.jpg',
+#     'African_Gray_Parrot1_gok1di',12),
+#     (25,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248575/African_Gray_Parrot_hotbsc.jpg',
+#     'African_Gray_Parrot_hotbsc',12),
+#     (26,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248657/Black-throated_Sparrow_qjw31m.jpg',
+#     'Black-throated_Sparrow_qjw31m',13),
+#     (27,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248657/Black-throated_Sparrow1_shbyfp.jpg',
+#     'Black-throated_Sparrow1_shbyfp',13),
+#     (28,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248752/Wemyss_ded9tq.jpg',
+#     'Wemyss_ded9tq',14),
+#     (29,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674248795/6eb26e78d1934412719d1d00ced860a9_ggmi6k.jpg',
+#     '6eb26e78d1934412719d1d00ced860a9_ggmi6k',15);

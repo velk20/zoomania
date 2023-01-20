@@ -11,7 +11,10 @@
 
 <div class="shop-items">
   <div class="container-fluid">
-    <h1 class="text-center text-white">Dashboard</h1>
+    <h1 class="text-center text-white">
+      <th:block th:unless="${offers.getContent().isEmpty()}">Dashboard</th:block>
+    <th:block th:if="${offers.getContent().isEmpty()}">No available offers!</th:block>
+    </h1>
 
     <div class="row">
       <div th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
@@ -37,7 +40,8 @@
     </div>
   </div>
 
-  <div id="paginationNav" class="container-fluid row justify-content-center mar">
+  <div th:unless="${offers.getContent().isEmpty()}" id="paginationNav"
+       class="container-fluid row justify-content-center mar">
     <nav>
       <ul class="pagination">
         <li class="page-item" th:classappend="${offers.isFirst()} ? 'disabled' : ''">

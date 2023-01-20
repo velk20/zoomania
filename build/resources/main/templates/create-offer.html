@@ -163,4 +163,13 @@
     <div th:replace="fragments/footer">Footer</div>
 </div>
 
+<script>
+    $("#image").on("change", function() {
+        if ($("#image")[0].files.length > 3) {
+            alert("You can select only 3 images");
+            $("#image").val(null);
+        }
+    });
+</script>
+
 </html>

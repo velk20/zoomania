@@ -221,7 +221,8 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
             // Resolving promise for error
             .catch(err => console.log(err));
 
-        window.location.href = "http://localhost:8080/admin/offers";
+        sleep(2000)
+        window.location.reload()
     }else{
         event.preventDefault()
     }
@@ -250,4 +251,10 @@ class DeleteHTTP {
         // Return response data
         return resData;
     }
+
+
+}
+function sleep(milliseconds) {
+    const start = Date.now();
+    while (Date.now() - start < milliseconds);
 }

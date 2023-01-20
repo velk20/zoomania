@@ -184,7 +184,7 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
         <a href="javascript:void(0)"  class="page-link">Last</a>
         \n`;
         }
-        
+
     }
     else{
         commentHtml += `<li onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
