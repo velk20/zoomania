@@ -169,13 +169,24 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     let commentHtml = '<nav>\n'
     commentHtml += `<ul class="pagination">\n`
 
-    if (currentData.pageNo != currentData.totalPages-1) {
-        commentHtml += `<li class="page-item">\n`
-        commentHtml+=`
+    if (currentData.totalElements != 0) {
+        if (currentData.pageNo != currentData.totalPages-1) {
+            commentHtml += `<li class="page-item">\n`
+            commentHtml+=`
         <a href="/admin/users?pageSize=${pageSize}&pageNo=${currentData.totalPages-1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Last</a>
         \n`;
-    }else{
+        }
+        else{
+            commentHtml += `<li onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
+ class="disabled page-item">\n`
+            commentHtml+=`
+        <a href="javascript:void(0)"  class="page-link">Last</a>
+        \n`;
+        }
+
+    }
+    else{
         commentHtml += `<li onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
  class="disabled page-item">\n`
         commentHtml+=`

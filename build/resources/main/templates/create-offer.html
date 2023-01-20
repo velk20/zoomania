@@ -112,6 +112,8 @@
                                                    class="form-label text-white"><strong>Upload Image</strong></label>
                                             <input id="image"
                                                    type="file"
+                                                   accept="image/*"
+                                                   multiple="multiple"
                                                       th:field="*{imageUrl}"
                                                       th:errorclass="is-invalid"
                                                       class="form-control"
