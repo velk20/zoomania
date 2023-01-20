@@ -93,7 +93,7 @@ public class TestDataUtils {
         OfferEntity offerEntity = new OfferEntity()
                 .setCategory(category)
                 .setCreatedOn(LocalDateTime.now())
-                .setImageUrl("https://image.com/image.png")
+                .setImagesEntities(List.of(new ImageEntity(1L,"publicId","https://image.com/image.png")))
                 .setBreed("Husky")
                 .setPrice(BigDecimal.valueOf(213.45))
                 .setTitle("Dog like hulk")
@@ -112,8 +112,6 @@ public class TestDataUtils {
 
         return commentRepository.save(commentEntity);
     }
-
-
 
     public void cleanUpDatabase() {
         offerRepository.deleteAll();

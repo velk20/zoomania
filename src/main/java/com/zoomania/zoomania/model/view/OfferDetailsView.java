@@ -2,6 +2,7 @@ package com.zoomania.zoomania.model.view;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class OfferDetailsView {
     private Long id;
@@ -9,7 +10,7 @@ public class OfferDetailsView {
     private BigDecimal price;
     private String breed;
     private String description;
-    private String imageUrl;
+    private List<String> imagesUrls;
     private LocalDate createdOn;
     private String category;
     private String sellerFirstName;
@@ -47,12 +48,12 @@ public class OfferDetailsView {
         return this;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<String> getImagesUrls() {
+        return imagesUrls;
     }
 
-    public OfferDetailsView setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public OfferDetailsView setImagesUrls(List<String> imagesUrls) {
+        this.imagesUrls = imagesUrls;
         return this;
     }
 

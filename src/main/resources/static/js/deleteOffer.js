@@ -1,7 +1,9 @@
-let deleteBtn = document.getElementById("deleteBtn");
+let deleteBtn = document.querySelectorAll(".deleteBtn");
+console.log(deleteBtn.length);
 let csrfHeaderNameDeleteOffer = document.head.querySelector('[name=_csrf_header]').content
 let csrfHeaderValueDeleteOffer = document.head.querySelector('[name=_csrf]').content
-deleteBtn.addEventListener("click", onDelete);
+deleteBtn.forEach(b=>b.addEventListener("click", onDelete));
+
 async function onDelete(event) {
     let offerId = event.currentTarget.getAttribute("data-id");
     if (confirm("Are you sure you want to delete this offer?")) {

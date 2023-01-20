@@ -33,16 +33,17 @@ fetch(`http://localhost:8080/api/offers?pageSize=${pageSize}&pageNo=${pageNo}&so
 
         if (data.content.length == 0) {
             tableBody.innerHTML += `
-<div class="d-block justify-content-center text-center">
-<h3 class="text-center justify-content-center text-danger">No more offers found!</h3>
-</div>
+<th colspan="5" class="text-center justify-content-center text-danger">
+<h3>No more offers found!</h3>
+</th>
+
 `
         }else{
             for (let offer of data.content) {
                 tableBody.innerHTML += `
               <tr>
                 <td>
-                  <img width="50px" height="50px" src="${offer.imageUrl}" alt="">
+                  <img width="50px" height="50px" src="${offer.imagesUrls[0]}" alt="">
                   <a href="/offers/${offer.id}/details" class="user-link">${offer.title}</a>
                   <span class="user-subhead">Category: ${offer.category}</span>
                 </td>
@@ -195,6 +196,7 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
 }
 
  function onDelete(event,offerId) {
+    //TODO fix the on ADMIN delete offer page
     if (confirm("Are you sure you want to delete this offer?")) {
 
 // Instantiating new EasyHTTP class
@@ -209,7 +211,7 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
             // Resolving promise for error
             .catch(err => console.log(err));
 
-        window.location.reload();
+        window.location.href = "http://localhost:8080/admin/offers";
     }else{
         event.preventDefault()
     }

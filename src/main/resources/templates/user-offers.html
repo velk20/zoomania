@@ -14,12 +14,12 @@
   <div class="container-fluid">
     <h1  th:if="${offers.hasContent()}" class="text-center text-white">My offers</h1>
 
-    <div class="row ">
+    <div class="row">
       <div th:if="${offers.hasContent()}" th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
         <!-- Restaurant Item -->
         <div class="item">
           <!-- Item's image -->
-          <img class="img-responsive" height="250px" width="250px" th:src="${offer.imageUrl}" alt="">
+          <img class="img-responsive" height="250px" width="250px" th:src="${offer.imagesUrls.get(0)}" alt="">
           <!-- Item details -->
           <div class="item-dtls">
             <!-- product title -->
@@ -31,18 +31,21 @@
           <!-- add to cart btn -->
           <div class="ecom bg-blue">
             <a class="btn bg-warning" th:href="@{/offers/{offerId}/edit(offerId=${offer.id})}">Edit</a>
-            <a class="btn bg-danger"
+            <a class="deleteBtn btn bg-danger"
                id="deleteBtn"
                th:data-id="${offer.id}">
               Delete</a>
           </div>
         </div>
       </div>
-      <div class=" ">
-        <h2 th:unless="${offers.hasContent()}" class="text-center text-danger text-capitalize">You don't
+
+  </div>
+    <div th:unless="${offers.hasContent()}" class="row justify-content-center text-center">
+      <div class="justify-content-center text-center">
+        <h2  class="text-center text-danger text-capitalize">You don't
           have any offers!</h2></div>
     </div>
-  </div>
+    </div>
 
   <div th:if="${offers.hasContent()}" id="paginationNav" class="container-fluid row justify-content-center mar">
     <nav class="pagination-outer">

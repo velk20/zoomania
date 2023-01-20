@@ -24,7 +24,7 @@ public class UpdateOfferDTO {
     private CategoryEnum category;
     private String imageUrl;
     @ValidImageFormat
-    private MultipartFile image;
+    private MultipartFile[] images;
     @NotEmpty(message = "Description can not be empty.")
     @Size(min = 3, max = 150)
     private String description;
@@ -48,12 +48,12 @@ public class UpdateOfferDTO {
         return this;
     }
 
-    public MultipartFile getImage() {
-        return image;
+    public MultipartFile[] getImages() {
+        return images;
     }
 
-    public UpdateOfferDTO setImage(MultipartFile image) {
-        this.image = image;
+    public UpdateOfferDTO setImages(MultipartFile[] images) {
+        this.images = images;
         return this;
     }
 

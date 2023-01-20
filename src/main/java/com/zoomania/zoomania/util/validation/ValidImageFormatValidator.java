@@ -6,8 +6,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class ValidImageFormatValidator implements ConstraintValidator<ValidImageFormat, MultipartFile> {
+public class ValidImageFormatValidator implements ConstraintValidator<ValidImageFormat, MultipartFile[]> {
     private final List<String> imageContentTypesAllowed =
             new ArrayList<>()
             {{
@@ -18,18 +19,19 @@ public class ValidImageFormatValidator implements ConstraintValidator<ValidImage
                 add("image/webp");
             }};
     @Override
-    public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if (value == null || value.getOriginalFilename() == null || value.getOriginalFilename().isEmpty()) {
+    public boolean isValid(MultipartFile[] value, ConstraintValidatorContext context) {
+
+        if (value.length == 1 && Objects.requireNonNull(value[0].getOriginalFilename()).isEmpty()) {
             return true;
         }
-
-        if (!imageContentTypesAllowed.contains(value.getContentType())) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Image format must be: " + String.join(", ", imageContentTypesAllowed))
-                    .addConstraintViolation();
-            return false;
+        for (int i = 0; i < value.length; i++) {
+            if (!imageContentTypesAllowed.contains(value[i].getContentType())) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate("Image format must be: " + String.join(", ", imageContentTypesAllowed))
+                        .addConstraintViolation();
+                return false;
+            }
         }
-
         return true;
     }
 }

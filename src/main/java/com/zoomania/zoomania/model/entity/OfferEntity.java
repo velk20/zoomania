@@ -2,8 +2,8 @@ package com.zoomania.zoomania.model.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "offers")
@@ -15,8 +15,6 @@ public class OfferEntity extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
     @Basic
-    private String imageUrl;
-    @Basic
     private String breed;
     @Column(nullable = false)
     private LocalDateTime createdOn;
@@ -24,6 +22,24 @@ public class OfferEntity extends BaseEntity {
     private CategoryEntity category;
     @ManyToOne(optional = false)
     private UserEntity seller;
+    @OneToMany(cascade = CascadeType.ALL,targetEntity = ImageEntity.class,mappedBy = "offer")
+    private List<ImageEntity> imagesEntities;
+
+    public void addImage(ImageEntity imageEntity) {
+        this.imagesEntities.add(imageEntity);
+    }
+
+    public void removeAllImages() {
+       this.imagesEntities.clear();
+    }
+    public List<ImageEntity> getImagesEntities() {
+        return imagesEntities;
+    }
+
+    public OfferEntity setImagesEntities(List<ImageEntity> imagesEntities) {
+        this.imagesEntities = imagesEntities;
+        return this;
+    }
 
     public String getBreed() {
         return breed;
@@ -42,16 +58,6 @@ public class OfferEntity extends BaseEntity {
         this.createdOn = createdOn;
         return this;
     }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public OfferEntity setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-        return this;
-    }
-
     public CategoryEntity getCategory() {
         return category;
     }

@@ -22,7 +22,7 @@ public class CreateOfferDTO {
     private CategoryEnum category;
     @NotEmptyImage(message = "Image is required.")
     @ValidImageFormat(message = "Invalid image format.")
-    private MultipartFile imageUrl;
+    private MultipartFile[] imageUrl;
     @NotEmpty(message = "Description can not be empty.")
     @Size(min = 3, max = 150)
     private String description;
@@ -37,11 +37,11 @@ public class CreateOfferDTO {
         return this;
     }
 
-    public MultipartFile getImageUrl() {
+    public MultipartFile[] getImageUrl() {
         return imageUrl;
     }
 
-    public CreateOfferDTO setImageUrl(MultipartFile imageUrl) {
+    public CreateOfferDTO setImageUrl(MultipartFile[] imageUrl) {
         this.imageUrl = imageUrl;
         return this;
     }

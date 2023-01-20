@@ -2,6 +2,7 @@ package com.zoomania.zoomania.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.zoomania.zoomania.model.entity.ImageEntity;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,24 +29,26 @@ public class CloudinaryService {
             "secure", true));
 
 
-    public String uploadPhoto(MultipartFile photo) throws IOException {
+    public ImageEntity uploadPhoto(MultipartFile photo) throws IOException {
         uploadPhotoToServer(photo);
 
         Map uploadResult = cloudinary.uploader()
                 .upload(new File(IMAGE_FOLDER + photo.getOriginalFilename()), ObjectUtils.emptyMap());
 
         Object url = uploadResult.get("url");
-        System.out.println(url);
+        Object publicId = uploadResult.get("public_id");
+
+        ImageEntity imageEntity = new ImageEntity()
+                .setImageUrl(url.toString())
+                .setPublicId(publicId.toString());
 
         deletePhotoFromServer(photo.getOriginalFilename());
 
-        return url.toString();
+        return imageEntity;
     }
-    // * !!!!!!!!!!!!!!!!!!!
-    //TODO make Image to be deleted
-    // /dasddsadasdasdasdas
-    public void deletePhoto(String imageUrl) throws IOException {
-        cloudinary.uploader().destroy(imageUrl,ObjectUtils.emptyMap());
+
+    public void deletePhoto(ImageEntity imageEntity) throws IOException {
+        cloudinary.uploader().destroy(imageEntity.getPublicId(),ObjectUtils.emptyMap());
     }
 
     private void deletePhotoFromServer(String fileName) throws IOException {

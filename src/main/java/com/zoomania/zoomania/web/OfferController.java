@@ -108,9 +108,9 @@ public class OfferController {
             @PathVariable("id") Long id,
             Principal principal
     ) {
-        //TODO edit offers page to cloudinary
         if (!model.containsAttribute("editOffer")) {
-            model.addAttribute("editOffer",offerService.getEditOfferById(id));
+            UpdateOfferDTO editOfferById = offerService.getEditOfferById(id);
+            model.addAttribute("editOffer",editOfferById);
         }
         model.addAttribute("offerId", id);
 
