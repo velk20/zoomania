@@ -3,8 +3,9 @@ package com.zoomania.zoomania.service;
 import com.zoomania.zoomania.exceptions.ImageNotFoundException;
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
-import com.zoomania.zoomania.model.dto.offer.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.CreateOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.UpdateOfferDTO;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
@@ -14,15 +15,18 @@ import com.zoomania.zoomania.repository.CategoryRepository;
 import com.zoomania.zoomania.repository.OfferRepository;
 import com.zoomania.zoomania.repository.OfferSpecification;
 import com.zoomania.zoomania.repository.UserRepository;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +50,7 @@ public class OfferService {
     }
 
 
-    public void addOffer(CreateOrUpdateOfferDTO addOfferDTO, UserDetails userDetails) {
+    public void addOffer(CreateOfferDTO addOfferDTO, UserDetails userDetails) {
         OfferEntity newOffer = mapper.map(addOfferDTO, OfferEntity.class);
 
         UserEntity seller = userRepository.findByUsername(userDetails.getUsername()).
@@ -55,7 +59,7 @@ public class OfferService {
         CategoryEntity categoryEntity = categoryRepository.findByName(addOfferDTO.getCategory()).orElseThrow();
 
 
-        String imageUrl = getImageUrl(addOfferDTO);
+        String imageUrl = getImageUrl(addOfferDTO.getImageUrl());
 
         newOffer
                 .setImageUrl(imageUrl)
@@ -97,12 +101,14 @@ public class OfferService {
                 .map(this::map);
     }
 
-    public CreateOrUpdateOfferDTO getEditOfferById(Long id) {
+    public UpdateOfferDTO getEditOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository
                 .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
-        return mapper.map(offerEntity, CreateOrUpdateOfferDTO.class);
+        UpdateOfferDTO updateOfferDTO = mapper.map(offerEntity, UpdateOfferDTO.class);
+        updateOfferDTO.setImageUrl(offerEntity.getImageUrl());
+        return updateOfferDTO;
     }
 
     public OfferDetailsView getOfferById(Long id) {
@@ -153,30 +159,39 @@ public class OfferService {
             this.offerRepository.delete(offer);
     }
 
-    public void editOffer(Long id,CreateOrUpdateOfferDTO editOffer) {
+    public void editOffer(Long id, UpdateOfferDTO editOffer) {
         OfferEntity offerById = this.offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
 
         CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory()).orElseThrow();
 
-        String imageUrl = getImageUrl(editOffer);
 
         offerById
                 .setTitle(editOffer.getTitle())
                 .setBreed(editOffer.getBreed())
                 .setPrice(editOffer.getPrice())
                 .setDescription(editOffer.getDescription())
-                .setImageUrl(imageUrl)
                 .setCategory(categoryEntity);
+
+        if (!Objects.requireNonNull(editOffer.getImage().getOriginalFilename()).isEmpty()) {
+            try {
+                this.cloudinaryService.deletePhoto(offerById.getImageUrl());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            String imageUrl = getImageUrl(editOffer.getImage());
+            offerById.setImageUrl(imageUrl);
+        }
 
         this.offerRepository.save(offerById);
     }
 
-    private String getImageUrl(CreateOrUpdateOfferDTO editOffer) {
+    private String getImageUrl(MultipartFile image) {
         String imageUrl = null;
         try {
-             imageUrl = this.cloudinaryService.uploadPhoto(editOffer.getImageUrl());
+             imageUrl = this.cloudinaryService.uploadPhoto(image);
         } catch (IOException e) {
             throw new ImageNotFoundException(e.getMessage());
         }

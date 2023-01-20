@@ -16,12 +16,15 @@ import java.util.Random;
 
 @Service
 public class CloudinaryService {
-    private final Random random = new Random();
+    private final String CLOUD_NAME = "dnlkkivap";
+    private final String API_KEY = "262551365886495";
+    private final String API_SECRET = "BH1S1XzSneAQU-x0VnPO3FCsRNo";
+
     private final String IMAGE_FOLDER = "src\\main\\resources\\static\\images\\";
-    private final  Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", "dnlkkivap",
-            "api_key", "262551365886495",
-            "api_secret", "BH1S1XzSneAQU-x0VnPO3FCsRNo",
+    private final Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", CLOUD_NAME,
+            "api_key", API_KEY,
+            "api_secret", API_SECRET,
             "secure", true));
 
 
@@ -29,24 +32,30 @@ public class CloudinaryService {
         uploadPhotoToServer(photo);
 
         Map uploadResult = cloudinary.uploader()
-                .upload(new File(IMAGE_FOLDER+photo.getOriginalFilename()), ObjectUtils.emptyMap());
+                .upload(new File(IMAGE_FOLDER + photo.getOriginalFilename()), ObjectUtils.emptyMap());
 
         Object url = uploadResult.get("url");
         System.out.println(url);
 
-         deletePhotoFromServer(photo.getOriginalFilename());
+        deletePhotoFromServer(photo.getOriginalFilename());
 
         return url.toString();
+    }
+    // * !!!!!!!!!!!!!!!!!!!
+    //TODO make Image to be deleted
+    // /dasddsadasdasdasdas
+    public void deletePhoto(String imageUrl) throws IOException {
+        cloudinary.uploader().destroy(imageUrl,ObjectUtils.emptyMap());
     }
 
     private void deletePhotoFromServer(String fileName) throws IOException {
         File file = new File(IMAGE_FOLDER + fileName);
-         FileUtils.forceDelete(file);
+        FileUtils.forceDelete(file);
     }
 
     private void uploadPhotoToServer(MultipartFile photo) throws IOException {
         Files.copy(photo.getInputStream(),
-                Paths.get(IMAGE_FOLDER+File.separator+photo.getOriginalFilename()),
+                Paths.get(IMAGE_FOLDER + File.separator + photo.getOriginalFilename()),
                 StandardCopyOption.REPLACE_EXISTING);
     }
 }

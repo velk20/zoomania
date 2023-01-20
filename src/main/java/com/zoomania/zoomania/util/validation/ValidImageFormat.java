@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Constraint(validatedBy = ImageValidator.class)
-public @interface Image {
-    String message() default "Invalid Image";
+@Constraint(validatedBy = ValidImageFormatValidator.class)
+public @interface ValidImageFormat {
+    String message() default "Invalid image format";
 
     Class<?>[] groups() default {};
 

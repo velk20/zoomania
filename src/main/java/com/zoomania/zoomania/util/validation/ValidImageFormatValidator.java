@@ -5,12 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
-
-public class ImageValidator implements ConstraintValidator<Image, MultipartFile> {
+public class ValidImageFormatValidator implements ConstraintValidator<ValidImageFormat, MultipartFile> {
     private final List<String> imageContentTypesAllowed =
             new ArrayList<>()
             {{
@@ -22,8 +19,8 @@ public class ImageValidator implements ConstraintValidator<Image, MultipartFile>
             }};
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if (value.getOriginalFilename() == null || value.getOriginalFilename().isEmpty()) {
-            return false;
+        if (value == null || value.getOriginalFilename() == null || value.getOriginalFilename().isEmpty()) {
+            return true;
         }
 
         if (!imageContentTypesAllowed.contains(value.getContentType())) {

@@ -1,14 +1,16 @@
 package com.zoomania.zoomania.model.dto.offer;
 
 import com.zoomania.zoomania.model.enums.CategoryEnum;
-import com.zoomania.zoomania.util.validation.Image;
-import org.hibernate.validator.constraints.URL;
+import com.zoomania.zoomania.util.validation.ValidImageFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public class CreateOrUpdateOfferDTO {
+public class UpdateOfferDTO {
     @NotEmpty(message = "Title can not be empty.")
     @Size(min = 3, max = 50)
     private String title;
@@ -20,8 +22,9 @@ public class CreateOrUpdateOfferDTO {
     private BigDecimal price;
     @NotNull(message = "Category can not be empty.")
     private CategoryEnum category;
-    @Image( message = "Image can not be empty.")
-    private MultipartFile imageUrl;
+    private String imageUrl;
+    @ValidImageFormat
+    private MultipartFile image;
     @NotEmpty(message = "Description can not be empty.")
     @Size(min = 3, max = 150)
     private String description;
@@ -31,17 +34,26 @@ public class CreateOrUpdateOfferDTO {
         return breed;
     }
 
-    public CreateOrUpdateOfferDTO setBreed(String breed) {
+    public UpdateOfferDTO setBreed(String breed) {
         this.breed = breed;
         return this;
     }
 
-    public MultipartFile getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public CreateOrUpdateOfferDTO setImageUrl(MultipartFile imageUrl) {
+    public UpdateOfferDTO setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public UpdateOfferDTO setImage(MultipartFile image) {
+        this.image = image;
         return this;
     }
 
@@ -49,7 +61,7 @@ public class CreateOrUpdateOfferDTO {
         return title;
     }
 
-    public CreateOrUpdateOfferDTO setTitle(String title) {
+    public UpdateOfferDTO setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -58,7 +70,7 @@ public class CreateOrUpdateOfferDTO {
         return price;
     }
 
-    public CreateOrUpdateOfferDTO setPrice(BigDecimal price) {
+    public UpdateOfferDTO setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
@@ -67,7 +79,7 @@ public class CreateOrUpdateOfferDTO {
         return category;
     }
 
-    public CreateOrUpdateOfferDTO setCategory(CategoryEnum category) {
+    public UpdateOfferDTO setCategory(CategoryEnum category) {
         this.category = category;
         return this;
     }
@@ -78,7 +90,7 @@ public class CreateOrUpdateOfferDTO {
         return description;
     }
 
-    public CreateOrUpdateOfferDTO setDescription(String description) {
+    public UpdateOfferDTO setDescription(String description) {
         this.description = description;
         return this;
     }

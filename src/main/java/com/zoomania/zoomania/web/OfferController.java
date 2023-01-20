@@ -1,8 +1,9 @@
 package com.zoomania.zoomania.web;
 
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
-import com.zoomania.zoomania.model.dto.offer.CreateOrUpdateOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.CreateOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
+import com.zoomania.zoomania.model.dto.offer.UpdateOfferDTO;
 import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
 import com.zoomania.zoomania.service.CategoryService;
@@ -65,14 +66,14 @@ public class OfferController {
     @GetMapping("/create")
     public String createOffer(Model model) {
         if (!model.containsAttribute("addOfferModel")) {
-            model.addAttribute("addOfferModel", new CreateOrUpdateOfferDTO());
+            model.addAttribute("addOfferModel", new CreateOfferDTO());
         }
         model.addAttribute("categories", categoryService.getAllCategories());
         return "create-offer";
     }
 
     @PostMapping("/create")
-    public String createOffers(@Valid CreateOrUpdateOfferDTO addOfferModel,
+    public String createOffers(@Valid CreateOfferDTO addOfferModel,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
                                @AuthenticationPrincipal ZooManiaUserDetails userDetails) {
@@ -107,10 +108,9 @@ public class OfferController {
             @PathVariable("id") Long id,
             Principal principal
     ) {
-
+        //TODO edit offers page to cloudinary
         if (!model.containsAttribute("editOffer")) {
-            CreateOrUpdateOfferDTO offerById = offerService.getEditOfferById(id);
-            model.addAttribute("editOffer", offerById);
+            model.addAttribute("editOffer",offerService.getEditOfferById(id));
         }
         model.addAttribute("offerId", id);
 
@@ -120,7 +120,7 @@ public class OfferController {
     @PatchMapping("/{id}/edit")
     public String editOffer(
                             @PathVariable("id") Long id,
-                            @Valid CreateOrUpdateOfferDTO editOffer,
+                            @Valid UpdateOfferDTO editOffer,
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes
     ) {
