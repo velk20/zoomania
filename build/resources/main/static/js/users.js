@@ -54,7 +54,7 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                   <a href="mailto:${user.email}"><h6>${user.email}</h6></a>
                 </td>
                 <td style="width: 20%;">
-                  <a href="#" class="table-link text-warning">
+                  <a href="/users/profile/${user.username}" class="table-link text-warning">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
@@ -66,7 +66,7 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                             </span>
                   </a>
-                  <a href="/users/profile/${user.username}/delete" class="table-link danger">
+                  <a data-username="${user.username}" class="deleteUserBtn table-link danger">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -75,6 +75,7 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                 </td>
               </tr>
             `;
+
             }
 
         }
@@ -88,6 +89,57 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
             pageNavNextLinkAsHtml(currentData,pageNo,pageSize,sortBy,sortDir);
         paginationNav.innerHTML +=
             pageNavLastLinkAsHtml(currentData,pageNo,pageSize,sortBy,sortDir);
+        let deleteUserBtns = document.querySelectorAll(".deleteUserBtn")
+        let csrfHeaderNameDeleteOffer = document.head.querySelector('[name=_csrf_header]').content
+        let csrfHeaderValueDeleteOffer = document.head.querySelector('[name=_csrf]').content
+        deleteUserBtns.forEach(b=>b.addEventListener("click", onDeleteUserBtn));
+        async function onDeleteUserBtn(event){
+            let dataUsername = event.currentTarget.getAttribute('data-username');
+            if (confirm("Are you sure you want to delete this user," +
+                "if you do all Offers will be deleted too?")) {
+
+                const http = new DeleteHTTP;
+
+                await http.delete(`http://localhost:8080/users/profile/${dataUsername}/delete`)
+
+                    // Resolving promise for response data
+                    .then(() => console.log("Deleted!"))
+
+                    // Resolving promise for error
+                    .catch(err => console.log(err));
+                sleep(1000);
+                window.location.href = "http://localhost:8080/"
+            }else{
+                event.preventDefault()
+            }
+
+        }
+// ES6 class
+        class DeleteHTTP {
+
+            // Make an HTTP PUT Request
+            async delete(url) {
+
+                // Awaiting fetch which contains
+                // method, headers and content-type
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        [csrfHeaderNameDeleteOffer]: csrfHeaderValueDeleteOffer
+                    }
+                });
+
+                // Return response data
+                return 'resource deleted...';
+            }
+        }
+
+        function sleep(milliseconds) {
+            const start = Date.now();
+            while (Date.now() - start < milliseconds);
+        }
     })
     .catch(err => console.log(err))
 

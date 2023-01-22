@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Maintenance</title>
+    <th:block th:include="~{/fragments/head}"></th:block>
+
+</head>
+<div th:replace="fragments/navbar">Navbar</div>
 
 <body>
 
@@ -9,4 +16,8 @@
     </h5>
 
 </body>
+<div class="fixed-bottom">
+    <div th:replace="fragments/footer">Footer</div>
+
+</div>
 </html>
