@@ -4,6 +4,7 @@ import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.user.ChangeUserPasswordDTO;
 import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
 import com.zoomania.zoomania.model.dto.user.UserRegisterDTO;
+import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
@@ -26,8 +27,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -146,7 +148,7 @@ public class UserService {
         return PageRequest.of(pageNo, pageSize, sort);
     }
 
-    public UserDetailsView editUser(String username, UpdateUserDTO editUser) {
+    public UserDetailsView editUser(String username, UpdateUserDTO editUser, Principal principal) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
@@ -174,7 +176,9 @@ public class UserService {
         }
 
         UserEntity editedUser = this.userRepository.save(userEntity);
-        this.login(editUser.getUsername());
+        if (username.equals(principal.getName())) {
+            this.login(username);
+        }
         return map(editedUser);
     }
 
@@ -195,11 +199,18 @@ public class UserService {
         }
     }
 
-    public void deleteUserByUsername(String username) {
-        UserEntity userEntity = this.userRepository.findByUsername(username)
+    @Transactional
+    public UserDetailsView deleteUserByUsername(String username) {
+        UserEntity userEntity = this.userRepository
+                .findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User with username: " + username + " was not found!"));
 
+        List<OfferEntity> allOffersBySeller = this.offerService.getAllOffersBySeller(userEntity);
+        for (OfferEntity offer : allOffersBySeller) {
+            this.offerService.deleteOfferById(offer.getId());
+        }
         this.userRepository.delete(userEntity);
+        return this.map(userEntity);
     }
 
     public boolean isOwner(String username) {

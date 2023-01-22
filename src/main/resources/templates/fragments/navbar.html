@@ -42,8 +42,8 @@
                                         th:href="@{/offers/create}"><strong>Create
                     Offer</strong></a></li>
 
-                <li class="nav-item dropdown">
-                    <a sec:authorize="hasRole('ADMIN')" class="text-dark btn btn-link nav-link dropdown-toggle"
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
+                    <a  class="text-dark btn btn-link nav-link dropdown-toggle"
                        href="#" id="navbarDropdown"
                        role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

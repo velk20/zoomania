@@ -205,15 +205,15 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     return commentHtml
 }
 
- function onDelete(event,offerId) {
-    //TODO fix the on ADMIN delete offer page
+ async function onDelete(event,offerId) {
+    //TODO fix the on ADMIN delete offer page WHEN OFFER IS THE ADMIN_AUTHOR
     if (confirm("Are you sure you want to delete this offer?")) {
 
 // Instantiating new EasyHTTP class
         const http = new DeleteHTTP;
 
 // Update Post
-        http.delete(`http://localhost:8080/offers/${offerId}/delete`)
+       await http.delete(`http://localhost:8080/offers/${offerId}/delete`)
 
             // Resolving promise for response data
             .then(data => console.log(data))

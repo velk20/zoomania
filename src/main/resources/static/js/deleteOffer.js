@@ -20,7 +20,7 @@ async function onDelete(event) {
             // Resolving promise for error
             .catch(err => console.log(err));
 
-        window.location.replace("http://localhost:8080/offers/all");
+        window.location.replace("http://localhost:8080/offers/my");
 
     }else{
         event.preventDefault()

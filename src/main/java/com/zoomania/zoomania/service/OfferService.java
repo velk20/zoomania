@@ -111,6 +111,10 @@ public class OfferService {
                 .map(this::map);
     }
 
+    public List<OfferEntity> getAllOffersBySeller(UserEntity seller) {
+        return this.offerRepository.findAllBySeller(seller);
+    }
+
     public UpdateOfferDTO getEditOfferById(Long id) {
         OfferEntity offerEntity = this.offerRepository
                 .findById(id)
@@ -169,11 +173,14 @@ public class OfferService {
                         .map(ImageEntity::getImageUrl).collect(Collectors.toList()));
     }
 
+    @Transactional
     public void deleteOfferById(Long id) {
         OfferEntity offer = this.offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
         deleteOfferImageCloudinary(offer);
+        offer.setSeller(null);
+        this.offerRepository.save(offer);
         this.offerRepository.delete(offer);
     }
 

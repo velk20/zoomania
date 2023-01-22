@@ -8,12 +8,16 @@ import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -41,7 +45,8 @@ public class ProfileController {
     public String updateProfile(@PathVariable("username") String username,
                                 @Valid UpdateUserDTO editUser,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                Principal principal) {
         if (bindingResult.hasErrors()) {
             editUser.setUsername(username);
             redirectAttributes.addFlashAttribute("user", editUser);
@@ -51,7 +56,7 @@ public class ProfileController {
             return "redirect:/users/profile/{username}";
         }
 
-        UserDetailsView userDetailsView = userService.editUser(username, editUser);
+        UserDetailsView userDetailsView = userService.editUser(username, editUser,principal);
 
         return "redirect:/users/profile/" + userDetailsView.getUsername();
     }
@@ -105,10 +110,13 @@ public class ProfileController {
     @DeleteMapping("/profile/{username}/delete")
     public String deleteProfile(
             @PathVariable("username") String username,
-            Principal principal
-    ) {
-        userService.deleteUserByUsername(username);
-
-        return "redirect:/admin/offers";
+            Principal principal,
+            HttpServletRequest request
+    ) throws ServletException {
+        UserDetailsView userDetailsView = userService.deleteUserByUsername(username);
+        if (userDetailsView.getUsername().equals(principal.getName())) {
+            request.logout();
+        }
+        return "index";
     }
 }

@@ -1,5 +1,8 @@
 package com.zoomania.zoomania.model.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,9 +23,13 @@ public class OfferEntity extends BaseEntity {
     private LocalDateTime createdOn;
     @ManyToOne(optional = false)
     private CategoryEntity category;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.EAGER,targetEntity = UserEntity.class)
     private UserEntity seller;
-    @OneToMany(cascade = CascadeType.ALL,targetEntity = ImageEntity.class,mappedBy = "offer")
+    @OneToMany(orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            targetEntity = ImageEntity.class,
+            mappedBy = "offer")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageEntity> imagesEntities;
 
     public void addImage(ImageEntity imageEntity) {
