@@ -106,8 +106,8 @@ public class OfferService {
     }
 
     public Page<OfferDetailsView> getAllUserOffers(String username, Pageable pageable) {
-
-        return this.offerRepository.findAllBySellerUsername(username, pageable)
+        return this.offerRepository
+                .findAllBySellerUsername(username, pageable)
                 .map(this::map);
     }
 
@@ -128,7 +128,8 @@ public class OfferService {
                 .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
-        UserEntity seller = this.userRepository.findById(offerEntity.getSeller().getId())
+        UserEntity seller = this.userRepository
+                .findById(offerEntity.getSeller().getId())
                 .orElseThrow(UserNotFoundException::new);
 
         OfferDetailsView offerDetailsView = map(offerEntity);
@@ -162,21 +163,17 @@ public class OfferService {
     }
     private OfferDetailsView map(OfferEntity offerEntity) {
         return mapper.map(offerEntity, OfferDetailsView.class)
-                .setImagesUrls(offerEntity.getImagesEntities().stream().map(ImageEntity::getImageUrl).collect(Collectors.toList()));
+                .setImagesUrls(
+                        offerEntity.getImagesEntities()
+                        .stream()
+                        .map(ImageEntity::getImageUrl).collect(Collectors.toList()));
     }
 
     public void deleteOfferById(Long id) {
         OfferEntity offer = this.offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
-        for (ImageEntity image : offer.getImagesEntities()) {
-            try {
-                this.cloudinaryService.deletePhoto(image);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+        deleteOfferImageCloudinary(offer);
         this.offerRepository.delete(offer);
     }
 
@@ -185,7 +182,8 @@ public class OfferService {
         OfferEntity offerById = this.offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
-        CategoryEntity categoryEntity = categoryRepository.findByName(editOffer.getCategory())
+        CategoryEntity categoryEntity = categoryRepository
+                .findByName(editOffer.getCategory())
                 .orElseThrow(CategoryNotFoundException::new);
 
         offerById
@@ -205,13 +203,7 @@ public class OfferService {
 
     private void deleteOldImagesAndUploadNewOnes(OfferEntity offerById, MultipartFile[] newImages) {
 
-        for (ImageEntity imageEntity : offerById.getImagesEntities()) {
-            try {
-                this.cloudinaryService.deletePhoto(imageEntity);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        deleteOfferImageCloudinary(offerById);
 
         this.imageService.deleteAll(offerById.getImagesEntities());
         offerById.removeAllImages();
@@ -225,6 +217,16 @@ public class OfferService {
         offerById.setImagesEntities(newImagesEntities);
         this.imageService.saveAll(newImagesEntities)
                  .forEach(offerById::addImage);
+    }
+
+    private void deleteOfferImageCloudinary(OfferEntity offerById) {
+        for (ImageEntity imageEntity : offerById.getImagesEntities()) {
+            try {
+                this.cloudinaryService.deletePhoto(imageEntity);
+            } catch (IOException e) {
+                throw new ImageNotFoundException();
+            }
+        }
     }
 
     private ImageEntity uploadImageEntity(MultipartFile image) {

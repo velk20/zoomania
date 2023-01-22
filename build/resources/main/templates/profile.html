@@ -177,8 +177,10 @@
                 <button
                         th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${user.username == #authentication.getName()}"
                         class="btn btn-danger">
-                    <a class="text-white" style="text-decoration: none;"
-                       th:href="@{/users/profile/{username}/delete(username=${user.username})}">Delete Profile</a>
+                    <a id="deleteBtnProfile" class="text-white"
+                       th:data-username="${user.getUsername()}"
+                       style="text-decoration: none;"
+                     >Delete Profile</a>
                 </button>
                 <button class="btn btn-light btn-icon-text"><i class="bi bi-x"></i>
                     <a class="text text-dark" style="text-decoration: none;" th:href="@{/}">Back</a></button>
@@ -186,12 +188,67 @@
 
         </div>
     </form>
-
-
 </div>
+<script>
+    let deleteProfile = document.getElementById("deleteBtnProfile");
+    deleteProfile.addEventListener('click',onDeleteProfile);
+    let csrfHeaderNameDeleteOffer = document.head.querySelector('[name=_csrf_header]').content
+    let csrfHeaderValueDeleteOffer = document.head.querySelector('[name=_csrf]').content
 
+    async function onDeleteProfile(event) {
+        let dataUsername = event.currentTarget.getAttribute('data-username');
+        if (confirm("Are you sure you want to delete this user?")) {
 
+// Instantiating new EasyHTTP class
+            const http = new DeleteHTTP;
 
+// Update Post
+            await http.delete(`http://localhost:8080/users/profile/${dataUsername}/delete`)
+
+                // Resolving promise for response data
+                .then(() => console.log("Deleted!"))
+
+                // Resolving promise for error
+                .catch(err => console.log(err));
+
+            window.location.replace("http://localhost:8080/users/all");
+
+        }else{
+            event.preventDefault()
+        }
+
+    }
+    // ES6 class
+    class DeleteHTTP {
+
+        // Make an HTTP PUT Request
+        async delete(url) {
+
+            // Awaiting fetch which contains
+            // method, headers and content-type
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    [csrfHeaderNameDeleteOffer]: csrfHeaderValueDeleteOffer
+                }
+            });
+
+            // Awaiting for the resource to be deleted
+            const resData = 'resource deleted...';
+
+            // Return response data
+            return resData;
+        }
+    }
+
+    function sleep(milliseconds) {
+        const start = Date.now();
+        while (Date.now() - start < milliseconds);
+    }
+
+</script>
 </body>
 <div class="fixed-bottom">
     <div th:replace="fragments/footer">Footer</div>
@@ -199,3 +256,4 @@
 </div>
 
 </html>
+

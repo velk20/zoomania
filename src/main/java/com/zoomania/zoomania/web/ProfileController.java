@@ -7,6 +7,7 @@ import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/users")
@@ -97,5 +99,16 @@ public class ProfileController {
     public String onProductNotFound(UserNotFoundException unfe,Model model){
         model.addAttribute("message", unfe.getMessage());
         return "error";
+    }
+
+    @PreAuthorize("@userService.isOwner(#principal.name)")
+    @DeleteMapping("/profile/{username}/delete")
+    public String deleteProfile(
+            @PathVariable("username") String username,
+            Principal principal
+    ) {
+        userService.deleteUserByUsername(username);
+
+        return "redirect:/admin/offers";
     }
 }

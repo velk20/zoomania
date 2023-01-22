@@ -114,9 +114,9 @@ public class UserService {
 
     private UserDetailsView map(UserEntity entity) {
         UserDetailsView userDetailsView = mapper.map(entity, UserDetailsView.class);
-        userDetailsView.setUserRoles(entity.getUserRoles().stream().map(r->r.getUserRoleEnum().name()).collect(Collectors.toList()));
+        userDetailsView.setUserRoles(entity.getUserRoles().stream().map(r -> r.getUserRoleEnum().name()).collect(Collectors.toList()));
         userDetailsView.setActive(entity.isActive());
-        userDetailsView.setAdmin(entity.getUserRoles().stream().anyMatch(r->r.getUserRoleEnum().equals(UserRoleEnum.ADMIN)));
+        userDetailsView.setAdmin(entity.getUserRoles().stream().anyMatch(r -> r.getUserRoleEnum().equals(UserRoleEnum.ADMIN)));
         return userDetailsView;
     }
 
@@ -145,6 +145,7 @@ public class UserService {
         // create Pageable instance
         return PageRequest.of(pageNo, pageSize, sort);
     }
+
     public UserDetailsView editUser(String username, UpdateUserDTO editUser) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(username)
@@ -164,7 +165,7 @@ public class UserService {
                     .noneMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
                 userEntity.addRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
             }
-        }else{
+        } else {
             if (userEntity.getUserRoles().stream()
                     .map(UserRoleEntity::getUserRoleEnum)
                     .anyMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
@@ -183,14 +184,43 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
 
         boolean isOldPasswordMatch =
-                passwordEncoder.matches(changeUserPasswordDTO.getOldPassword(),userEntity.getPassword());
+                passwordEncoder.matches(changeUserPasswordDTO.getOldPassword(), userEntity.getPassword());
 
         if (!isOldPasswordMatch) {
             return false;
-        }else{
+        } else {
             userEntity.setPassword(passwordEncoder.encode(changeUserPasswordDTO.getNewPassword()));
             this.userRepository.save(userEntity);
             return true;
         }
+    }
+
+    public void deleteUserByUsername(String username) {
+        UserEntity userEntity = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username: " + username + " was not found!"));
+
+        this.userRepository.delete(userEntity);
+    }
+
+    public boolean isOwner(String username) {
+
+        boolean isOwner = userRepository.
+                findByUsername(username).
+                isPresent();
+
+        if (isOwner) {
+            return true;
+        }
+
+        return userRepository.
+                findByUsername(username).
+                filter(this::isAdmin).
+                isPresent();
+    }
+
+    private boolean isAdmin(UserEntity user) {
+        return user.getUserRoles().
+                stream().
+                anyMatch(r -> r.getUserRoleEnum() == UserRoleEnum.ADMIN);
     }
 }
