@@ -37,11 +37,15 @@ public class SecurityConfig {
                 // everyone can log in and register
                         antMatchers( "/").permitAll().
                         antMatchers("/offers/all").permitAll().
+                        antMatchers("/offers/search").permitAll().
                         antMatchers("/offers/{id}/details").permitAll().
                         antMatchers("/offers/**").authenticated().
                         antMatchers("/maintenance").permitAll().
                         antMatchers("/admin/**").hasRole("ADMIN").
+                        antMatchers("/api/**").hasRole("ADMIN").
+                        antMatchers("users/**").authenticated().
                         antMatchers("/users/login", "/users/register").anonymous().
+                        antMatchers("/users/logout").authenticated().
                 // all other pages are available for logger in users
                         anyRequest().
                 authenticated().
