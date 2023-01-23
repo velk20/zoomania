@@ -25,7 +25,7 @@ public class OfferEntity extends BaseEntity {
     private CategoryEntity category;
     @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.EAGER,targetEntity = UserEntity.class)
     private UserEntity seller;
-    @OneToMany(orphanRemoval = true,
+    @OneToMany(
             cascade = CascadeType.ALL,
             targetEntity = ImageEntity.class,
             mappedBy = "offer")
