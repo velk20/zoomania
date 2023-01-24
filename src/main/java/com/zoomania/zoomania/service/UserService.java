@@ -64,7 +64,6 @@ public class UserService {
     }
 
     public UserResponse getAllUsersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
-
         Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
 
         Page<UserEntity> users = userRepository.findAll(pageable);
@@ -122,22 +121,6 @@ public class UserService {
         return userDetailsView;
     }
 
-    public OfferResponse getAllOffersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
-        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
-
-        Page<OfferDetailsView> offers = offerService.getAllOffers(pageable);
-
-        // get content for page object
-        List<OfferDetailsView> listOfOffers = offers.getContent();
-
-        return new OfferResponse()
-                .setContent(listOfOffers)
-                .setPageNo(offers.getNumber())
-                .setPageSize(offers.getSize())
-                .setTotalElements(offers.getTotalElements())
-                .setTotalPages(offers.getTotalPages())
-                .setLast(offers.isLast());
-    }
 
     private static Pageable getPageable(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
@@ -233,5 +216,9 @@ public class UserService {
         return user.getUserRoles().
                 stream().
                 anyMatch(r -> r.getUserRoleEnum() == UserRoleEnum.ADMIN);
+    }
+
+    public Long getAllUsersCount() {
+        return this.userRepository.count();
     }
 }
