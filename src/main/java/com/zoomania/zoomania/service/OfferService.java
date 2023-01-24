@@ -13,10 +13,13 @@ import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
+import com.zoomania.zoomania.model.view.OfferResponse;
 import com.zoomania.zoomania.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -251,4 +254,35 @@ public class OfferService {
                 .findAll(new OfferSpecification(searchOfferDTO), pageable)
                 .map(this::map);
     }
+
+    public OfferResponse getAllOffersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
+
+        Page<OfferDetailsView> offers = this.getAllOffers(pageable);
+
+        // get content for page object
+        List<OfferDetailsView> listOfOffers = offers.getContent();
+
+        return new OfferResponse()
+                .setContent(listOfOffers)
+                .setPageNo(offers.getNumber())
+                .setPageSize(offers.getSize())
+                .setTotalElements(offers.getTotalElements())
+                .setTotalPages(offers.getTotalPages())
+                .setLast(offers.isLast());
+    }
+
+    private static Pageable getPageable(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // create Pageable instance
+        return PageRequest.of(pageNo, pageSize, sort);
+    }
+
+    public long getAllOffersCount() {
+        return this.offerRepository.count();
+    }
+
 }
