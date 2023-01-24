@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class OfferEntity extends BaseEntity {
             targetEntity = ImageEntity.class,
             mappedBy = "offer")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<ImageEntity> imagesEntities;
+    private List<ImageEntity> imagesEntities = new ArrayList<>();
 
     public void addImage(ImageEntity imageEntity) {
         this.imagesEntities.add(imageEntity);

@@ -11,8 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,7 +27,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OfferControllerIT {
-    private final String BASE_URL ="http://localhost";
+    private final String BASE_URL = "http://localhost";
     private final String USER_AUTHENTICATION_PAGE = BASE_URL + "/users/login";
     @Autowired
     private MockMvc mockMvc;
@@ -72,7 +75,7 @@ public class OfferControllerIT {
             userDetailsServiceBeanName = "testUserDataService")
     void testGetMyOffersWithUser() throws Exception {
         mockMvc.perform(get("/offers/my")
-                .with(csrf()))
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user-offers"))
                 .andExpect(model().attributeExists("offers"));
@@ -100,32 +103,33 @@ public class OfferControllerIT {
     @Test
     @WithUserDetails(value = "testAdmin",
             userDetailsServiceBeanName = "testUserDataService")
-    void testCreateOffer() throws Exception {
+    void testCreateOffer_InvalidImage() throws Exception {
+
+
         mockMvc.perform(post("/offers/create")
-                .param("title","MY dog")
-                .param("breed","Husky")
-                .param("price", String.valueOf(BigDecimal.valueOf(123)))
-                .param("category", String.valueOf(CategoryEnum.Dogs))
-                .param("imageUrl","http://image.com")
-                .param("description","My description.")
-                .with(csrf()))
+                        .param("title", "MY dog")
+                        .param("breed", "Husky")
+                        .param("price", String.valueOf(BigDecimal.valueOf(123)))
+                        .param("category", String.valueOf(CategoryEnum.Dogs))
+                        .param("description", "My description.")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/offers/all"));
+                .andExpect(redirectedUrl("error"));
     }
 
     @Test
-    void testGetOfferDetails() throws  Exception {
-        mockMvc.perform(get(String.format("/offers/%d/details",this.testOffer.getId()))
-                .with(csrf()))
+    void testGetOfferDetails() throws Exception {
+        mockMvc.perform(get(String.format("/offers/%d/details", this.testOffer.getId()))
+                        .with(csrf()))
                 .andExpect(model().attributeExists("offer"))
                 .andExpect(model().attributeExists("offerSellerUsername"))
                 .andExpect(view().name("details-offer"));
     }
 
     @Test
-    void testGetOfferDetailsWithWrongId_NotFound() throws  Exception {
-        mockMvc.perform(get(String.format("/offers/%d/details",testOffer.getId()+100))
-                .with(csrf()))
+    void testGetOfferDetailsWithWrongId_NotFound() throws Exception {
+        mockMvc.perform(get(String.format("/offers/%d/details", testOffer.getId() + 100))
+                        .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(model().attributeExists("message"))
                 .andExpect(view().name("error"));
@@ -135,9 +139,20 @@ public class OfferControllerIT {
     @WithUserDetails(value = "testAdmin",
             userDetailsServiceBeanName = "testUserDataService")
     void testGetOfferEditPage() throws Exception {
-        mockMvc.perform(get(String.format("/offers/%d/edit",testAdminOffer.getId()))
+        mockMvc.perform(get(String.format("/offers/%d/edit", testAdminOffer.getId()))
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit-offer"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testGetOfferEditPageWithInvalidId_NotFound() throws Exception {
+        mockMvc.perform(get(String.format("/offers/%d/edit", testOffer.getId() + 100))
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(model().attributeExists("message"))
+                .andExpect(view().name("error"));
     }
 }

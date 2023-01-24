@@ -6,6 +6,7 @@ import com.zoomania.zoomania.model.enums.UserRoleEnum;
 import com.zoomania.zoomania.repository.*;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -19,13 +20,15 @@ public class TestDataUtils {
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final ImageRepository imageRepository;
 
-    public TestDataUtils(CategoryRepository categoryRepository, CommentRepository commentRepository, OfferRepository offerRepository, UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public TestDataUtils(CategoryRepository categoryRepository, CommentRepository commentRepository, OfferRepository offerRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, ImageRepository imageRepository) {
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
         this.offerRepository = offerRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.imageRepository = imageRepository;
     }
 
     private void  initUserRoles() {
@@ -51,6 +54,7 @@ public class TestDataUtils {
         }
         return categoryRepository.findAll();
     }
+
 
     public UserEntity createTestAdmin(String username) {
         initUserRoles();
@@ -89,18 +93,29 @@ public class TestDataUtils {
         return userRepository.save(userEntity);
     }
 
+    @Transactional
     public OfferEntity createTestOffer(UserEntity seller,CategoryEntity category) {
         OfferEntity offerEntity = new OfferEntity()
                 .setCategory(category)
                 .setCreatedOn(LocalDateTime.now())
-                .setImagesEntities(List.of(new ImageEntity(1L,"publicId","https://image.com/image.png")))
                 .setBreed("Husky")
                 .setPrice(BigDecimal.valueOf(213.45))
                 .setTitle("Dog like hulk")
                 .setDescription("Cutstom desc")
-                .setSeller(seller);
+                .setSeller(this.userRepository.findByUsername(seller.getUsername()).get());
 
-        return offerRepository.save(offerEntity);
+        OfferEntity saved = offerRepository.save(offerEntity);
+        ImageEntity testImage = this.createTestImage(saved);
+        saved.addImage(testImage);
+
+       return this.offerRepository.save(saved);
+    }
+
+    public ImageEntity createTestImage(OfferEntity offer) {
+        return this.imageRepository.save(new ImageEntity()
+                .setImageUrl("https://image.com/image.png"+offer.getId())
+                .setOffer(offer)
+                .setPublicId("publicId"+offer.getId()));
     }
 
     public CommentEntity createTestComment(UserEntity author, OfferEntity offer) {
