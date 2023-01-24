@@ -40,6 +40,6 @@ public class AdminRestController {
             @RequestParam(value = "sortDir", defaultValue = RestPaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
 
     ) {
-        return userService.getAllOffersAdminRest(pageNo, pageSize, sortBy, sortDir);
+        return offerService.getAllOffersAdminRest(pageNo, pageSize, sortBy, sortDir);
     }
 }
