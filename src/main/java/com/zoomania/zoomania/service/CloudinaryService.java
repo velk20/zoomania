@@ -48,7 +48,11 @@ public class CloudinaryService {
     }
 
     public void deletePhoto(ImageEntity imageEntity) throws IOException {
-        cloudinary.uploader().destroy(imageEntity.getPublicId(),ObjectUtils.emptyMap());
+
+        // * >= 30 so that no images will be deleted from Cloudinary
+        if (imageEntity.getId() >= 30) {
+            cloudinary.uploader().destroy(imageEntity.getPublicId(),ObjectUtils.emptyMap());
+        }
     }
 
     private void deletePhotoFromServer(String fileName) throws IOException {

@@ -11,7 +11,10 @@ async function handleFormSubmission(event) {
     event.preventDefault()
 
     const messageVal = document.getElementById('message').value
-
+        if (messageVal.trim() === ""){
+            alert("Message must not be empty!")
+            return;
+        }
     fetch(`http://localhost:8080/api/${offerId}/comments`, {
         method: 'POST',
         headers: {

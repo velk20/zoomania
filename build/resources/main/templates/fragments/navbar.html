@@ -42,7 +42,7 @@
                                         th:href="@{/offers/create}"><strong>Create
                     Offer</strong></a></li>
 
-                <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
+                <li sec:authorize="hasRole('ADMIN')" class="dropdown show">
                     <a  class="text-dark btn btn-link nav-link dropdown-toggle"
                        href="#" id="navbarDropdown"
                        role="button"
@@ -74,7 +74,8 @@
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form id="GFG" th:action="@{/users/logout}" th:method="post">
                         <a class="nav-link text-dark btn btn-link"
-                           href="javascript:document.getElementById('GFG').submit();"><strong>Logout</strong></a>
+                           href="javascript:document.getElementById('GFG').submit();"><strong>Logout,
+                            <th:block th:text="${#authentication.name}"></th:block></strong></a>
                     </form>
                 </li>
             </ul>
