@@ -64,7 +64,7 @@ public class TestDataUtils {
                 .setUserRoles(userRoleRepository.findAll())
                 .setAge(32)
                 .setEmail("admin@admin.com")
-                .setPassword("admin")
+                .setPassword("feacb029fda31fcea2038d31933e65929fa6a2f635dd0563947147c9245504a4db4400ff6f59ea8c")
                 .setFirstName("Admin")
                 .setLastName("Adminov")
                 .setPhone("0888888")
@@ -84,7 +84,7 @@ public class TestDataUtils {
                         .collect(Collectors.toList()))
                 .setAge(32)
                 .setEmail("user@user.com")
-                .setPassword("user")
+                .setPassword("feacb029fda31fcea2038d31933e65929fa6a2f635dd0563947147c9245504a4db4400ff6f59ea8c")
                 .setFirstName("User")
                 .setLastName("Userov")
                 .setPhone("088888869")
@@ -129,10 +129,10 @@ public class TestDataUtils {
     }
 
     public void cleanUpDatabase() {
+        commentRepository.deleteAll();
         offerRepository.deleteAll();
         userRepository.deleteAll();
         userRoleRepository.deleteAll();
         categoryRepository.deleteAll();
-        commentRepository.deleteAll();
     }
 }

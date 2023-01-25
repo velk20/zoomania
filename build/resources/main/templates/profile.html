@@ -160,7 +160,8 @@
                            th:checked="${#bools.isTrue(user.isActive())}"/>
             </div>
         </div>
-        <div class="row d-block justify-content-center text-center">
+        <div  th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${user.username == #authentication.getName()}"
+                class="row d-block justify-content-center text-center">
             <div class="justify-content-center text-center">
                 <h5 class="text-white">If you want to change the password,
                     <a th:href="@{/users/profile/{username}/change_password(username=${user.username})}">click here</a></h5>

@@ -35,17 +35,18 @@ public class SecurityConfig {
                 // everyone can download static resources (css, js, images)
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 // everyone can log in and register
-                        antMatchers( "/").permitAll().
-                        antMatchers("/offers/all").permitAll().
-                        antMatchers("/offers/search").permitAll().
-                        antMatchers("/offers/{id}/details").permitAll().
-                        antMatchers("/offers/**").authenticated().
-                        antMatchers("/maintenance").permitAll().
-                        antMatchers("/admin/**").hasRole("ADMIN").
-                        antMatchers("/api/**").hasRole("ADMIN").
-                        antMatchers("users/**").authenticated().
-                        antMatchers("/users/login", "/users/register").anonymous().
-                        antMatchers("/users/logout").authenticated().
+                        antMatchers("/").permitAll().
+                antMatchers("/offers/all").permitAll().
+                antMatchers("/offers/search").permitAll().
+                antMatchers("/offers/{id}/details").permitAll().
+                antMatchers("/offers/**").authenticated().
+                antMatchers("/maintenance").permitAll().
+                antMatchers("/admin/**").hasRole("ADMIN").
+                antMatchers("/api/{offerId}/comments").permitAll().
+                antMatchers("/api/**").hasRole("ADMIN").
+                antMatchers("users/**").authenticated().
+                antMatchers("/users/login", "/users/register").anonymous().
+                antMatchers("/users/logout").authenticated().
                 // all other pages are available for logger in users
                         anyRequest().
                 authenticated().
@@ -67,7 +68,7 @@ public class SecurityConfig {
                         logout().
                 // which is the logout url
                         logoutUrl("/users/logout").
-                        logoutSuccessUrl("/").
+                logoutSuccessUrl("/").
                 // invalidate the session and delete the cookies
                         invalidateHttpSession(true).
                 deleteCookies("JSESSIONID");

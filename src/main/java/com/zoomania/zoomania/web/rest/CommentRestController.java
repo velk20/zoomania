@@ -30,7 +30,8 @@ public class CommentRestController {
     public ResponseEntity<CommentDisplayView> createComment(@PathVariable("offerId") Long offerId,
                                                             @AuthenticationPrincipal ZooManiaUserDetails userDetails,
                                                             @RequestBody CommentMessageDTO commentDto) {
-        CommentCreationDTO commentCreationDto = new CommentCreationDTO(
+        CommentCreationDTO commentCreationDto =
+                new CommentCreationDTO(
                 userDetails.getUsername(),
                 offerId,
                 commentDto.getMessage()

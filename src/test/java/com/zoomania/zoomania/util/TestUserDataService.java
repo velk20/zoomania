@@ -16,7 +16,7 @@ public class TestUserDataService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return new ZooManiaUserDetails(
                 1L,
-                "admin",
+                "feacb029fda31fcea2038d31933e65929fa6a2f635dd0563947147c9245504a4db4400ff6f59ea8c",
                 username,
                 "Admin",
                 "Adminov",
@@ -24,4 +24,6 @@ public class TestUserDataService implements UserDetailsService {
                 Collections.emptyList()
         );
     }
+
+
 }

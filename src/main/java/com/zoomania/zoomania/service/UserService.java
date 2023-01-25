@@ -51,7 +51,8 @@ public class UserService {
     }
 
     public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
-        UserRoleEntity byUserRoleEnum = userRoleRepository.findByUserRoleEnum(UserRoleEnum.USER);
+        UserRoleEntity byUserRoleEnum = userRoleRepository
+                .findByUserRoleEnum(UserRoleEnum.USER);
 
         UserEntity userEntity = mapper.map(userRegisterDTO, UserEntity.class);
         userEntity
@@ -160,7 +161,7 @@ public class UserService {
 
         UserEntity editedUser = this.userRepository.save(userEntity);
         if (username.equals(principal.getName())) {
-            this.login(username);
+            this.login(editedUser.getUsername());
         }
         return map(editedUser);
     }
@@ -196,18 +197,14 @@ public class UserService {
         return this.map(userEntity);
     }
 
-    public boolean isOwner(String username) {
+    public boolean isOwner(String principalName, String username) {
 
-        boolean isOwner = userRepository.
-                findByUsername(username).
-                isPresent();
-
-        if (isOwner) {
+        if (principalName.equals(username)) {
             return true;
         }
 
         return userRepository.
-                findByUsername(username).
+                findByUsername(principalName).
                 filter(this::isAdmin).
                 isPresent();
     }

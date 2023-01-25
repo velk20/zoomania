@@ -7,6 +7,7 @@ import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -61,8 +62,11 @@ public class ProfileController {
         return "redirect:/users/profile/" + userDetailsView.getUsername();
     }
 
+    @PreAuthorize("@userService.isOwner(#principal.name,#username)")
     @GetMapping("/profile/{username}/change_password")
-    public String changePassword(@PathVariable("username") String username, Model model) {
+    public String changePassword(@PathVariable("username") String username,
+                                 Model model,
+                                 Principal principal) {
 
         if (!model.containsAttribute("user")) {
             ChangeUserPasswordDTO user = new ChangeUserPasswordDTO();
@@ -73,11 +77,13 @@ public class ProfileController {
         return "user-change-password";
     }
 
+    @PreAuthorize("@userService.isOwner(#principal.name,#username)")
     @PatchMapping("/profile/{username}/change_password")
     public String changePassword(@PathVariable("username") String username,
                                 @Valid ChangeUserPasswordDTO changeUserPasswordDTO,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                 Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", changeUserPasswordDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user",
@@ -106,7 +112,14 @@ public class ProfileController {
         return "error";
     }
 
-    @PreAuthorize("@userService.isOwner(#principal.name)")
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({AccessDeniedException.class})
+    public String onProductNotFound(AccessDeniedException ade,Model model){
+        model.addAttribute("message", ade.getMessage());
+        return "error";
+    }
+
+    @PreAuthorize("@userService.isOwner(#principal.name,#username)")
     @DeleteMapping("/profile/{username}/delete")
     public String deleteProfile(
             @PathVariable("username") String username,
@@ -116,7 +129,9 @@ public class ProfileController {
         UserDetailsView userDetailsView = userService.deleteUserByUsername(username);
         if (userDetailsView.getUsername().equals(principal.getName())) {
             request.logout();
+            return "index";
         }
-        return "index";
+
+        return "redirect:/admin/users";
     }
 }

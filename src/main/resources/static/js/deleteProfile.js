@@ -20,8 +20,9 @@
     // Resolving promise for error
     .catch(err => console.log(err));
         sleep(1000);
-        window.location.href = "http://localhost:8080/"
-}else{
+        window.location.href = "http://localhost:8080/";
+
+    }else{
     event.preventDefault()
 }
 

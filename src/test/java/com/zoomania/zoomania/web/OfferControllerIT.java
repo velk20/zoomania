@@ -11,18 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -154,5 +151,67 @@ public class OfferControllerIT {
                 .andExpect(status().isNotFound())
                 .andExpect(model().attributeExists("message"))
                 .andExpect(view().name("error"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testEditOfferWithInvalidParams_Error() throws Exception {
+        mockMvc.perform(patch(String.format("/offers/%d/edit", testOffer.getId()))
+                        .param("title", "MY new dog")
+                        .param("breed", "Husky 2")
+                        .param("images", "iamges")
+                        .param("price", String.valueOf(BigDecimal.valueOf(123)))
+                        .param("category", String.valueOf(CategoryEnum.Dogs))
+                        .param("description", "My description.")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("error"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testSearchOfferPage() throws Exception {
+        mockMvc.perform(get("/offers/search")
+                .param("minPrice","100")
+                .with(csrf()))
+                .andExpect(view().name("search-offer"))
+                .andExpect(model().attributeExists("offers"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testSearchOfferPage_InvalidParams() throws Exception {
+        mockMvc.perform(get("/offers/search")
+                        .param("minPrice","-1")
+                        .with(csrf()))
+                .andExpect(view().name("search-offer"))
+                .andExpect(model().attributeDoesNotExist("offers"))
+                .andExpect(model().attributeExists("searchOfferModel"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testDeleteOffer() throws Exception {
+        mockMvc.perform(
+                        delete(String.format("/offers/%d/delete",
+                                testAdminOffer.getId()))
+                                .with(csrf()))
+                .andExpect(redirectedUrl("/offers/all"));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void testDeleteOffer_ThrowsOfferNotFound() throws Exception {
+        mockMvc.perform(
+                        delete(String.format("/offers/%d/delete",
+                                testAdminOffer.getId()-100))
+                                .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(model().attributeExists("message"));
     }
 }

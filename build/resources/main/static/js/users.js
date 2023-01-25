@@ -108,7 +108,8 @@ fetch(`http://localhost:8080/api/users?pageSize=${pageSize}&pageNo=${pageNo}&sor
                     // Resolving promise for error
                     .catch(err => console.log(err));
                 sleep(1000);
-                window.location.href = "http://localhost:8080/"
+                window.location.reload();
+
             }else{
                 event.preventDefault()
             }
