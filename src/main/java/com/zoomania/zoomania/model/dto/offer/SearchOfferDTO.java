@@ -1,5 +1,7 @@
 package com.zoomania.zoomania.model.dto.offer;
 
+import com.zoomania.zoomania.model.enums.CategoryEnum;
+
 import javax.validation.constraints.Positive;
 
 public class SearchOfferDTO {
@@ -8,7 +10,16 @@ public class SearchOfferDTO {
     private Integer minPrice;
     @Positive
     private Integer maxPrice;
+    private CategoryEnum category;
 
+    public CategoryEnum getCategory() {
+        return category;
+    }
+
+    public SearchOfferDTO setCategory(CategoryEnum category) {
+        this.category = category;
+        return this;
+    }
 
     public String getName() {
         return name;

@@ -50,6 +50,20 @@
                     aria-label="Search"
                     id="maxPrice"
             />
+            <select id="category"
+                    name="category"
+                    th:errorclass="is-invalid"
+                    class="form-control">
+                <option selected disabled>Category</option>
+                <option th:text="ALL"
+                th:value="null"> Category: ALL</option>
+                <option th:each="e : ${T(com.zoomania.zoomania.model.enums.CategoryEnum).values()}"
+                        th:text="${e}"
+                        th:value="${e}"
+                        th:selected="${e} == *{category}">
+                    Category
+                </option>
+            </select>
             <small
                     id="searchOfferHelpInline"
                     class="bg-danger text-light rounded invalid-feedback"

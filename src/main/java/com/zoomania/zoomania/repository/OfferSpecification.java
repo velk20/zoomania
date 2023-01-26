@@ -1,6 +1,7 @@
 package com.zoomania.zoomania.repository;
 
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
+import com.zoomania.zoomania.model.entity.CategoryEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -8,13 +9,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.math.BigDecimal;
+import java.util.Optional;
 
 public class OfferSpecification implements Specification<OfferEntity> {
     private final SearchOfferDTO searchOfferDTO;
+    private final CategoryRepository categoryRepository;
 
-    public OfferSpecification(SearchOfferDTO searchOfferDTO) {
+    public OfferSpecification(SearchOfferDTO searchOfferDTO,  CategoryRepository categoryRepository) {
         this.searchOfferDTO = searchOfferDTO;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -36,6 +39,13 @@ public class OfferSpecification implements Specification<OfferEntity> {
         if (searchOfferDTO.getMaxPrice() != null) {
             predicate.getExpressions().add(
                     criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("price"), searchOfferDTO.getMaxPrice()))
+            );
+        }
+
+        if (searchOfferDTO.getCategory() != null) {
+            Optional<CategoryEntity> categoryEntity = this.categoryRepository.findByName(searchOfferDTO.getCategory());
+            predicate.getExpressions().add(
+                    criteriaBuilder.and(criteriaBuilder.equal(root.get("category"),categoryEntity.get()))
             );
         }
 

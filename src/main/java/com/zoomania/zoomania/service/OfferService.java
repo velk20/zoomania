@@ -251,7 +251,7 @@ public class OfferService {
 
     public Page<OfferDetailsView> searchOffer(SearchOfferDTO searchOfferDTO,Pageable pageable) {
         return this.offerRepository
-                .findAll(new OfferSpecification(searchOfferDTO), pageable)
+                .findAll(new OfferSpecification(searchOfferDTO, categoryRepository), pageable)
                 .map(this::map);
     }
 
