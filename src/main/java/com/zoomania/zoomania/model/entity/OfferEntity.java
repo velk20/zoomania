@@ -22,6 +22,8 @@ public class OfferEntity extends BaseEntity {
     private String breed;
     @Column(nullable = false)
     private LocalDateTime createdOn;
+    @Column(nullable = false)
+    private boolean isActive;
     @ManyToOne(optional = false)
     private CategoryEntity category;
     @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.EAGER,targetEntity = UserEntity.class)
@@ -32,6 +34,15 @@ public class OfferEntity extends BaseEntity {
             mappedBy = "offer")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageEntity> imagesEntities = new ArrayList<>();
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public OfferEntity setActive(boolean active) {
+        isActive = active;
+        return this;
+    }
 
     public void addImage(ImageEntity imageEntity) {
         this.imagesEntities.add(imageEntity);

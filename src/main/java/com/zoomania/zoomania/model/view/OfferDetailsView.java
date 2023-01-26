@@ -16,6 +16,16 @@ public class OfferDetailsView {
     private String sellerFirstName;
     private String sellerLastName;
     private String sellerUsername;
+    private boolean isActive;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public OfferDetailsView setActive(boolean active) {
+        isActive = active;
+        return this;
+    }
 
     public String getSellerUsername() {
         return sellerUsername;

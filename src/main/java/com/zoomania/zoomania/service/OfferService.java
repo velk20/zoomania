@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,8 +79,14 @@ public class OfferService {
                 .setImagesEntities(imageEntityList)
                 .setCategory(categoryEntity)
                 .setSeller(seller)
+                .setActive(false)
                 .setCreatedOn(LocalDateTime.now());
 
+        if (userDetails.getAuthorities()
+                .stream()
+                .anyMatch(o->o.getAuthority().equals("ROLE_ADMIN"))) {
+            newOffer.setActive(true);
+        }
         offerRepository.save(newOffer);
     }
 
@@ -103,8 +110,14 @@ public class OfferService {
     }
 
     public Page<OfferDetailsView> getAllOffers(Pageable pageable) {
-        return this.offerRepository
-                .findAll(pageable)
+        return  this.offerRepository
+                .findAllByIsActive(true,pageable)
+                .map(this::map);
+    }
+
+    public Page<OfferDetailsView> getAllOffers(Pageable pageable,boolean isActive) {
+        return  this.offerRepository
+                .findAllByIsActive(isActive,pageable)
                 .map(this::map);
     }
 
@@ -173,7 +186,8 @@ public class OfferService {
                 .setImagesUrls(
                         offerEntity.getImagesEntities()
                         .stream()
-                        .map(ImageEntity::getImageUrl).collect(Collectors.toList()));
+                        .map(ImageEntity::getImageUrl)
+                                .collect(Collectors.toList()));
     }
 
     @Transactional
@@ -285,4 +299,26 @@ public class OfferService {
         return this.offerRepository.count();
     }
 
+    public OfferResponse getAllNotApproveOffers(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
+
+        Page<OfferDetailsView> offers = this.getAllOffers(pageable,false);
+
+        // get content for page object
+        List<OfferDetailsView> listOfOffers = offers.getContent();
+
+        return new OfferResponse()
+                .setContent(listOfOffers)
+                .setPageNo(offers.getNumber())
+                .setPageSize(offers.getSize())
+                .setTotalElements(offers.getTotalElements())
+                .setTotalPages(offers.getTotalPages())
+                .setLast(offers.isLast());
+
+    }
+
+    public void approveOfferById(Long id) {
+        Optional<OfferEntity> offerEntity = this.offerRepository.findById(id);
+        offerEntity.ifPresent(offer -> this.offerRepository.save(offer.setActive(true).setCreatedOn(LocalDateTime.now())));
+    }
 }

@@ -23,7 +23,7 @@ let currentData = undefined;
 let tableBody = document.getElementById("tableBody");
 let paginationNav = document.getElementById("paginationNav");
 
-fetch(`http://localhost:8080/api/offers?pageSize=${pageSize}&pageNo=${pageNo}&sortBy=${sortBy}&sortDir=${sortDir}`, {
+fetch(`http://localhost:8080/api/offers/approve?pageSize=${pageSize}&pageNo=${pageNo}&sortBy=${sortBy}&sortDir=${sortDir}`, {
     headers: {
         "Accept": "application/json"
     }
@@ -56,26 +56,17 @@ fetch(`http://localhost:8080/api/offers?pageSize=${pageSize}&pageNo=${pageNo}&so
                 <td>
                   <a href="/users/profile/${offer.sellerUsername}"><h6>${offer.sellerUsername}</h6></a>
                 </td>
-                <td style="width: 20%;">
-                  <a href="/offers/${offer.id}/details" class="table-link text-warning">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                                            </span>
+                <td style="width: 25%;">
+                  <a href="/offers/${offer.id}/details" class="table-link btn btn-warning text-white">
+                                         Details
                   </a>
-                  <a href="/offers/${offer.id}/edit" class="table-link text-info">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                            </span>
+                  <a onclick="onPatch(event,${offer.id})" class="table-link btn btn-success">
+                                         Approve
                   </a>
                   <a
                   onclick="onDelete(event,${offer.id})"
-                  class="table-link danger">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                            </span>
+                  class="table-link btn btn-danger text-white">
+                                          Deny
                   </a>
                 </td>
               </tr>
@@ -103,7 +94,7 @@ function pageNavFirstLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     if (currentData.pageNo != 0) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${0}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${0}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">First</a>
         \n`;
     }else{
@@ -127,7 +118,7 @@ function pageNavPreviousLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir
     if (currentData.pageNo > 0) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${parseInt(pageNo)-1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${parseInt(pageNo)-1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Previous</a>
         \n`;
     }else{
@@ -152,7 +143,7 @@ function pageNavNextLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     if (!currentData.last) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${parseInt(pageNo)+1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${parseInt(pageNo)+1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Next</a>
         \n`;
     }else{
@@ -178,7 +169,7 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
         if (currentData.pageNo != currentData.totalPages-1) {
             commentHtml += `<li class="page-item">\n`;
             commentHtml+=`
-        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${currentData.totalPages-1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${currentData.totalPages-1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Last</a>
         \n`;
         }
@@ -205,15 +196,36 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     return commentHtml
 }
 
- async function onDelete(event,offerId) {
-    //TODO fix the on ADMIN delete offer page WHEN OFFER IS THE ADMIN_AUTHOR
+async function onDelete(event,offerId) {
     if (confirm("Are you sure you want to delete this offer?")) {
 
 // Instantiating new EasyHTTP class
         const http = new DeleteHTTP;
 
 // Update Post
-       await http.delete(`http://localhost:8080/offers/${offerId}/delete`)
+        await http.delete(`http://localhost:8080/offers/${offerId}/delete`)
+
+            // Resolving promise for response data
+            .then(data => console.log(data))
+
+            // Resolving promise for error
+            .catch(err => console.log(err));
+
+        sleep(2000)
+        window.location.reload()
+    }else{
+        event.preventDefault()
+    }
+
+}
+async function onPatch(event,offerId) {
+    if (confirm("Are you sure you want to approve this offer?")) {
+
+// Instantiating new EasyHTTP class
+        const http = new PatchHTTP();
+
+// Update Post
+        await http.patch(`http://localhost:8080/offers/${offerId}/approve`)
 
             // Resolving promise for response data
             .then(data => console.log(data))
@@ -238,6 +250,32 @@ class DeleteHTTP {
         // method, headers and content-type
         const response = await fetch(url, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                [csrfHeaderName]: csrfHeaderValue
+            }
+        });
+
+        // Awaiting for the resource to be deleted
+        const resData = 'resource deleted...';
+
+        // Return response data
+        return resData;
+    }
+
+
+}
+
+class PatchHTTP {
+
+    // Make an HTTP PUT Request
+    async patch(url) {
+
+        // Awaiting fetch which contains
+        // method, headers and content-type
+        const response = await fetch(url, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

@@ -10,8 +10,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public WebMvcConfig( MaintenanceInterceptor maintenanceInterceptor) {
         this.maintenanceInterceptor = maintenanceInterceptor;
     }
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(maintenanceInterceptor);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(maintenanceInterceptor);
+//    }
 }

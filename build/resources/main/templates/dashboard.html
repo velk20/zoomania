@@ -16,6 +16,8 @@
     <th:block th:if="${offers.getContent().isEmpty()}">No available offers!</th:block>
     </h1>
 
+    <input id="waitForApproval" hidden th:value="${waitForApproval}"/>
+
     <div class="row">
       <div th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
          <!-- Restaurant Item -->
@@ -92,7 +94,12 @@
 
   <div th:replace="fragments/footer">Footer</div>
 
-
+<script>
+  let waitForApproval = document.getElementById("waitForApproval");
+  if (waitForApproval.value){
+    alert("Your offer wait for approval!")
+  }
+</script>
 </body>
 
 </html>

@@ -18,4 +18,9 @@ public class AdminController {
     public String adminOffers() {
         return "admin-offers";
     }
+
+    @GetMapping("/offers/approve")
+    public String adminApproveOffers() {
+        return "admin-approve-offers";
+    }
 }

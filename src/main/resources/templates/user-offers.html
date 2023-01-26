@@ -17,7 +17,7 @@
     <div class="row">
       <div th:if="${offers.hasContent()}" th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">
         <!-- Restaurant Item -->
-        <div class="item">
+        <div class="item" th:style="${offer.isActive ? '' : 'opacity:0.5'}">
           <!-- Item's image -->
           <img class="img-responsive" height="250px" width="250px" th:src="${offer.imagesUrls.get(0)}" alt="">
           <!-- Item details -->
@@ -30,11 +30,15 @@
           </div>
           <!-- add to cart btn -->
           <div class="ecom bg-blue">
-            <a class="btn bg-warning" th:href="@{/offers/{offerId}/edit(offerId=${offer.id})}">Edit</a>
-            <a class="deleteBtn btn bg-danger"
-               id="deleteBtn"
-               th:data-id="${offer.id}">
-              Delete</a>
+            <a th:unless="${offer.isActive}" class="btn bg-danger">Not Approved</a>
+            <th:block th:if="${offer.isActive}">
+              <a class="btn bg-warning" th:href="@{/offers/{offerId}/edit(offerId=${offer.id})}">Edit</a>
+              <a class="deleteBtn btn bg-danger"
+                 id="deleteBtn"
+                 th:data-id="${offer.id}">
+                Delete</a>
+            </th:block>
+
           </div>
         </div>
       </div>

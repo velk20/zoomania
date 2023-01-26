@@ -18,5 +18,6 @@ public interface OfferRepository extends
 
     void deleteAllBySeller(UserEntity user);
     List<OfferEntity>  findAllBySeller(UserEntity seller);
+    Page<OfferEntity> findAllByIsActive(boolean isActive,Pageable pageable);
     Page<OfferEntity> findAllBySellerUsername(String username, Pageable pageable);
 }

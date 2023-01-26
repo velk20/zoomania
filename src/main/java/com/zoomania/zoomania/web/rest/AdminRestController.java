@@ -42,4 +42,15 @@ public class AdminRestController {
     ) {
         return offerService.getAllOffersAdminRest(pageNo, pageSize, sortBy, sortDir);
     }
+
+    @GetMapping("/offers/approve")
+    public OfferResponse getAllNotApproveOffers(
+            @RequestParam(value = "pageNo", defaultValue = RestPaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = RestPaginationConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = RestPaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = RestPaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+
+    ) {
+        return offerService.getAllNotApproveOffers(pageNo, pageSize, sortBy, sortDir);
+    }
 }

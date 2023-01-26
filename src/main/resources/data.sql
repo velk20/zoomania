@@ -56,28 +56,30 @@ VALUES (1,1),
        (10,2),(11,2),(12,2),(13,2),(14,2),(15,2);
 
 
-insert into offers(id, breed, created_on, `description`, price, title, category_id, seller_id)
-VALUES (1,'Affenpinscher','2023-01-03 00:00:00.000000','Affenpinscher: cute, small, monkey-like lap dog.',250,'Alonso',1,1),
-       (2,'Akita','2023-01-04 00:00:00.000000','Akita: a large, powerful, and loyal breed with a bold spirit. ',150,'Fluffy',1,2),
-       (3,'Alaskan','2023-01-05 00:00:00.000000','Alaskan Malamute: a majestic, strong, and playful arctic breed. ',270,'Alis',1,3),
-       (4,'Spaniel','2023-01-06 00:00:00.000000','English Springer Spaniel: energetic, friendly and loving hunting breed. ',350,'Calyn',1,4),
+insert into offers(id, breed, created_on, `description`, price, title, category_id, seller_id,is_active)
+VALUES (1,'Affenpinscher','2023-01-03 00:00:00.000000','Affenpinscher: cute, small, monkey-like lap dog.',250,
+        'Alonso',1,1,true),
+       (2,'Akita','2023-01-04 00:00:00.000000','Akita: a large, powerful, and loyal breed with a bold spirit. ',150,'Fluffy',1,2,true),
+       (3,'Alaskan','2023-01-05 00:00:00.000000','Alaskan Malamute: a majestic, strong, and playful arctic breed. ',270,'Alis',1,3,true),
+       (4,'Spaniel','2023-01-06 00:00:00.000000','English Springer Spaniel: energetic, friendly and loving hunting breed. ',350,'Calyn',1,4,true),
 
-       (5,'Street Superb','2023-01-07 00:00:00.000000','Street cat: resilient, independent, and adaptable to urban environments.',1,'Teny',2,5),
-       (6,'Birman','2023-01-08 00:00:00.000000','Birman: a beautiful, long-haired, blue-eyed, and affectionate cat breed',150,'Antonin',2,1),
-       (7,'Chartreux','2023-01-09 00:00:00.000000','Chartreux: a blue-gray, muscular, and friendly feline breed with a gentle purr.',90,'Camille',2,1),
-       (8,'Korat','2023-01-10 00:00:00.000000','Korat: an ancient, silver-tipped, and intelligent cat breed with a loving nature.',100,'Liona',2,1),
+       (5,'Street Superb','2023-01-07 00:00:00.000000','Street cat: resilient, independent, and adaptable to urban environments.',1,'Teny',2,5,true),
+       (6,'Birman','2023-01-08 00:00:00.000000','Birman: a beautiful, long-haired, blue-eyed, and affectionate cat breed',150,'Antonin',2,1,true),
+       (7,'Chartreux','2023-01-09 00:00:00.000000','Chartreux: a blue-gray, muscular, and friendly feline breed with
+a gentle purr.',90,'Camille',2,1,false),
+       (8,'Korat','2023-01-10 00:00:00.000000','Korat: an ancient, silver-tipped, and intelligent cat breed with a loving nature.',100,'Liona',2,1,true),
 
-       (9,'Guppies','2023-01-11 00:00:00.000000','Guppies: small, colorful, and hardy tropical fish, popular in aquariums.',20,'Gary Ellis',3,6),
-       (10,'Angelfish','2023-01-12 00:00:00.000000','Angelfish: a elegant, tropical, and graceful freshwater fish.',25,'Sohrab',3,7),
+       (9,'Guppies','2023-01-11 00:00:00.000000','Guppies: small, colorful, and hardy tropical fish, popular in aquariums.',20,'Gary Ellis',3,6,true),
+       (10,'Angelfish','2023-01-12 00:00:00.000000','Angelfish: a elegant, tropical, and graceful freshwater fish.',25,'Sohrab',3,7,true),
        (11,'Blue Fish','2023-01-13 00:00:00.000000','Blue fish: a predatory, strong-tasting, and migratory saltwater
-fish.',50,'Dori',3,8),
+fish.',50,'Dori',3,8,true),
 
-       (12,'African Gray Parrot','2023-01-14 00:00:00.000000','African Gray Parrot: a highly intelligent, sociable, and talkative bird species.',60,'Elis',4,9),
-       (13,'Black-throated Sparrow','2023-01-15 00:00:00.000000','Black-throated Sparrow: a small, desert-dwelling, and secretive songbird.',15,'Eric',4,10),
+       (12,'African Gray Parrot','2023-01-14 00:00:00.000000','African Gray Parrot: a highly intelligent, sociable, and talkative bird species.',60,'Elis',4,9,true),
+       (13,'Black-throated Sparrow','2023-01-15 00:00:00.000000','Black-throated Sparrow: a small, desert-dwelling, and secretive songbird.',15,'Eric',4,10,true),
        (14,'Wemyss','2023-01-16 00:00:00.000000','Wemyss: small, independent and also very scary when angry.',20,
-        'Martin',4,11),
+        'Martin',4,11,false),
        (15,'Ewing','2023-01-17 00:00:00.000000','Ewing: tiny but powerful of emotional and beautiful songs.',1,
-        'Skyler',4,12);
+        'Skyler',4,12,true);
 
 insert into offer_images(id, image_url, public_id, offer_id)
 VALUES (1,'https://res.cloudinary.com/dnlkkivap/image/upload/v1674678563/Affenpinscher_pakyft.jpg','Affenpinscher_pakyft',1),

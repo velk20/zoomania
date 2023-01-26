@@ -42,7 +42,7 @@ public class OfferController {
                     direction = Sort.Direction.DESC,
                     page = 0,
                     size = 8
-            )Pageable pageable) {
+            )Pageable pageable){
 
         model.addAttribute("offers", offerService.getAllOffers(pageable));
         return "dashboard";
@@ -86,7 +86,7 @@ public class OfferController {
         }
 
         offerService.addOffer(addOfferModel, userDetails);
-
+        redirectAttributes.addFlashAttribute("waitForApproval",true);
         return "redirect:/offers/all";
     }
 
@@ -174,6 +174,17 @@ public class OfferController {
             Principal principal
     ) {
         offerService.deleteOfferById(id);
+
+        return "redirect:/offers/all";
+    }
+
+    @PreAuthorize("@offerService.isOwner(#principal.name,#id)")
+    @PatchMapping("/{id}/approve")
+    public String approveOffer(
+            @PathVariable("id") Long id,
+            Principal principal
+    ) {
+        offerService.approveOfferById(id);
 
         return "redirect:/offers/all";
     }
