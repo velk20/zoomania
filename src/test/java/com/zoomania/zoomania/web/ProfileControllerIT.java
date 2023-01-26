@@ -87,6 +87,26 @@ public class ProfileControllerIT {
     }
 
     @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void updateUserProfile_WithInvalidParams() throws Exception {
+        String newUsername = "userNewUsername";
+        mockMvc.perform(patch(String.format("/users/profile/%s/edit", testAdmin.getUsername()))
+                        .param("username",newUsername)
+                        .param("firstName","a")
+                        .param("email",testAdmin.getEmail())
+                        .param("lastName",testAdmin.getLastName())
+                        .param("phone",testAdmin.getPhone())
+                        .param("age", String.valueOf(testAdmin.getAge()))
+                        .param("active","true")
+                        .param("admin","true")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("user"))
+                .andExpect(redirectedUrl("/users/profile/"+testAdmin.getUsername()));
+    }
+
+    @Test
     @WithUserDetails(value = "testUser",
             userDetailsServiceBeanName = "testUserDataService")
     void getProfileChangePassword_AccessDenied() throws Exception {
@@ -119,6 +139,21 @@ public class ProfileControllerIT {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users/profile/" + testAdmin.getUsername()));
+    }
+
+    @Test
+    @WithUserDetails(value = "testAdmin",
+            userDetailsServiceBeanName = "testUserDataService")
+    void patchProfileChangePassword_WithInvalidNewPasswords() throws Exception {
+        mockMvc.perform(patch(String.format("/users/profile/%s/change_password", testAdmin.getUsername()))
+                        .param("username", testAdmin.getUsername())
+                        .param("oldPassword", "admin")
+                        .param("newPassword", "1")
+                        .param("confirmPassword", "12")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("user"))
+                .andExpect(redirectedUrl(String.format("/users/profile/%s/change_password", testAdmin.getUsername())));
     }
 
     @Test

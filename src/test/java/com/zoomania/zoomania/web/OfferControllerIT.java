@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OfferControllerIT {
+    private final String IMAGE_PATH = "src/main/resources/static/images/fish/angelfish/angelfish.jpg";
     private final String BASE_URL = "http://localhost";
     private final String USER_AUTHENTICATION_PAGE = BASE_URL + "/users/login";
     @Autowired
@@ -101,8 +102,6 @@ public class OfferControllerIT {
     @WithUserDetails(value = "testAdmin",
             userDetailsServiceBeanName = "testUserDataService")
     void testCreateOffer_InvalidImage() throws Exception {
-
-
         mockMvc.perform(post("/offers/create")
                         .param("title", "MY dog")
                         .param("breed", "Husky")

@@ -4,6 +4,7 @@ import com.zoomania.zoomania.model.dto.user.UserRegisterDTO;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
+import com.zoomania.zoomania.model.user.ZooManiaUserDetails;
 import com.zoomania.zoomania.repository.CategoryRepository;
 import com.zoomania.zoomania.repository.CommentRepository;
 import com.zoomania.zoomania.repository.UserRepository;
@@ -18,6 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -68,7 +72,14 @@ public class UserServiceTest {
                 .setPhone("546983312")
                 .setPassword("passs")
                 .setConfirmPassword("passs");
-        user = new UserEntity().setUsername("admin");
+        user = new UserEntity()
+                .setAge(21)
+                .setEmail("email@email.com")
+                .setUsername("admin")
+                .setFirstName("Admin")
+                .setLastName("Adminov")
+                .setPhone("546983312")
+                .setPassword("passs");
     }
 
 //    @Test
@@ -79,11 +90,30 @@ public class UserServiceTest {
 //                .thenReturn(user);
 //        when(userRepository.save(user))
 //                .thenReturn(user);
+//        when(passwordEncoder.encode(userRegisterDTO.getPassword()))
+//                .thenReturn(user.getPassword());
 //        when(userRepository.findByUsername(userRegisterDTO.getUsername()))
 //                .thenReturn(Optional.of(user));
+//        when(userDetailsService.loadUserByUsername(user.getUsername()))
+//                .thenReturn(new ZooManiaUserDetails(
+//                        user.getId(),
+//                        user.getPassword(),
+//                        user.getUsername(),
+//                        user.getFirstName(),
+//                        user.getLastName(),
+//                        user.isActive(),
+//                        user.getUserRoles().stream().map(this::map).toList()
+//                ));
 //        this.userService.registerAndLogin(userRegisterDTO);
 //
 //        Assertions.assertTrue(userRepository.findByUsername(user.getUsername()).isPresent());
 //
 //    }
+
+    private GrantedAuthority map(UserRoleEntity userRole) {
+        //It MUST have "ROLE_" before the real role
+        return new SimpleGrantedAuthority("ROLE_" +
+                userRole.
+                        getUserRoleEnum().name());
+    }
 }
