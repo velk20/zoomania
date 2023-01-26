@@ -31,12 +31,15 @@
             <div class="form-group col-md-6 mb-3">
                 <label for="password"  class="text-white font-weight-bold">Password:</label>
                 <input id="password" name="password" type="password"
-                       class="form-control"placeholder="********" value="">
+                       class="form-control" placeholder="********" value="">
             </div>
 </div>
 
             <p th:if="${bad_credentials}" class="errors alert alert-danger">
                 Invalid username or password.
+            </p>
+            <p th:if="${inactive_user}" class="errors alert alert-danger">
+                User is currently not active!
             </p>
             <div class="justify-content-center">
                 <input id="loginBtn"  type="submit" class="btn btn-info btn-lg" value="Login"/>
