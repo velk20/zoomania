@@ -218,4 +218,8 @@ public class UserService {
     public Long getAllUsersCount() {
         return this.userRepository.count();
     }
+
+    public boolean isUserActive(String username) {
+        return this.userRepository.findByUsername(username).isPresent();
+    }
 }

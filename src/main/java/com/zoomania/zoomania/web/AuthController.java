@@ -46,7 +46,12 @@ public class AuthController {
     ) {
 
         redirectAttributes.addFlashAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
-        redirectAttributes.addFlashAttribute("bad_credentials", true);
+        if (this.userService.isUserActive(username)) {
+            redirectAttributes.addFlashAttribute("inactive_user", true);
+
+        }else{
+            redirectAttributes.addFlashAttribute("bad_credentials", true);
+        }
 
         return "redirect:/users/login";
     }
