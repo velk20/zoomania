@@ -65,4 +65,5 @@ public class CloudinaryService {
                 Paths.get(IMAGE_FOLDER + File.separator + photo.getOriginalFilename()),
                 StandardCopyOption.REPLACE_EXISTING);
     }
+
 }

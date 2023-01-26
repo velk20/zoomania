@@ -4,16 +4,18 @@ import com.zoomania.zoomania.model.entity.ImageEntity;
 import com.zoomania.zoomania.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ImageService {
+    private final Long INITIAL_LAST_IMAGE_ENTITY_ID = 29L;
     private final ImageRepository imageRepository;
+    private final CloudinaryService cloudinaryService;
 
-    // ! Make it work with multiple images
-    public ImageService(ImageRepository imageRepository) {
+    public ImageService(ImageRepository imageRepository, CloudinaryService cloudinaryService) {
         this.imageRepository = imageRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public ImageEntity save(ImageEntity imageEntity) {
@@ -28,4 +30,14 @@ public class ImageService {
          this.imageRepository.deleteAll(imageEntities);
     }
 
+    public void deleteAllNotInitialPhotos() {
+        List<ImageEntity> allByIdGreater = this.imageRepository.findAllByIdGreaterThan(INITIAL_LAST_IMAGE_ENTITY_ID);
+        for (ImageEntity imageEntity : allByIdGreater) {
+            try {
+                cloudinaryService.deletePhoto(imageEntity);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
