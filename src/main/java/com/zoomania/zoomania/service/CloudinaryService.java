@@ -17,6 +17,7 @@ import java.util.Random;
 
 @Service
 public class CloudinaryService {
+    private final Long INITIAL_LAST_IMAGE_ENTITY_ID = 29L;
     private final String CLOUD_NAME = "dnlkkivap";
     private final String API_KEY = "262551365886495";
     private final String API_SECRET = "BH1S1XzSneAQU-x0VnPO3FCsRNo";
@@ -49,8 +50,8 @@ public class CloudinaryService {
 
     public void deletePhoto(ImageEntity imageEntity) throws IOException {
 
-        // * >= 30 so that no images will be deleted from Cloudinary
-        if (imageEntity.getId() >= 30) {
+        // * > INITIAL_LAST_IMAGE_ENTITY_ID so that no 'INITIAL' images will be deleted from Cloudinary
+        if (imageEntity.getId() > INITIAL_LAST_IMAGE_ENTITY_ID) {
             cloudinary.uploader().destroy(imageEntity.getPublicId(),ObjectUtils.emptyMap());
         }
     }
