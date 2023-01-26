@@ -3,14 +3,25 @@ package com.zoomania.zoomania.model.dto.offer;
 import com.zoomania.zoomania.model.enums.CategoryEnum;
 
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 public class SearchOfferDTO {
     private String name;
-    @Positive
+    @PositiveOrZero
     private Integer minPrice;
-    @Positive
+    @PositiveOrZero
     private Integer maxPrice;
     private CategoryEnum category;
+    private boolean isActive = true;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public SearchOfferDTO setActive(boolean active) {
+        isActive = active;
+        return this;
+    }
 
     public CategoryEnum getCategory() {
         return category;

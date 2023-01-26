@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,8 +93,13 @@ public class OfferService {
 
     public List<OfferDetailsView> getRecentOffers(int limit) {
         List<OfferEntity> byOrderByCreatedOnDesc =
-                this.offerRepository.findByOrderByCreatedOnDesc();
-        if (byOrderByCreatedOnDesc == null || byOrderByCreatedOnDesc.size() == 0) {
+                this.offerRepository
+                        .findByOrderByCreatedOnDesc()
+                        .stream()
+                        .filter(OfferEntity::isActive)
+                        .toList();
+
+        if (byOrderByCreatedOnDesc.size() == 0) {
             return null;
         }
         if (byOrderByCreatedOnDesc.size() < limit) {
@@ -120,6 +126,7 @@ public class OfferService {
                 .findAllByIsActive(isActive,pageable)
                 .map(this::map);
     }
+
 
     public Page<OfferDetailsView> getAllUserOffers(String username, Pageable pageable) {
         return this.offerRepository
@@ -272,7 +279,7 @@ public class OfferService {
     public OfferResponse getAllOffersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
         Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
 
-        Page<OfferDetailsView> offers = this.getAllOffers(pageable);
+        Page<OfferDetailsView> offers = this.getAllOffers(pageable,true);
 
         // get content for page object
         List<OfferDetailsView> listOfOffers = offers.getContent();

@@ -1,4 +1,4 @@
-package com.zoomania.zoomania.service;
+package com.zoomania.zoomania.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;

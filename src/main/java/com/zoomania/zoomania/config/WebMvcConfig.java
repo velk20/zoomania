@@ -1,6 +1,5 @@
 package com.zoomania.zoomania.config;
 
-import com.zoomania.zoomania.service.MaintenanceInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
