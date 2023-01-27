@@ -12,7 +12,7 @@ ZooMania is an online web (MVC) application where you can adopt your favorite pe
 -	Registered users can view all offers for adoption, create and offer, also edit their accounts.
 -	Only the administrator can delete, add or edit offers and users, to accept or deny creation for offer requests.
 -	Also admins can add other accounts and make them administrators
--	Admins can configur order details like: "On Delivery", "Cancled" ...
+-	Admins can configur order details like: "Approve", "Deny" ...
 <br/><br/>
 
 ## Getting Started <a name = "getting_started"></a>
