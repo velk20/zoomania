@@ -48,6 +48,7 @@ Open your client(browser) on localhost:8080
 * [Spring Security 5.7](https://spring.io/projects/spring-security)
 * [Spring Data JPA 2.7.0](https://spring.io/projects/spring-data-jpa)
 * [MySQL 8.0](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/)
+* [Cloudinary - file storage cloud API](https://cloudinary.com/documentation)
 <br/><br/>
 
 ## 📸 Application screenshots
