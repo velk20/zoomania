@@ -16,11 +16,9 @@ import javax.validation.Valid;
 
 public class AuthController {
     private final UserService userService;
-    private final ModelMapper mapper;
 
-    public AuthController(UserService userService, ModelMapper mapper) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.mapper = mapper;
     }
 
     @ModelAttribute("userModel")
