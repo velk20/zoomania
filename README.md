@@ -12,7 +12,7 @@ ZooMania is an online web (MVC) application where you can adopt your favorite pe
 -	Registered users can view all offers for adoption, create and offer, also edit their accounts.
 -	Only the administrator can delete, add or edit offers and users, to accept or deny creation for offer requests.
 -	Also admins can add other accounts and make them administrators
--	Admins can configur order details like: "On Delivery", "Cancled" ...
+-	Admins can configur order details like: "Approve", "Deny" ...
 <br/><br/>
 
 ## Getting Started <a name = "getting_started"></a>
@@ -48,6 +48,7 @@ Open your client(browser) on localhost:8080
 * [Spring Security 5.7](https://spring.io/projects/spring-security)
 * [Spring Data JPA 2.7.0](https://spring.io/projects/spring-data-jpa)
 * [MySQL 8.0](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/)
+* [Cloudinary - file storage cloud API](https://cloudinary.com/documentation)
 <br/><br/>
 
 ## 📸 Application screenshots
