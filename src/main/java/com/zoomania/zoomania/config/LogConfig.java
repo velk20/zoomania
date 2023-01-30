@@ -37,7 +37,7 @@ public class LogConfig {
         BufferedWriter writer = new BufferedWriter(new FileWriter("log.txt"));
         writer.write(stringBuilder.toString());
 
-        String format = String.format("{%s} - It has total USERS[%d] and total OFFERS[%d]",
+        String format = String.format("{%s} - Application has total USERS[%d] and total OFFERS[%d]",
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                         this.userService.getAllUsersCount(),
                         this.offerService.getAllOffersCount()

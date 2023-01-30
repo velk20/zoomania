@@ -1,5 +1,6 @@
 package com.zoomania.zoomania.service;
 
+import com.zoomania.zoomania.exceptions.ExceptionConstants;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.user.ChangeUserPasswordDTO;
 import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
@@ -63,7 +64,21 @@ public class UserService {
         userRepository.save(userEntity);
         this.login(userEntity.getUsername());
     }
+    public void login(String username) {
+        UserDetails userDetails =
+                userDetailsService.loadUserByUsername(username);
 
+        Authentication auth =
+                new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        userDetails.getPassword(),
+                        userDetails.getAuthorities()
+                );
+
+        SecurityContextHolder.
+                getContext().
+                setAuthentication(auth);
+    }
     public UserResponse getAllUsersAdminRest(int pageNo, int pageSize, String sortBy, String sortDir) {
         Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
 
@@ -89,27 +104,11 @@ public class UserService {
         return userResponse;
 
     }
-
-    public void login(String username) {
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(username);
-
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        userDetails.getPassword(),
-                        userDetails.getAuthorities()
-                );
-
-        SecurityContextHolder.
-                getContext().
-                setAuthentication(auth);
-    }
-
     public UserDetailsView getUser(String username) {
         UserEntity user = userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username + " was not found!"));
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, username)));
 
         return this.map(user);
     }
@@ -135,26 +134,31 @@ public class UserService {
     public UserDetailsView editUser(String username, UpdateUserDTO editUser, Principal principal) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, username)));
 
         userEntity.setPhone(editUser.getPhone())
                 .setUsername(editUser.getUsername())
                 .setLastName(editUser.getLastName())
                 .setFirstName(editUser.getFirstName())
                 .setAge(editUser.getAge())
-                .setEmail(editUser.getEmail())
-                .setActive(editUser.isActive());
+                .setEmail(editUser.getEmail());
+
+        UserEntity currentLoggedUser = this.userRepository
+                .findByUsername(principal.getName())
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, username)));
+
+        if (isAdmin(currentLoggedUser)) {
+            userEntity.setActive(editUser.isActive());
+        }
 
         if (editUser.isAdmin()) {
-            if (userEntity.getUserRoles().stream()
-                    .map(UserRoleEntity::getUserRoleEnum)
-                    .noneMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
+            if (!isAdmin(userEntity)) {
                 userEntity.addRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
             }
         } else {
-            if (userEntity.getUserRoles().stream()
-                    .map(UserRoleEntity::getUserRoleEnum)
-                    .anyMatch(r -> r.equals(UserRoleEnum.ADMIN))) {
+            if (isAdmin(userEntity)) {
                 userEntity.removeRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
             }
         }
@@ -169,7 +173,8 @@ public class UserService {
     public boolean changeUserPassword(ChangeUserPasswordDTO changeUserPasswordDTO) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(changeUserPasswordDTO.getUsername())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, changeUserPasswordDTO.getUsername())));
 
         boolean isOldPasswordMatch =
                 passwordEncoder.matches(changeUserPasswordDTO.getOldPassword(), userEntity.getPassword());
@@ -187,7 +192,8 @@ public class UserService {
     public UserDetailsView deleteUserByUsername(String username) {
         UserEntity userEntity = this.userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User with username: " + username + " was not found!"));
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, username)));
 
         List<OfferEntity> allOffersBySeller = this.offerService.getAllOffersBySeller(userEntity);
         for (OfferEntity offer : allOffersBySeller) {
@@ -198,7 +204,6 @@ public class UserService {
     }
 
     public boolean isOwner(String principalName, String username) {
-
         if (principalName.equals(username)) {
             return true;
         }

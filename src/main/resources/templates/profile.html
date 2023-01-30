@@ -151,8 +151,9 @@
                 <label for="isActive"
                        class="form-label text-white"><strong>Active: </strong></label>
 
-                    <input class="text-white  bg-info"
-                           style="margin: 10px;" type="checkbox"
+                    <input class="text-white bg-info"
+                           style="margin: 10px;"
+                           type="checkbox"
                            id="isActive"
                            th:field="*{active}"
                            th:text="${#bools.isTrue(user.isActive())} ? 'User is currently active' : 'User is NOT currently active'"

@@ -102,6 +102,7 @@ public class TestDataUtils {
                 .setPrice(BigDecimal.valueOf(213.45))
                 .setTitle("Dog like hulk")
                 .setDescription("Cutstom desc")
+                .setActive(true)
                 .setSeller(this.userRepository.findByUsername(seller.getUsername()).get());
 
         OfferEntity saved = offerRepository.save(offerEntity);
