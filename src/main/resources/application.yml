@@ -6,6 +6,8 @@ logging:
         type:
           descriptor: trace
 spring:
+#  main:
+#    allow-circular-references: true
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/zoomania?createDatabaseIfNotExist=true

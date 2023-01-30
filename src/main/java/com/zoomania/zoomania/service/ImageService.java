@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageService {
@@ -16,6 +17,14 @@ public class ImageService {
     public ImageService(ImageRepository imageRepository, CloudinaryService cloudinaryService) {
         this.imageRepository = imageRepository;
         this.cloudinaryService = cloudinaryService;
+    }
+
+    public Optional<ImageEntity> findByPublicId(String publicId) {
+        return this.imageRepository.findByPublicId(publicId);
+    }
+
+    public Optional<ImageEntity> findByImageUrl(String imageUrl) {
+        return this.imageRepository.findByImageUrl(imageUrl);
     }
 
     public ImageEntity save(ImageEntity imageEntity) {
@@ -31,7 +40,9 @@ public class ImageService {
     }
 
     public void deleteAllNotInitialPhotos() {
-        List<ImageEntity> allByIdGreater = this.imageRepository.findAllByIdGreaterThan(INITIAL_LAST_IMAGE_ENTITY_ID);
+        List<ImageEntity> allByIdGreater =
+                this.imageRepository
+                .findAllByIdGreaterThan(INITIAL_LAST_IMAGE_ENTITY_ID);
         for (ImageEntity imageEntity : allByIdGreater) {
             try {
                 cloudinaryService.deletePhoto(imageEntity);

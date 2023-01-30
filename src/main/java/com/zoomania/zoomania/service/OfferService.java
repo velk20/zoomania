@@ -7,20 +7,21 @@ import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.offer.CreateOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.UpdateOfferDTO;
-import com.zoomania.zoomania.model.entity.ImageEntity;
-import com.zoomania.zoomania.model.enums.UserRoleEnum;
-import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.entity.CategoryEntity;
+import com.zoomania.zoomania.model.entity.ImageEntity;
 import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
+import com.zoomania.zoomania.model.enums.UserRoleEnum;
+import com.zoomania.zoomania.model.view.OfferDetailsView;
 import com.zoomania.zoomania.model.view.OfferResponse;
-import com.zoomania.zoomania.repository.*;
+import com.zoomania.zoomania.repository.OfferRepository;
+import com.zoomania.zoomania.repository.OfferSpecification;
+import com.zoomania.zoomania.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,34 +38,52 @@ import java.util.stream.Collectors;
 public class OfferService {
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
-    private final ModelMapper mapper;
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final ImageService imageService;
+    private final ModelMapper mapper;
     private final CloudinaryService cloudinaryService;
 
-    public OfferService(OfferRepository offerRepository,
-                        UserRepository userRepository,
-                        ModelMapper mapper,
-                        CategoryRepository categoryRepository,
-                        ImageService imageService,
-                        CloudinaryService cloudinaryService) {
+    public OfferService(OfferRepository offerRepository, UserRepository userRepository, CategoryService categoryService, ImageService imageService, ModelMapper mapper, CloudinaryService cloudinaryService) {
         this.offerRepository = offerRepository;
         this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
         this.imageService = imageService;
+        this.mapper = mapper;
         this.cloudinaryService = cloudinaryService;
     }
 
+
+    public  List<OfferEntity> findByOrderByCreatedOnDesc() {
+        return this.offerRepository.findByOrderByCreatedOnDesc();
+    }
+
+    public void deleteAllBySeller(UserEntity seller) {
+        this.offerRepository.deleteAllBySeller(seller);
+    }
+
+    public List<OfferEntity>  findAllBySeller(UserEntity seller) {
+        return this.offerRepository.findAllBySeller(seller);
+    }
+
+    public Page<OfferEntity> findAllByIsActive(boolean isActive,Pageable pageable) {
+        return this.offerRepository.findAllByIsActive(isActive, pageable);
+    }
+
+    public Page<OfferEntity> findAllBySellerUsername(String username, Pageable pageable){
+        return this.offerRepository.findAllBySellerUsername(username, pageable);
+    }
 
     @Transactional
     public void addOffer(CreateOfferDTO addOfferDTO, UserDetails userDetails) {
         OfferEntity newOffer = mapper.map(addOfferDTO, OfferEntity.class);
 
-        UserEntity seller = userRepository.findByUsername(userDetails.getUsername()).
-                orElseThrow(UserNotFoundException::new);
+        UserEntity seller = userRepository
+                .findByUsername(userDetails.getUsername())
+                .orElseThrow(UserNotFoundException::new);
 
-        CategoryEntity categoryEntity = categoryRepository.findByName(addOfferDTO.getCategory()).orElseThrow();
+        CategoryEntity categoryEntity = categoryService
+                .findByName(addOfferDTO.getCategory())
+                .orElseThrow(CategoryNotFoundException::new);
 
         List<ImageEntity> imageEntityList =
                 Arrays.stream(addOfferDTO.getImageUrl())
@@ -127,7 +146,6 @@ public class OfferService {
                 .map(this::map);
     }
 
-
     public Page<OfferDetailsView> getAllUserOffers(String username, Pageable pageable) {
         return this.offerRepository
                 .findAllBySellerUsername(username, pageable)
@@ -139,7 +157,8 @@ public class OfferService {
     }
 
     public UpdateOfferDTO getEditOfferById(Long id) {
-        OfferEntity offerEntity = this.offerRepository
+        OfferEntity offerEntity =
+                this.offerRepository
                 .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
@@ -168,7 +187,6 @@ public class OfferService {
     }
 
     public boolean isOwner(String username, Long offerId) {
-
         boolean isOwner = offerRepository.
                 findById(offerId).
                 filter(o -> o.getSeller().getUsername().equals(username)).
@@ -199,7 +217,8 @@ public class OfferService {
 
     @Transactional
     public void deleteOfferById(Long id) {
-        OfferEntity offer = this.offerRepository.findById(id)
+        OfferEntity offer = this.offerRepository
+                .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
         deleteOfferImageCloudinary(offer);
@@ -210,10 +229,11 @@ public class OfferService {
 
     @Transactional
     public void editOffer(Long id, UpdateOfferDTO editOffer) {
-        OfferEntity offerById = this.offerRepository.findById(id)
+        OfferEntity offerById = this.offerRepository
+                .findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id));
 
-        CategoryEntity categoryEntity = categoryRepository
+        CategoryEntity categoryEntity = categoryService
                 .findByName(editOffer.getCategory())
                 .orElseThrow(CategoryNotFoundException::new);
 
@@ -233,7 +253,6 @@ public class OfferService {
     }
 
     private void deleteOldImagesAndUploadNewOnes(OfferEntity offerById, MultipartFile[] newImages) {
-
         deleteOfferImageCloudinary(offerById);
 
         this.imageService.deleteAll(offerById.getImagesEntities());
@@ -272,7 +291,7 @@ public class OfferService {
 
     public Page<OfferDetailsView> searchOffer(SearchOfferDTO searchOfferDTO,Pageable pageable) {
         return this.offerRepository
-                .findAll(new OfferSpecification(searchOfferDTO, categoryRepository), pageable)
+                .findAll(new OfferSpecification(searchOfferDTO, categoryService.getRepository()), pageable)
                 .map(this::map);
     }
 
@@ -327,5 +346,9 @@ public class OfferService {
     public void approveOfferById(Long id) {
         Optional<OfferEntity> offerEntity = this.offerRepository.findById(id);
         offerEntity.ifPresent(offer -> this.offerRepository.save(offer.setActive(true).setCreatedOn(LocalDateTime.now())));
+    }
+
+    public Optional<OfferEntity> findById(Long offerId) {
+        return this.offerRepository.findById(offerId);
     }
 }

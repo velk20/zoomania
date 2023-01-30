@@ -9,12 +9,9 @@ import com.zoomania.zoomania.model.entity.OfferEntity;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.model.entity.UserRoleEntity;
 import com.zoomania.zoomania.model.enums.UserRoleEnum;
-import com.zoomania.zoomania.model.view.OfferDetailsView;
-import com.zoomania.zoomania.model.view.OfferResponse;
 import com.zoomania.zoomania.model.view.UserDetailsView;
 import com.zoomania.zoomania.model.view.UserResponse;
 import com.zoomania.zoomania.repository.UserRepository;
-import com.zoomania.zoomania.repository.UserRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,28 +28,30 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
+    private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final ModelMapper mapper;
     private final OfferService offerService;
 
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper, OfferService offerService) {
+    public UserService(UserRepository userRepository, UserRoleService userRoleService, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper, OfferService offerService) {
         this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
+        this.userRoleService = userRoleService;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.mapper = mapper;
         this.offerService = offerService;
     }
 
+
     public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
-        UserRoleEntity byUserRoleEnum = userRoleRepository
+        UserRoleEntity byUserRoleEnum = this.userRoleService
                 .findByUserRoleEnum(UserRoleEnum.USER);
 
         UserEntity userEntity = mapper.map(userRegisterDTO, UserEntity.class);
@@ -155,11 +154,11 @@ public class UserService {
 
         if (editUser.isAdmin()) {
             if (!isAdmin(userEntity)) {
-                userEntity.addRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
+                userEntity.addRole(userRoleService.findByUserRoleEnum(UserRoleEnum.ADMIN));
             }
         } else {
             if (isAdmin(userEntity)) {
-                userEntity.removeRole(userRoleRepository.findByUserRoleEnum(UserRoleEnum.ADMIN));
+                userEntity.removeRole(userRoleService.findByUserRoleEnum(UserRoleEnum.ADMIN));
             }
         }
 
@@ -224,7 +223,20 @@ public class UserService {
         return this.userRepository.count();
     }
 
+    public Optional<UserEntity> findByEmail(String email){
+        return this.userRepository.findByEmail(email);
+    }
+
+    public Optional<UserEntity> findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
+
     public boolean isUserActive(String username) {
         return this.userRepository.findByUsername(username).isPresent();
     }
+
+    public Optional<UserEntity> findById(Long id) {
+        return this.userRepository.findById(id);
+    }
+
 }
