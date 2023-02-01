@@ -29,6 +29,19 @@ public class UpdateUserDTO {
     private boolean isActive;
     private boolean isAdmin;
 
+    public UpdateUserDTO() {
+    }
+
+    public UpdateUserDTO(String username, String firstName, String email, String lastName, String phone, Integer age, boolean isActive, boolean isAdmin) {
+        this.username = username;
+        this.firstName = firstName;
+        this.email = email;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.age = age;
+        this.isActive = isActive;
+        this.isAdmin = isAdmin;
+    }
 
     public String getUsername() {
         return username;

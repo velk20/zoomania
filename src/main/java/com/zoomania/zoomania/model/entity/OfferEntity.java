@@ -35,6 +35,34 @@ public class OfferEntity extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ImageEntity> imagesEntities = new ArrayList<>();
 
+    public OfferEntity() {
+    }
+
+    public OfferEntity(String title, String description, BigDecimal price, String breed, LocalDateTime createdOn, boolean isActive, CategoryEntity category, UserEntity seller, List<ImageEntity> imagesEntities) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.breed = breed;
+        this.createdOn = createdOn;
+        this.isActive = isActive;
+        this.category = category;
+        this.seller = seller;
+        this.imagesEntities = imagesEntities;
+    }
+
+    public OfferEntity(Long id, String title, String description, BigDecimal price, String breed, LocalDateTime createdOn, boolean isActive, CategoryEntity category, UserEntity seller, List<ImageEntity> imagesEntities) {
+        super(id);
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.breed = breed;
+        this.createdOn = createdOn;
+        this.isActive = isActive;
+        this.category = category;
+        this.seller = seller;
+        this.imagesEntities = imagesEntities;
+    }
+
     public boolean isActive() {
         return isActive;
     }

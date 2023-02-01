@@ -38,6 +38,19 @@ public class UserRegisterDTO {
     private String password;
     private String confirmPassword;
 
+    public UserRegisterDTO() {
+    }
+
+    public UserRegisterDTO(String username, String firstName, String email, String lastName, String phone, Integer age, String password, String confirmPassword) {
+        this.username = username;
+        this.firstName = firstName;
+        this.email = email;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.age = age;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getPhone() {
         return phone;

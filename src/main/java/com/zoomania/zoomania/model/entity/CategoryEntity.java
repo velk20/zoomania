@@ -11,6 +11,13 @@ public class  CategoryEntity extends BaseEntity {
     @Column(nullable = false,unique = true)
     private CategoryEnum name;
 
+    public CategoryEntity() {
+    }
+
+    public CategoryEntity(Long id, CategoryEnum name) {
+        super(id);
+        this.name = name;
+    }
 
     public CategoryEnum getName() {
         return name;

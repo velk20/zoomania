@@ -17,6 +17,23 @@ public class UserDetailsView {
     private boolean isAdmin;
     private List<String> userRoles;
 
+
+    public UserDetailsView() {
+    }
+
+    public UserDetailsView(Long id, String username, String email, String phone, String age, String firstName, String lastName, boolean isActive, boolean isAdmin, List<String> userRoles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.age = age;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.isAdmin = isAdmin;
+        this.userRoles = userRoles;
+    }
+
     public List<String> getUserRoles() {
         return userRoles;
     }
