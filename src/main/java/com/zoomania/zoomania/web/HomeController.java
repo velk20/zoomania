@@ -15,7 +15,6 @@ public class HomeController {
     private final static int HOME_RECENT_OFFERS_COUNT = 3;
 
     private final OfferService offerService;
-
     public HomeController(OfferService offerService) {
         this.offerService = offerService;
     }
