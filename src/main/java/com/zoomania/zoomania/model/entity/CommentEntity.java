@@ -14,6 +14,17 @@ public class CommentEntity extends BaseEntity{
     @ManyToOne
     private OfferEntity offer;
 
+    public CommentEntity() {
+    }
+
+    public CommentEntity(Long id, LocalDateTime created, String text, UserEntity author, OfferEntity offer) {
+        super(id);
+        this.created = created;
+        this.text = text;
+        this.author = author;
+        this.offer = offer;
+    }
+
     public LocalDateTime getCreated() {
         return created;
     }

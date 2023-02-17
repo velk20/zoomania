@@ -160,8 +160,12 @@ public class OfferController {
             model.addAttribute("searchOfferModel", searchOfferDTO);
         }
 
-        if (!searchOfferDTO.isEmpty()) {
-            model.addAttribute("offers", offerService.searchOffer(searchOfferDTO,pageable));
+        if (    searchOfferDTO.getName() != null
+                || searchOfferDTO.getCategory() != null
+                || searchOfferDTO.getMaxPrice() != null
+                || searchOfferDTO.getMinPrice() != null) {
+
+            model.addAttribute("offers", offerService.searchOffer(searchOfferDTO, pageable));
         }
 
         return "search-offer";

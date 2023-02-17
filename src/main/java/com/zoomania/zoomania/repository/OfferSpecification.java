@@ -20,7 +20,6 @@ public class OfferSpecification implements Specification<OfferEntity> {
         this.categoryRepository = categoryRepository;
     }
 
-
     @Override
     public Predicate toPredicate(Root<OfferEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         Predicate predicate = criteriaBuilder.conjunction();

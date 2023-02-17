@@ -27,6 +27,17 @@ public class CreateOfferDTO {
     @Size(min = 3, max = 150)
     private String description;
 
+    public CreateOfferDTO() {
+    }
+
+    public CreateOfferDTO(String title, String breed, BigDecimal price, CategoryEnum category, MultipartFile[] imageUrl, String description) {
+        this.title = title;
+        this.breed = breed;
+        this.price = price;
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
 
     public String getBreed() {
         return breed;
