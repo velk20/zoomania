@@ -127,14 +127,14 @@
         </div>
       </div>
       <div class="form-group col-md-6 mb-3">
-        <label for="confirmPassword" class="text-white font-weight-bold">Repeat Password</label>
+        <label for="confirmPassword" class="text-white font-weight-bold">Confirm Password</label>
         <input
                 id="confirmPassword"
                 th:field="*{confirmPassword}"
                 th:errorclass="is-invalid"
                 type="password"
                 class="form-control"
-                placeholder="Repeat password"
+                placeholder="Confirm password"
         />
         <div class="invalid-feedback errors alert alert-danger">
           <div   th:each="err : ${#fields.errors('confirmPassword')}"
@@ -151,11 +151,11 @@
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col col-md-4">
-        <div class="button-holder d-flex">
+    <div class="row justify-content-center text-center">
+      <div class="col col-md-6 justify-content-center text-center">
+        <div class="button-holder d-flex justify-content-center text-center">
         <p>
-                  <span>If you have profile click <a th:href="@{/users/login}">here</a></span>
+                  <span>If you have an account login <a class="text-success" th:href="@{/users/login}">here.</a></span>
                 </p>
         </div>
       </div>

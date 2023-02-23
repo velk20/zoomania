@@ -16,7 +16,11 @@ public class ChangeUserPasswordDTO {
     @NotEmpty(message = "Password is required.")
     @Size(min = 5,message = "Password must be at least 5 symbols.")
     private String oldPassword;
+    @NotEmpty(message = "New Password is required.")
+    @Size(min = 5,message = "New Password must be at least 5 symbols.")
     private String newPassword;
+    @NotEmpty(message = "Confirm Password is required.")
+    @Size(min = 5,message = "Confirm Password must be at least 5 symbols.")
     private String confirmPassword;
 
     public String getUsername() {
