@@ -1,10 +1,12 @@
 package com.zoomania.zoomania.web;
 
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.user.UserRegisterDTO;
 import com.zoomania.zoomania.service.UserService;
-import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -68,4 +70,12 @@ public class AuthController {
 
         return "redirect:/";
     }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UserNotFoundException.class})
+    public String onUserNotFound(UserNotFoundException exception, Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
+
 }

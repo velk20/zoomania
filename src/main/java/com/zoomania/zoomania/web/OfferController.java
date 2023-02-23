@@ -1,6 +1,8 @@
 package com.zoomania.zoomania.web;
 
+import com.zoomania.zoomania.exceptions.CategoryNotFoundException;
 import com.zoomania.zoomania.exceptions.OfferNotFoundException;
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.offer.CreateOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.UpdateOfferDTO;
@@ -195,8 +197,22 @@ public class OfferController {
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     @ExceptionHandler({OfferNotFoundException.class})
-    public String onProductNotFound(OfferNotFoundException onfe,Model model){
-        model.addAttribute("message", onfe.getMessage());
+    public String onOfferNotFound(OfferNotFoundException exception,Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UserNotFoundException.class})
+    public String onUserNotFound(UserNotFoundException exception,Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({CategoryNotFoundException.class})
+    public String onCategoryNotFound(CategoryNotFoundException exception,Model model){
+        model.addAttribute("message", exception.getMessage());
         return "error";
     }
 }

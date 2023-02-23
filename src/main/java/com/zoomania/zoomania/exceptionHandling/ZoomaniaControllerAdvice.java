@@ -12,8 +12,8 @@ public class ZoomaniaControllerAdvice {
     @InitBinder
     public void initBinder ( WebDataBinder binder )
     {
-        StringTrimmerEditor stringtrimmer = new StringTrimmerEditor(true);
-        binder.registerCustomEditor(String.class, stringtrimmer);
+        StringTrimmerEditor stringTrimmer = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmer);
     }
     @ExceptionHandler({Exception.class})
     public String handleError() {

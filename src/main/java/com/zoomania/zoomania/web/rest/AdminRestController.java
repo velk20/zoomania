@@ -1,14 +1,16 @@
 package com.zoomania.zoomania.web.rest;
 
+import com.zoomania.zoomania.exceptions.CategoryNotFoundException;
+import com.zoomania.zoomania.exceptions.OfferNotFoundException;
+import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.view.OfferResponse;
 import com.zoomania.zoomania.model.view.UserResponse;
 import com.zoomania.zoomania.service.OfferService;
 import com.zoomania.zoomania.service.UserService;
 import com.zoomania.zoomania.util.RestPaginationConstants;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -52,5 +54,24 @@ public class AdminRestController {
 
     ) {
         return offerService.getAllNotApproveOffers(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UserNotFoundException.class})
+    public String onUserNotFound(UserNotFoundException exception, Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({CategoryNotFoundException.class})
+    public String onCategoryNotFound(CategoryNotFoundException exception, Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({OfferNotFoundException.class})
+    public String onOfferNotFound(OfferNotFoundException exception, Model model){
+        model.addAttribute("message", exception.getMessage());
+        return "error";
     }
 }

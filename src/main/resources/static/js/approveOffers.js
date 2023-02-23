@@ -94,7 +94,7 @@ function pageNavFirstLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     if (currentData.pageNo != 0) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${0}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${0}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">First</a>
         \n`;
     }else{
@@ -118,7 +118,7 @@ function pageNavPreviousLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir
     if (currentData.pageNo > 0) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${parseInt(pageNo)-1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${parseInt(pageNo)-1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Previous</a>
         \n`;
     }else{
@@ -143,7 +143,7 @@ function pageNavNextLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
     if (!currentData.last) {
         commentHtml += `<li class="page-item">\n`
         commentHtml+=`
-        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${parseInt(pageNo)+1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${parseInt(pageNo)+1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Next</a>
         \n`;
     }else{
@@ -169,7 +169,7 @@ function pageNavLastLinkAsHtml(currentData,pageNo, pageSize, sortBy, sortDir) {
         if (currentData.pageNo != currentData.totalPages-1) {
             commentHtml += `<li class="page-item">\n`;
             commentHtml+=`
-        <a href="/admin/offers?pageSize=${pageSize}&pageNo=${currentData.totalPages-1}&sortBy=${sortBy}&sortDir=${sortDir}"
+        <a href="/admin/offers/approve?pageSize=${pageSize}&pageNo=${currentData.totalPages-1}&sortBy=${sortBy}&sortDir=${sortDir}"
                            class="page-link">Last</a>
         \n`;
         }

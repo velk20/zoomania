@@ -107,15 +107,15 @@ public class ProfileController {
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     @ExceptionHandler({UserNotFoundException.class})
-    public String onProductNotFound(UserNotFoundException unfe,Model model){
-        model.addAttribute("message", unfe.getMessage());
+    public String onUserNotFound(UserNotFoundException exception,Model model){
+        model.addAttribute("message", exception.getMessage());
         return "error";
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     @ExceptionHandler({AccessDeniedException.class})
-    public String onProductNotFound(AccessDeniedException ade,Model model){
-        model.addAttribute("message", ade.getMessage());
+    public String onAccessDeniedException(AccessDeniedException exception,Model model){
+        model.addAttribute("message", exception.getMessage());
         return "error";
     }
 
