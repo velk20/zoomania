@@ -36,7 +36,8 @@
                                         th:href="@{/offers/all}"><strong>All offers</strong></a></li>
 
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link text-dark btn btn-link"
-                                        th:href="@{/offers/my}"><strong>My offers</strong></a></li>
+                                        th:href="@{/offers/{username}(username=${#authentication.name})}"><strong>My
+                    offers</strong></a></li>
 
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link text-dark btn btn-link"
                                         th:href="@{/offers/create}"><strong>Create

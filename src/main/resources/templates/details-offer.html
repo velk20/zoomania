@@ -71,7 +71,9 @@
                 <li><h5>Category: <span class="text-primary" th:text="*{category}">category</span></h5></li>
                 <li><h5>Breed: <span class="text-primary" th:text="*{breed}"> breed</span></h5></li>
                 <li><h5>Posted on: <span class="text-primary" th:text="*{createdOn}">posted</span></h5></li>
-                <li><h5>Seller: <span class="text-primary" th:text="*{getSellerFullName()}">seller</span></h5></li>
+                <li><h5>Seller: <span class="text-primary" >
+                    <a th:href="@{/offers/{username}(username=${offerSellerUsername})}" th:text="*{getSellerFullName()}"></a>
+                </span></h5></li>
             </ul>
             <div th:if="${#authentication.name}==${offerSellerUsername}" class="my-3">
                 <a style="text-decoration: none" class="text-white btn btn-link bg-warning text-decoration-none"
@@ -85,6 +87,26 @@
                     Delete</a>
 
             </div>
+
+            <div class="my-3">
+                <a id="contactSellerBtn" style="text-decoration: none"
+                   class="text-white btn btn-link bg-success text-decoration-none"
+                   >Contact Seller
+                </a>
+            </div>
+
+            <div id="contactSeller" hidden="hidden" class="my-3">
+               <label>Phone:</label>
+                <span class="font-weight-bold"  th:text="${offer.getSellerPhone()}">
+                        <a th:text="${offer.getSellerPhone()}" th:href="'tel:'+${offer.getSellerPhone()}"></a>
+                </span>
+                <br>
+                <label>Email:</label>
+                <span class="font-weight-bold" >
+                    <a th:text="${offer.getSellerEmail()}" th:href="'mailto:' + ${offer.getSellerEmail()}"></a>
+                </span>
+            </div>
+
         </div>
 
     </div>
@@ -130,7 +152,12 @@
 </div>
 <script th:src="@{/js/comments.js}"></script>
 <script th:src="@{/js/deleteOffer.js}"></script>
-
+<script>
+    let contactDiv = document.getElementById("contactSeller");
+    document.getElementById("contactSellerBtn").addEventListener("click",() => {
+        contactDiv.hidden = !contactDiv.hidden;
+    })
+</script>
 </body>
 <div th:replace="fragments/footer">Footer</div>
 

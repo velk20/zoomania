@@ -16,7 +16,27 @@ public class OfferDetailsView {
     private String sellerFirstName;
     private String sellerLastName;
     private String sellerUsername;
+    private String sellerEmail;
+    private String sellerPhone;
     private boolean isActive;
+
+    public String getSellerPhone() {
+        return sellerPhone;
+    }
+
+    public OfferDetailsView setSellerPhone(String sellerPhone) {
+        this.sellerPhone = sellerPhone;
+        return this;
+    }
+
+    public String getSellerEmail() {
+        return sellerEmail;
+    }
+
+    public OfferDetailsView setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
+        return this;
+    }
 
     public boolean isActive() {
         return isActive;

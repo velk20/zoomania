@@ -50,18 +50,19 @@ public class OfferController {
         return "dashboard";
     }
 
-    @GetMapping("/my")
+    @GetMapping("/{username}")
     public String myOffers(
+            @PathVariable String username,
             Model model,
             @PageableDefault(
                     sort = "createdOn",
                     direction = Sort.Direction.DESC,
                     page = 0,
                     size = 8
-            )Pageable pageable,
-            @AuthenticationPrincipal ZooManiaUserDetails userDetails) {
+            ) Pageable pageable) {
 
-        model.addAttribute("offers", offerService.getAllUserOffers(userDetails.getUsername(),pageable));
+        model.addAttribute("sellerUsername", username);
+        model.addAttribute("offers", offerService.getAllUserOffers(username, pageable));
         return "user-offers";
     }
 

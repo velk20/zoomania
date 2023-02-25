@@ -1,9 +1,6 @@
 package com.zoomania.zoomania.service;
 
-import com.zoomania.zoomania.exceptions.CategoryNotFoundException;
-import com.zoomania.zoomania.exceptions.ImageNotFoundException;
-import com.zoomania.zoomania.exceptions.OfferNotFoundException;
-import com.zoomania.zoomania.exceptions.UserNotFoundException;
+import com.zoomania.zoomania.exceptions.*;
 import com.zoomania.zoomania.model.dto.offer.CreateOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.SearchOfferDTO;
 import com.zoomania.zoomania.model.dto.offer.UpdateOfferDTO;
@@ -147,6 +144,8 @@ public class OfferService {
     }
 
     public Page<OfferDetailsView> getAllUserOffers(String username, Pageable pageable) {
+        this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, username)));
         return this.offerRepository
                 .findAllBySellerUsername(username, pageable)
                 .map(this::map);
@@ -183,7 +182,9 @@ public class OfferService {
         return offerDetailsView
                 .setSellerFirstName(seller.getFirstName())
                 .setSellerLastName(seller.getLastName())
-                .setSellerUsername(seller.getUsername());
+                .setSellerUsername(seller.getUsername())
+                .setSellerEmail(seller.getEmail())
+                .setSellerPhone(seller.getPhone());
     }
 
     public boolean isOwner(String username, Long offerId) {

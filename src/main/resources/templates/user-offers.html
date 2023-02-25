@@ -12,7 +12,9 @@
 
 <div class="shop-items">
   <div class="container-fluid">
-    <h1  th:if="${offers.hasContent()}" class="text-center text-white">My offers</h1>
+    <h1  th:if="${offers.hasContent()}" class="text-center text-white"
+         th:text="'\''+${sellerUsername}+'\''+' offers'">
+      offers</h1>
 
     <div class="row">
       <div th:if="${offers.hasContent()}" th:each="offer : ${offers.getContent()}" class="col-md-3 col-sm-6">

@@ -42,6 +42,7 @@ public class ProfileController {
         return "profile";
     }
 
+    @PreAuthorize("@userService.isOwner(#principal.name,#username)")
     @PatchMapping("/profile/{username}/edit")
     public String updateProfile(@PathVariable("username") String username,
                                 @Valid UpdateUserDTO editUser,

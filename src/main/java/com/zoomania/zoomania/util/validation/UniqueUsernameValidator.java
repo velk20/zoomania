@@ -3,6 +3,7 @@ package com.zoomania.zoomania.util.validation;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.entity.UserEntity;
 import com.zoomania.zoomania.repository.UserRepository;
+import org.hibernate.dialect.function.TemplateRenderer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -26,6 +27,10 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
 
             Optional<UserEntity> currentLoggedUser = this.userRepository
                     .findByUsername(authentication.getName());
+
+            if (authentication.getName().equals(value)) {
+                return true;
+            }
 
             if (currentLoggedUser.isPresent()) {
                 if (!currentLoggedUser.get().getUsername().equals(value)) {
