@@ -179,7 +179,7 @@
                 <button
                         th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${user.username == #authentication.getName()}"
                         class="btn btn-danger"
-                type="button">
+                        type="button">
                     <a id="deleteBtnProfile" class="text-white"
                        th:data-username="${user.username}"
                        style="text-decoration: none;"
@@ -187,6 +187,10 @@
                 </button>
                 <button class="btn btn-light btn-icon-text"><i class="bi bi-x"></i>
                     <a class="text text-dark" style="text-decoration: none;" th:href="@{/}">Back</a></button>
+
+                <button class="btn btn-success btn-icon-text"><i class="bi bi-x"></i>
+                    <a class="text text-dark" style="text-decoration: none;"
+                       th:href="@{/offers/{username}(username=${user.username})}">See user offers</a></button>
             </div>
 
         </div>
