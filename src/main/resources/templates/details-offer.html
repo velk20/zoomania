@@ -71,8 +71,10 @@
                 <li><h5>Category: <span class="text-primary" th:text="*{category}">category</span></h5></li>
                 <li><h5>Breed: <span class="text-primary" th:text="*{breed}"> breed</span></h5></li>
                 <li><h5>Posted on: <span class="text-primary" th:text="*{createdOn}">posted</span></h5></li>
-                <li><h5>Seller: <span class="text-primary" >
+                <li><h5>Seller: <span class="text-success">
+                    <u>
                     <a th:href="@{/offers/{username}(username=${offerSellerUsername})}" th:text="*{getSellerFullName()}"></a>
+                    </u>
                 </span></h5></li>
             </ul>
             <div th:if="${#authentication.name}==${offerSellerUsername}" class="my-3">
