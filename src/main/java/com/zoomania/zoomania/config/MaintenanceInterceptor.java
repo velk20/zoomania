@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalTime;
 
-@Configuration
+@Configuration("maintenance")
 public class MaintenanceInterceptor implements HandlerInterceptor {
 
   @Override
@@ -18,7 +18,7 @@ public class MaintenanceInterceptor implements HandlerInterceptor {
     var requestURI = request.getRequestURI();
     if (!requestURI.equals("/maintenance")) {
       LocalTime now = LocalTime.now();
-      if (now.getHour() >= 23) {
+      if (now.getHour() == 23) {
         response.sendRedirect("/maintenance");
         return false;
       }

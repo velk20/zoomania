@@ -72,7 +72,7 @@ public class OfferControllerIT {
     @WithUserDetails(value = "testUser",
             userDetailsServiceBeanName = "testUserDataService")
     void testGetMyOffersWithUser() throws Exception {
-        mockMvc.perform(get("/offers/my")
+        mockMvc.perform(get("/offers/"+testUser.getUsername())
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user-offers"))
