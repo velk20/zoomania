@@ -20,6 +20,26 @@ public class OfferDetailsView {
     private String sellerPhone;
     private boolean isActive;
 
+    public OfferDetailsView() {
+    }
+
+    public OfferDetailsView(Long id, String title, BigDecimal price, String breed, String description, List<String> imagesUrls, LocalDate createdOn, String category, String sellerFirstName, String sellerLastName, String sellerUsername, String sellerEmail, String sellerPhone, boolean isActive) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.breed = breed;
+        this.description = description;
+        this.imagesUrls = imagesUrls;
+        this.createdOn = createdOn;
+        this.category = category;
+        this.sellerFirstName = sellerFirstName;
+        this.sellerLastName = sellerLastName;
+        this.sellerUsername = sellerUsername;
+        this.sellerEmail = sellerEmail;
+        this.sellerPhone = sellerPhone;
+        this.isActive = isActive;
+    }
+
     public String getSellerPhone() {
         return sellerPhone;
     }
