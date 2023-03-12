@@ -63,6 +63,10 @@ Open your client(browser) on localhost:8080
 <br/><br/>
 <kbd><img src="https://user-images.githubusercontent.com/48069264/224537385-6851ca91-6b00-4d5a-8051-d47792f7b502.png"/></kbd>
 <br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537568-09ff4d6e-ef5d-480d-bba3-59a8a205917f.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537573-b8928f90-bbd3-4c85-a36e-ec1b7a660748.png"/></kbd>
+<br/><br/>
 <kbd><img src="https://user-images.githubusercontent.com/48069264/224537403-8e4ed551-404d-4369-8b3c-99fe7c5ef526.png"/></kbd>
 <br/><br/>
 <kbd><img src="https://user-images.githubusercontent.com/48069264/224537418-79b2ab11-f49c-4e76-bb34-32ee901a563a.png"/></kbd>
