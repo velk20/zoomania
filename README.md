@@ -13,6 +13,7 @@ ZooMania is an online web (MVC) application where you can adopt your favorite pe
 -	Only the administrator can delete, add or edit offers and users, to accept or deny creation for offer requests.
 -	Also admins can add other accounts and make them administrators
 -	Admins can configur order details like: "Approve", "Deny" ...
+-	DB diagram: <kbd><img src="https://user-images.githubusercontent.com/48069264/224537013-ccbd6a78-fd88-42ca-b0cd-a9a32d3699ad.png"/></kbd>
 <br/><br/>
 
 ## Getting Started <a name = "getting_started"></a>
@@ -52,27 +53,31 @@ Open your client(browser) on localhost:8080
 <br/><br/>
 
 ## 📸 Application screenshots
-<kbd><img src="https://user-images.githubusercontent.com/48069264/211287068-d4035522-5e0b-4108-b03b-eb580b7e41b4.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537313-e8b6cbad-95ca-45e5-b2ab-29f7d7b101e1.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/211287192-cc9ee5a2-abb6-45ec-8022-bd735f16f38f.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537342-3e3105f6-c35c-4d5e-952d-4ed7c8b25e21.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/211287225-02ba5ff3-3e06-4a6c-973b-48548cc1f414.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537352-6eb00705-b148-49ee-aaf0-813109ea6775.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569221-99757e3a-5083-40a8-b066-e54a86a03312.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537378-4258445b-bbd7-43d3-a409-9e9ce1a56625.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569251-c79da0b3-78e4-4ebe-9aaf-89c8eaae6efd.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537385-6851ca91-6b00-4d5a-8051-d47792f7b502.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569260-4c592bcd-2792-4136-9fe8-b62e1e737dd7.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537568-09ff4d6e-ef5d-480d-bba3-59a8a205917f.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569272-2a71c3bb-732d-41a0-92ff-86ceb9822a22.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537573-b8928f90-bbd3-4c85-a36e-ec1b7a660748.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569281-111e31fe-b42d-4876-a648-d22efe6b8da5.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537403-8e4ed551-404d-4369-8b3c-99fe7c5ef526.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569292-4cf2cec5-7691-4296-b9f1-b216578d2b91.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537418-79b2ab11-f49c-4e76-bb34-32ee901a563a.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569851-de819a70-33b6-47f4-9fea-b6d44e6e2da4.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537432-165eff17-c603-47d2-a0be-6961177f90f2.png"/></kbd>
 <br/><br/>
-<kbd><img src="https://user-images.githubusercontent.com/48069264/212569856-5586a258-c902-4d15-9c57-b2214d27e494.png"/></kbd>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537435-fb5b9ff7-1031-4f21-9954-d8365c93eb96.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537439-903fd219-6169-4148-b9c7-a5366d1953ce.png"/></kbd>
+<br/><br/>
+<kbd><img src="https://user-images.githubusercontent.com/48069264/224537469-531f8a8d-9756-4f30-ba13-7fd64d804ca9.png"/></kbd>
 <br/><br/>
 
 ## :v: Leave a feedback!
