@@ -48,28 +48,6 @@ public class OfferService {
         this.mapper = mapper;
         this.cloudinaryService = cloudinaryService;
     }
-
-
-    public  List<OfferEntity> findByOrderByCreatedOnDesc() {
-        return this.offerRepository.findByOrderByCreatedOnDesc();
-    }
-
-    public void deleteAllBySeller(UserEntity seller) {
-        this.offerRepository.deleteAllBySeller(seller);
-    }
-
-    public List<OfferEntity>  findAllBySeller(UserEntity seller) {
-        return this.offerRepository.findAllBySeller(seller);
-    }
-
-    public Page<OfferEntity> findAllByIsActive(boolean isActive,Pageable pageable) {
-        return this.offerRepository.findAllByIsActive(isActive, pageable);
-    }
-
-    public Page<OfferEntity> findAllBySellerUsername(String username, Pageable pageable){
-        return this.offerRepository.findAllBySellerUsername(username, pageable);
-    }
-
     @Transactional
     public void addOffer(CreateOfferDTO addOfferDTO, UserDetails userDetails) {
         OfferEntity newOffer = mapper.map(addOfferDTO, OfferEntity.class);
@@ -90,7 +68,6 @@ public class OfferService {
         imageEntityList.forEach(e->e.setOffer(newOffer));
 
         this.imageService.saveAll(imageEntityList);
-
 
         newOffer
                 .setImagesEntities(imageEntityList)
@@ -118,6 +95,7 @@ public class OfferService {
         if (byOrderByCreatedOnDesc.size() == 0) {
             return null;
         }
+
         if (byOrderByCreatedOnDesc.size() < limit) {
             return byOrderByCreatedOnDesc
                     .stream()

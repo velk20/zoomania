@@ -22,9 +22,7 @@ public class LogConfig {
         this.offerService = offerService;
     }
 
-//    @Scheduled(cron="0 0/30 * * * ?") // 30 minutes
-    @Scheduled(cron="0 0/15 * * * ?") // 15 minutes
-//    @Scheduled(cron = "0 * * * * *") // every minutes
+    @Scheduled(cron="0 0 10,16 * * *") // twice a day at 10am and 4pm
     public void LogCurrentApplicationStatus() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("log.txt"));
         StringBuilder stringBuilder = new StringBuilder();

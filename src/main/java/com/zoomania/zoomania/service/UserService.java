@@ -40,7 +40,13 @@ public class UserService {
     private final ModelMapper mapper;
     private final OfferService offerService;
 
-    public UserService(UserRepository userRepository, UserRoleService userRoleService, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper mapper, OfferService offerService) {
+    public UserService(
+            UserRepository userRepository,
+            UserRoleService userRoleService,
+            PasswordEncoder passwordEncoder,
+            UserDetailsService userDetailsService,
+            ModelMapper mapper,
+            OfferService offerService) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.passwordEncoder = passwordEncoder;
@@ -114,9 +120,15 @@ public class UserService {
 
     private UserDetailsView map(UserEntity entity) {
         UserDetailsView userDetailsView = mapper.map(entity, UserDetailsView.class);
-        userDetailsView.setUserRoles(entity.getUserRoles().stream().map(r -> r.getUserRoleEnum().name()).collect(Collectors.toList()));
+        userDetailsView.setUserRoles(entity.getUserRoles()
+                .stream()
+                .map(r -> r.getUserRoleEnum().name())
+                .collect(Collectors.toList()));
         userDetailsView.setActive(entity.isActive());
-        userDetailsView.setAdmin(entity.getUserRoles().stream().anyMatch(r -> r.getUserRoleEnum().equals(UserRoleEnum.ADMIN)));
+        userDetailsView.setAdmin(entity.getUserRoles()
+                .stream()
+                .anyMatch(r -> r.getUserRoleEnum()
+                        .equals(UserRoleEnum.ADMIN)));
         return userDetailsView;
     }
 
@@ -173,7 +185,11 @@ public class UserService {
         UserEntity userEntity = this.userRepository
                 .findByUsername(changeUserPasswordDTO.getUsername())
                 .orElseThrow(() ->
-                        new UserNotFoundException(String.format(ExceptionConstants.USER_NOT_FOUND, changeUserPasswordDTO.getUsername())));
+                        new UserNotFoundException(
+                                String.format(
+                                        ExceptionConstants.USER_NOT_FOUND,
+                                        changeUserPasswordDTO.getUsername()
+                                )));
 
         boolean isOldPasswordMatch =
                 passwordEncoder.matches(changeUserPasswordDTO.getOldPassword(), userEntity.getPassword());

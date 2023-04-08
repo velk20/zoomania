@@ -18,19 +18,6 @@ public class ImageService {
         this.imageRepository = imageRepository;
         this.cloudinaryService = cloudinaryService;
     }
-
-    public Optional<ImageEntity> findByPublicId(String publicId) {
-        return this.imageRepository.findByPublicId(publicId);
-    }
-
-    public Optional<ImageEntity> findByImageUrl(String imageUrl) {
-        return this.imageRepository.findByImageUrl(imageUrl);
-    }
-
-    public ImageEntity save(ImageEntity imageEntity) {
-        return this.imageRepository.save(imageEntity);
-    }
-
     public List<ImageEntity> saveAll(List<ImageEntity> imageEntities) {
         return this.imageRepository.saveAll(imageEntities);
     }
