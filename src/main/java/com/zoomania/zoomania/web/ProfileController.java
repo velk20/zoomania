@@ -1,6 +1,5 @@
 package com.zoomania.zoomania.web;
 
-import com.zoomania.zoomania.exceptions.OfferNotFoundException;
 import com.zoomania.zoomania.exceptions.UserNotFoundException;
 import com.zoomania.zoomania.model.dto.user.ChangeUserPasswordDTO;
 import com.zoomania.zoomania.model.dto.user.UpdateUserDTO;
@@ -9,8 +8,6 @@ import com.zoomania.zoomania.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
